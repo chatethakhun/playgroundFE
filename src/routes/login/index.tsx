@@ -41,7 +41,7 @@ function RouteComponent() {
   const onSumbit = useCallback(async (formValue: FormValues) => {
     const { email, password } = formValue
     try {
-      const data = await login(email, password)
+      await login(email, password)
 
       goTo('/chatapp')
     } catch (error) {
