@@ -1,9 +1,11 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { IoIosArrowBack } from 'react-icons/io'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+
 import PageContainer from '@/components/ui/PageContainer'
 import IconButton from '@/components/ui/IconButton'
 import useCustomRouter from '@/hooks/useCustomRouter'
@@ -27,7 +29,18 @@ export const Route = createFileRoute('/_public/login/')({
 
 function RouteComponent() {
   const { goTo } = useCustomRouter()
-
+  // Access the client
+  const mutation = useMutation({
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+      login(email, password),
+    onSuccess: () => {
+      goTo('/chatapp')
+    },
+    onError: (error) => {
+      console.error(`error from login ${error}`)
+      alert(error)
+    },
+  })
   const method = useForm({
     defaultValues: {
       email: '',
@@ -40,14 +53,8 @@ function RouteComponent() {
 
   const onSumbit = useCallback(async (formValue: FormValues) => {
     const { email, password } = formValue
-    try {
-      await login(email, password)
 
-      goTo('/chatapp')
-    } catch (error) {
-      console.error(`error from login ${error}`)
-      alert(error)
-    }
+    mutation.mutate({ email, password })
   }, [])
   return (
     <PageContainer>
@@ -89,7 +96,9 @@ function RouteComponent() {
           )}
         />
 
-        <Button onClick={handleSubmit(onSumbit)}>Login</Button>
+        <Button onClick={handleSubmit(onSumbit)} disabled={mutation.isPending}>
+          {mutation.isPending ? 'Loading...' : 'Login'}
+        </Button>
       </FormProvider>
 
       <div className="flex justify-center items-center mt-auto gap-2">
