@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SignupIndexRouteImport } from './routes/signup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as ChatappIndexRouteImport } from './routes/chatapp/index'
 import { Route as ExampleQueryIndexRouteImport } from './routes/example/query/index'
 import { Route as ExampleIconsIndexRouteImport } from './routes/example/icons/index'
 
@@ -19,9 +21,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupIndexRoute = SignupIndexRouteImport.update({
+  id: '/signup/',
+  path: '/signup/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginIndexRoute = LoginIndexRouteImport.update({
   id: '/login/',
   path: '/login/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatappIndexRoute = ChatappIndexRouteImport.update({
+  id: '/chatapp/',
+  path: '/chatapp/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExampleQueryIndexRoute = ExampleQueryIndexRouteImport.update({
@@ -37,34 +49,61 @@ const ExampleIconsIndexRoute = ExampleIconsIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/chatapp': typeof ChatappIndexRoute
   '/login': typeof LoginIndexRoute
+  '/signup': typeof SignupIndexRoute
   '/example/icons': typeof ExampleIconsIndexRoute
   '/example/query': typeof ExampleQueryIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/chatapp': typeof ChatappIndexRoute
   '/login': typeof LoginIndexRoute
+  '/signup': typeof SignupIndexRoute
   '/example/icons': typeof ExampleIconsIndexRoute
   '/example/query': typeof ExampleQueryIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/chatapp/': typeof ChatappIndexRoute
   '/login/': typeof LoginIndexRoute
+  '/signup/': typeof SignupIndexRoute
   '/example/icons/': typeof ExampleIconsIndexRoute
   '/example/query/': typeof ExampleQueryIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/example/icons' | '/example/query'
+  fullPaths:
+    | '/'
+    | '/chatapp'
+    | '/login'
+    | '/signup'
+    | '/example/icons'
+    | '/example/query'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/example/icons' | '/example/query'
-  id: '__root__' | '/' | '/login/' | '/example/icons/' | '/example/query/'
+  to:
+    | '/'
+    | '/chatapp'
+    | '/login'
+    | '/signup'
+    | '/example/icons'
+    | '/example/query'
+  id:
+    | '__root__'
+    | '/'
+    | '/chatapp/'
+    | '/login/'
+    | '/signup/'
+    | '/example/icons/'
+    | '/example/query/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChatappIndexRoute: typeof ChatappIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
+  SignupIndexRoute: typeof SignupIndexRoute
   ExampleIconsIndexRoute: typeof ExampleIconsIndexRoute
   ExampleQueryIndexRoute: typeof ExampleQueryIndexRoute
 }
@@ -78,11 +117,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup/': {
+      id: '/signup/'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login/': {
       id: '/login/'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chatapp/': {
+      id: '/chatapp/'
+      path: '/chatapp'
+      fullPath: '/chatapp'
+      preLoaderRoute: typeof ChatappIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/example/query/': {
@@ -104,7 +157,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChatappIndexRoute: ChatappIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
+  SignupIndexRoute: SignupIndexRoute,
   ExampleIconsIndexRoute: ExampleIconsIndexRoute,
   ExampleQueryIndexRoute: ExampleQueryIndexRoute,
 }

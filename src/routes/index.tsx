@@ -18,7 +18,7 @@ function RouteComponent() {
         <Button isBlock onClick={() => goTo('/login')}>
           Login
         </Button>
-        <Button isBlock secondary>
+        <Button isBlock secondary onClick={() => goTo('/signup')}>
           Register
         </Button>
       </div>
