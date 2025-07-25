@@ -1,0 +1,32 @@
+@font-face {
+  font-family: OpenSansRegular;
+  src: url('assets/fonts/Open_Sans/OpenSans-Regular.ttf');
+}
+
+@font-face {
+  font-family: OpenSansLight;
+  src: url('assets/fonts/Open_Sans/OpenSans-Light.ttf');
+}
+
+@import 'tailwindcss';
+/* Add color theme to this */
+@theme {
+  --font-open-sans-regular: OpenSansRegular, 'sans-serif';
+  --font-open-sans-light: OpenSansLight, 'sans-serif';
+  --main-color: #333;
+}
+
+body {
+  @apply m-0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--main-color);
+}
+
+code {
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
