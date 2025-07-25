@@ -27,7 +27,7 @@ const signupSchema = yup.object({
 
 type FormValues = yup.InferType<typeof signupSchema>
 
-export const Route = createFileRoute('/signup/')({
+export const Route = createFileRoute('/_public/signup/')({
   component: RouteComponent,
 })
 

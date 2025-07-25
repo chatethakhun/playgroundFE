@@ -21,7 +21,7 @@ const loginSchema = yup.object({
 
 type FormValues = yup.InferType<typeof loginSchema>
 
-export const Route = createFileRoute('/login/')({
+export const Route = createFileRoute('/_public/login/')({
   component: RouteComponent,
 })
 

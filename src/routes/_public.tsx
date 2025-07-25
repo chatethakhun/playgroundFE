@@ -1,11 +1,11 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import isAuthenticate from '@/utils/isAuthenticate'
 
-export const Route = createFileRoute('/_authenticated')({
+export const Route = createFileRoute('/_public')({
   beforeLoad: () => {
-    if (!isAuthenticate()) {
+    if (isAuthenticate()) {
       throw redirect({
-        to: '/login',
+        to: '/chatapp',
       })
     }
   },
