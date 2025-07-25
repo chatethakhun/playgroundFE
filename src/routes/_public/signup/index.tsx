@@ -4,6 +4,7 @@ import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { useCallback } from 'react'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
 
 import IconButton from '@/components/ui/IconButton'
 import PageContainer from '@/components/ui/PageContainer'
@@ -33,6 +34,16 @@ export const Route = createFileRoute('/_public/signup/')({
 
 function RouteComponent() {
   const { goTo } = useCustomRouter()
+  const signUpMutation = useMutation({
+    mutationFn: signup,
+    onSuccess: () => {
+      goTo('/chatapp')
+    },
+    onError: (err) => {
+      console.log(err)
+      alert('Something went wrong')
+    },
+  })
   const method = useForm({
     defaultValues: {
       fullName: '',
@@ -43,23 +54,13 @@ function RouteComponent() {
     resolver: yupResolver(signupSchema),
   })
   const { handleSubmit, control } = method
-  const onSubmit = useCallback(
-    async (data: FormValues) => {
-      try {
-        const userData = await signup({
-          email: data.email,
-          password: data.password,
-          fullName: data.fullName,
-        })
-        console.log({ userData })
-        goTo('/chatapp')
-      } catch (error) {
-        console.error(`error from signup ${error}`)
-        alert(error)
-      }
-    },
-    [goTo],
-  )
+  const onSubmit = useCallback((data: FormValues) => {
+    signUpMutation.mutate({
+      email: data.email,
+      password: data.password,
+      fullName: data.fullName,
+    })
+  }, [])
   return (
     <PageContainer>
       <IconButton onClick={() => goTo('/')}>
@@ -126,7 +127,12 @@ function RouteComponent() {
           )}
         />
 
-        <Button onClick={handleSubmit(onSubmit)}>Register</Button>
+        <Button
+          onClick={handleSubmit(onSubmit)}
+          disabled={signUpMutation.isPending}
+        >
+          {signUpMutation.isPending ? 'Signing up...' : 'Sign up'}
+        </Button>
       </FormProvider>
 
       <div className="flex justify-center items-center mt-auto gap-2">
