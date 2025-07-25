@@ -7,11 +7,23 @@
 /* Add color theme to this */
 @theme {
   --font-urbanist: 'Urbanist', san-serif;
-  --main-color: #333;
+  --color-dark: #1e232c;
+  --color-border: #e8ecf4;
+  --color-dark-gray-: #6a707c;
+  --color-gray: #8391a1;
+  --color-primary: #35c2c1;
+}
+
+html {
+  max-width: 440px;
+  min-height: 800px;
+  height: 100%;
+  max-height: 100px;
+  margin: 0 auto;
 }
 
 body {
-  @apply m-0;
+  @apply m-0 h-full;
   font-family:
     Urbanist,
     -apple-system,
@@ -29,11 +41,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: var(--main-color);
   font-weight: 400;
-  max-width: 440px;
-  margin: 0 auto;
 }
 
 code {
   font-family:
     source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+#app {
+  height: 100%;
 }

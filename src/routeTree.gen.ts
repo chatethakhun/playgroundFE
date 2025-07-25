@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as ExampleQueryIndexRouteImport } from './routes/example/query/index'
 import { Route as ExampleIconsIndexRouteImport } from './routes/example/icons/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExampleQueryIndexRoute = ExampleQueryIndexRouteImport.update({
@@ -31,30 +37,34 @@ const ExampleIconsIndexRoute = ExampleIconsIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginIndexRoute
   '/example/icons': typeof ExampleIconsIndexRoute
   '/example/query': typeof ExampleQueryIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginIndexRoute
   '/example/icons': typeof ExampleIconsIndexRoute
   '/example/query': typeof ExampleQueryIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login/': typeof LoginIndexRoute
   '/example/icons/': typeof ExampleIconsIndexRoute
   '/example/query/': typeof ExampleQueryIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/example/icons' | '/example/query'
+  fullPaths: '/' | '/login' | '/example/icons' | '/example/query'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/example/icons' | '/example/query'
-  id: '__root__' | '/' | '/example/icons/' | '/example/query/'
+  to: '/' | '/login' | '/example/icons' | '/example/query'
+  id: '__root__' | '/' | '/login/' | '/example/icons/' | '/example/query/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
   ExampleIconsIndexRoute: typeof ExampleIconsIndexRoute
   ExampleQueryIndexRoute: typeof ExampleQueryIndexRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/example/query/': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
   ExampleIconsIndexRoute: ExampleIconsIndexRoute,
   ExampleQueryIndexRoute: ExampleQueryIndexRoute,
 }
