@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const login = async (email: string, password: string) => {
   try {
-    const response = await axios.post(
+    const response = await axios.post<{ user: User; token: string }>(
       `${import.meta.env.VITE_API_URL}/api/auth/login`,
       {
         email,
@@ -13,6 +13,8 @@ export const login = async (email: string, password: string) => {
     if (response.status !== 200) {
       throw new Error('Invalid credentials')
     }
+
+    localStorage.setItem('token', response.data.token)
 
     const data = response.data
     return data
@@ -32,7 +34,7 @@ export const signup = async ({
   password: string
 }) => {
   try {
-    const response = await axios.post(
+    const response = await axios.post<{ user: User; token: string }>(
       `${import.meta.env.VITE_API_URL}/api/auth/signup`,
       {
         fullName,
@@ -43,6 +45,8 @@ export const signup = async ({
     if (response.status !== 201) {
       throw new Error('Invalid credentials')
     }
+
+    localStorage.setItem('token', response.data.token)
     const data = response.data
     return data
   } catch (error) {
