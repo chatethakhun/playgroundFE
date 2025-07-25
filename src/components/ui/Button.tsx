@@ -12,11 +12,13 @@ const Button = ({
   primary = true,
   secondary = false,
   isBlock = false,
+  onClick,
 }: IButton) => {
   return (
     <button
+      onClick={onClick}
       type="button"
-      className={cn(' rounded-md px-4 py-4 font-semibold', {
+      className={cn(' rounded-md px-4 py-2 font-semibold', {
         'w-full': isBlock,
         'bg-dark text-white hover:bg-gray-800': primary,
         'bg-white text-dark hover:bg-gray-200 border-dark border-1': secondary,
