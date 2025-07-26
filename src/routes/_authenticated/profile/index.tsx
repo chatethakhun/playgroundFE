@@ -5,7 +5,7 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { useMutation, useQuery } from '@tanstack/react-query'
-
+import { ToastContainer, toast } from 'react-toastify'
 import PageContainer from '@/components/ui/PageContainer'
 import Avatar from '@/components/ui/Avatar'
 import TextInput from '@/components/ui/TextInput'
@@ -85,6 +85,8 @@ function RouteComponent() {
           bio: data.bio || '',
           avatar: avatar,
         })
+
+        toast('Profile updated successfully')
       } catch (error) {
         console.log(error)
       }
@@ -169,6 +171,7 @@ function RouteComponent() {
           </Button>
         </FormProvider>
       </div>
+      <ToastContainer />
     </PageContainer>
   )
 }
