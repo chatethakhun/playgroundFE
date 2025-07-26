@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -22,6 +22,7 @@ export const Route = createFileRoute('/_authenticated/profile/')({
 })
 
 function RouteComponent() {
+  const inputFile = useRef<HTMLInputElement>(null)
   const method = useForm({
     defaultValues: {
       fullName: '',
@@ -31,6 +32,16 @@ function RouteComponent() {
   })
   const { handleSubmit, control } = method
 
+  const onChangeUpload = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files?.length === 0) return
+      const file = (e.target.files || [])[0]
+
+      console.log(e.target.files)
+    },
+    [],
+  )
+
   const onSubmit = useCallback((data: FormData) => {
     console.log(data)
   }, [])
@@ -38,19 +49,26 @@ function RouteComponent() {
   return (
     <PageContainer noPadding>
       <div className="flex justify-center items-center-safe h-[30%] relative ">
-        <div className="w-[128px] h-[128px] relative">
+        <div
+          className="w-[128px] h-[128px] relative"
+          onClick={() => {
+            if (inputFile.current) {
+              inputFile.current.click()
+            }
+          }}
+        >
           <Avatar size={128} alt="profile" />
+          <input
+            ref={inputFile}
+            type="file"
+            className="hidden"
+            onChange={onChangeUpload}
+          />
         </div>
       </div>
 
       <div className="bg-primary h-full px-8 py-10 rounded-t-3xl flex flex-col gap-3">
-        <TextInput
-          id="Email"
-          placeholder="Email"
-          value={''}
-          theme="white"
-          disabled
-        />
+        <TextInput id="Email" placeholder="Email" value={''} disabled />
         <FormProvider {...method}>
           <Controller
             control={control}
@@ -62,7 +80,6 @@ function RouteComponent() {
                 onChange={(evt) => onChange(evt.target.value)}
                 value={value}
                 errorMessage={error?.message || ''}
-                theme="white"
               />
             )}
           />
@@ -77,7 +94,6 @@ function RouteComponent() {
                 onChange={(evt) => onChange(evt.target.value)}
                 value={value}
                 errorMessage={error?.message || ''}
-                theme="white"
               />
             )}
           />

@@ -1,6 +1,5 @@
 import { cn } from '@/utils/cn'
 
-type ThemeTextInput = 'default' | 'white'
 interface ITextAreaInput
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string
@@ -8,7 +7,6 @@ interface ITextAreaInput
   id: string
   icon?: React.ReactNode
   errorMessage?: string
-  theme?: ThemeTextInput
 }
 const TextAreaInput = ({
   label,
@@ -18,7 +16,7 @@ const TextAreaInput = ({
   errorMessage,
   onChange,
   value,
-  theme = 'default',
+
   rows = 4,
 }: ITextAreaInput) => {
   return (
@@ -31,11 +29,7 @@ const TextAreaInput = ({
         onChange={onChange}
         value={value}
         className={cn(
-          'rounded-md border-border border-1 py-2 px-4 text-dark rounde-lg focus:outline-dark-gray',
-          {
-            'bg-light-gray': theme === 'default',
-            'bg-white': theme === 'white',
-          },
+          'rounded-md border-border bg-white border-1 py-2 px-4 text-dark rounde-lg focus:outline-dark-gray',
         )}
       />
       <div className="absolute right-2 top-2">{icon}</div>

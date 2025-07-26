@@ -1,13 +1,11 @@
 import { cn } from '@/utils/cn'
 
-type ThemeTextInput = 'default' | 'white'
 interface ITextInput extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   placeholder: string
   id: string
   icon?: React.ReactNode
   errorMessage?: string
-  theme?: ThemeTextInput
 }
 const TextInput = ({
   label,
@@ -18,7 +16,6 @@ const TextInput = ({
   onChange,
   value,
   type = 'text',
-  theme = 'default',
   disabled = false,
 }: ITextInput) => {
   return (
