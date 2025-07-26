@@ -1,14 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+import { useMutation } from '@tanstack/react-query'
 
 import PageContainer from '@/components/ui/PageContainer'
 import Avatar from '@/components/ui/Avatar'
 import TextInput from '@/components/ui/TextInput'
 import TextAreaInput from '@/components/ui/TextAreaInput'
 import Button from '@/components/ui/Button'
+
+import { uploadFile } from '@/services/upload/upload.service'
 
 const profileSchema = yup.object({
   fullName: yup.string().required('Full Name is required'),
@@ -23,6 +27,7 @@ export const Route = createFileRoute('/_authenticated/profile/')({
 
 function RouteComponent() {
   const inputFile = useRef<HTMLInputElement>(null)
+  const [avatar, setAvatar] = useState('')
   const method = useForm({
     defaultValues: {
       fullName: '',
@@ -32,14 +37,28 @@ function RouteComponent() {
   })
   const { handleSubmit, control } = method
 
+  const uploadMutation = useMutation({
+    mutationFn: uploadFile,
+    onSuccess: (url) => {
+      console.log({ url })
+      setAvatar(url)
+    },
+  })
+
   const onChangeUpload = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files?.length === 0) return
+      if (e.target.files?.length === 0 || uploadMutation.isPending) return
       const file = (e.target.files || [])[0]
 
-      console.log(e.target.files)
+      // limit file size to 1MB
+      if (file.size > 1024 * 1024) {
+        alert('File size must be less than 1MB')
+        return
+      }
+      console.log(file)
+      uploadMutation.mutate(file)
     },
-    [],
+    [uploadMutation],
   )
 
   const onSubmit = useCallback((data: FormData) => {
@@ -52,12 +71,15 @@ function RouteComponent() {
         <div
           className="w-[128px] h-[128px] relative"
           onClick={() => {
-            if (inputFile.current) {
+            if (inputFile.current && !uploadMutation.isPending) {
               inputFile.current.click()
             }
           }}
         >
-          <Avatar size={128} alt="profile" />
+          <Avatar size={128} alt="profile" src={avatar} />
+          {uploadMutation.isPending && (
+            <AiOutlineLoading3Quarters className="text-primary absolute top-0 left-0 w-full h-full z-10 flex items-center justify-center animate-spin" />
+          )}
           <input
             ref={inputFile}
             type="file"
