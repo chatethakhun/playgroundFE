@@ -34,23 +34,15 @@ function RouteComponent() {
   const method = useForm({
     defaultValues: {
       fullName: '',
-      avatar: '',
+      bio: '',
     },
     resolver: yupResolver(profileSchema),
   })
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors },
-  } = method
-
-  console.log({ errors })
+  const { handleSubmit, control, setValue } = method
 
   const uploadMutation = useMutation({
     mutationFn: uploadFile,
     onSuccess: (url) => {
-      console.log({ url })
       setAvatar(url)
     },
   })
@@ -104,6 +96,7 @@ function RouteComponent() {
     if (me) {
       setValue('fullName', me.user.fullName)
       setValue('avatar', me.user.avatar)
+      setValue('bio', me.user.bio)
       setEmail(me.user.email)
       setAvatar(me.user.avatar)
     }
