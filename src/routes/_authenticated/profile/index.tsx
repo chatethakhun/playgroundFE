@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import PageContainer from '@/components/ui/PageContainer'
 import Avatar from '@/components/ui/Avatar'
@@ -13,10 +13,12 @@ import TextAreaInput from '@/components/ui/TextAreaInput'
 import Button from '@/components/ui/Button'
 
 import { uploadFile } from '@/services/upload/upload.service'
+import { getMe, updateProfile } from '@/services/auth/auth.service'
+import LoadingFullPage from '@/components/ui/LoadingFullPage'
 
 const profileSchema = yup.object({
   fullName: yup.string().required('Full Name is required'),
-  avatar: yup.string().required('Avatar is required'),
+  avatar: yup.string().optional(),
   bio: yup.string().optional(),
 })
 
@@ -27,7 +29,8 @@ export const Route = createFileRoute('/_authenticated/profile/')({
 
 function RouteComponent() {
   const inputFile = useRef<HTMLInputElement>(null)
-  const [avatar, setAvatar] = useState('')
+  const [avatar, setAvatar] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
   const method = useForm({
     defaultValues: {
       fullName: '',
@@ -35,7 +38,14 @@ function RouteComponent() {
     },
     resolver: yupResolver(profileSchema),
   })
-  const { handleSubmit, control } = method
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors },
+  } = method
+
+  console.log({ errors })
 
   const uploadMutation = useMutation({
     mutationFn: uploadFile,
@@ -43,6 +53,20 @@ function RouteComponent() {
       console.log({ url })
       setAvatar(url)
     },
+  })
+
+  const updateProfileMutation = useMutation({
+    mutationFn: updateProfile,
+    onSuccess: (data) => {
+      setValue('fullName', data.fullName)
+      setValue('bio', data.bio)
+      setAvatar(data.avatar)
+    },
+  })
+
+  const { data: me, isLoading } = useQuery({
+    queryFn: () => getMe(),
+    queryKey: ['me'],
   })
 
   const onChangeUpload = useCallback(
@@ -55,15 +79,37 @@ function RouteComponent() {
         alert('File size must be less than 1MB')
         return
       }
-      console.log(file)
+
       uploadMutation.mutate(file)
     },
     [uploadMutation],
   )
 
-  const onSubmit = useCallback((data: FormData) => {
-    console.log(data)
-  }, [])
+  const onSubmit = useCallback(
+    (data: FormData) => {
+      try {
+        updateProfileMutation.mutate({
+          fullName: data.fullName,
+          bio: data.bio || '',
+          avatar: avatar,
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    [updateProfileMutation, avatar],
+  )
+
+  useEffect(() => {
+    if (me) {
+      setValue('fullName', me.user.fullName)
+      setValue('avatar', me.user.avatar)
+      setEmail(me.user.email)
+      setAvatar(me.user.avatar)
+    }
+  }, [me])
+
+  if (isLoading) return <LoadingFullPage />
 
   return (
     <PageContainer noPadding>
@@ -90,7 +136,7 @@ function RouteComponent() {
       </div>
 
       <div className="bg-primary h-full px-8 py-10 rounded-t-3xl flex flex-col gap-3">
-        <TextInput id="Email" placeholder="Email" value={''} disabled />
+        <TextInput id="Email" placeholder="Email" value={email} disabled />
         <FormProvider {...method}>
           <Controller
             control={control}
@@ -120,7 +166,14 @@ function RouteComponent() {
             )}
           />
 
-          <Button onClick={handleSubmit(onSubmit)}>Save</Button>
+          <Button
+            onClick={() => {
+              console.log('handleSubmit')
+              handleSubmit(onSubmit)()
+            }}
+          >
+            Save
+          </Button>
         </FormProvider>
       </div>
     </PageContainer>
