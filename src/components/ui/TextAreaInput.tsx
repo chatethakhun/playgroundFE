@@ -1,7 +1,8 @@
 import { cn } from '@/utils/cn'
 
 type ThemeTextInput = 'default' | 'white'
-interface ITextInput extends React.InputHTMLAttributes<HTMLInputElement> {
+interface ITextAreaInput
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string
   placeholder: string
   id: string
@@ -9,7 +10,7 @@ interface ITextInput extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string
   theme?: ThemeTextInput
 }
-const TextInput = ({
+const TextAreaInput = ({
   label,
   placeholder,
   id,
@@ -17,34 +18,30 @@ const TextInput = ({
   errorMessage,
   onChange,
   value,
-  type = 'text',
   theme = 'default',
-  disabled = false,
-}: ITextInput) => {
+  rows = 4,
+}: ITextAreaInput) => {
   return (
     <fieldset className="flex flex-col gap-2 relative">
       {label && <label className="text-dark">{label}</label>}
-      <input
-        type={type}
+      <textarea
         id={id}
+        rows={rows}
         placeholder={placeholder}
         onChange={onChange}
         value={value}
-        disabled={disabled}
         className={cn(
-          'rounded-md border-border border-1 bg-white py-2 px-4 text-dark rounde-lg focus:outline-dark-gray',
+          'rounded-md border-border border-1 py-2 px-4 text-dark rounde-lg focus:outline-dark-gray',
           {
-            'bg-light-gray': disabled,
-            'border-red-500 border-2': errorMessage,
+            'bg-light-gray': theme === 'default',
+            'bg-white': theme === 'white',
           },
         )}
       />
       <div className="absolute right-2 top-2">{icon}</div>
-      {errorMessage && (
-        <p className="text-red-500 text-sm font-bold px-1">{errorMessage}</p>
-      )}
+      {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
     </fieldset>
   )
 }
 
-export default TextInput
+export default TextAreaInput
