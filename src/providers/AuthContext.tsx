@@ -1,7 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
+import { createContext, useCallback, useEffect, useState } from 'react'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { getMe } from '@/services/auth/auth.service'
-import { useQuery } from '@tanstack/react-query'
-import { createContext, useCallback, useState, useEffect } from 'react'
 
 interface AuthContextType {
   authUser: User | null
@@ -21,12 +21,12 @@ const AuthProvider = ({ children }: Props) => {
   const { goTo } = useCustomRouter()
   const { data } = useQuery({
     queryFn: () => getMe(),
-    queryKey: ['authUser'],
+    queryKey: ['me'],
   })
 
-  const login = useCallback((data: { user: User; token: string }) => {
-    setAuthUser(data.user)
-    localStorage.setItem('token', data.token)
+  const login = useCallback((userData: { user: User; token: string }) => {
+    setAuthUser(userData.user)
+    localStorage.setItem('token', userData.token)
     goTo('/chatapp')
   }, [])
 

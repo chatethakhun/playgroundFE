@@ -13,6 +13,7 @@ import { Route as PublicRouteImport } from './routes/_public'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedSettingRouteRouteImport } from './routes/_authenticated/setting/route'
+import { Route as AuthenticatedChatappRouteRouteImport } from './routes/_authenticated/chatapp/route'
 import { Route as ExampleQueryIndexRouteImport } from './routes/example/query/index'
 import { Route as ExampleIconsIndexRouteImport } from './routes/example/icons/index'
 import { Route as PublicSignupIndexRouteImport } from './routes/_public/signup/index'
@@ -38,6 +39,12 @@ const AuthenticatedSettingRouteRoute =
   AuthenticatedSettingRouteRouteImport.update({
     id: '/setting',
     path: '/setting',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedChatappRouteRoute =
+  AuthenticatedChatappRouteRouteImport.update({
+    id: '/chatapp',
+    path: '/chatapp',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const ExampleQueryIndexRoute = ExampleQueryIndexRouteImport.update({
@@ -74,15 +81,16 @@ const AuthenticatedProfileIndexRoute =
   } as any)
 const AuthenticatedChatappIndexRoute =
   AuthenticatedChatappIndexRouteImport.update({
-    id: '/chatapp/',
-    path: '/chatapp/',
-    getParentRoute: () => AuthenticatedRoute,
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedChatappRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/chatapp': typeof AuthenticatedChatappRouteRouteWithChildren
   '/setting': typeof AuthenticatedSettingRouteRouteWithChildren
-  '/chatapp': typeof AuthenticatedChatappIndexRoute
+  '/chatapp/': typeof AuthenticatedChatappIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/setting/': typeof AuthenticatedSettingIndexRoute
   '/login': typeof PublicLoginIndexRoute
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/_authenticated/chatapp': typeof AuthenticatedChatappRouteRouteWithChildren
   '/_authenticated/setting': typeof AuthenticatedSettingRouteRouteWithChildren
   '/_authenticated/chatapp/': typeof AuthenticatedChatappIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
@@ -118,8 +127,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/setting'
     | '/chatapp'
+    | '/setting'
+    | '/chatapp/'
     | '/profile'
     | '/setting/'
     | '/login'
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/_public'
+    | '/_authenticated/chatapp'
     | '/_authenticated/setting'
     | '/_authenticated/chatapp/'
     | '/_authenticated/profile/'
@@ -189,6 +200,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingRouteRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/chatapp': {
+      id: '/_authenticated/chatapp'
+      path: '/chatapp'
+      fullPath: '/chatapp'
+      preLoaderRoute: typeof AuthenticatedChatappRouteRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/example/query/': {
       id: '/example/query/'
       path: '/example/query'
@@ -233,13 +251,27 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/chatapp/': {
       id: '/_authenticated/chatapp/'
-      path: '/chatapp'
-      fullPath: '/chatapp'
+      path: '/'
+      fullPath: '/chatapp/'
       preLoaderRoute: typeof AuthenticatedChatappIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedChatappRouteRoute
     }
   }
 }
+
+interface AuthenticatedChatappRouteRouteChildren {
+  AuthenticatedChatappIndexRoute: typeof AuthenticatedChatappIndexRoute
+}
+
+const AuthenticatedChatappRouteRouteChildren: AuthenticatedChatappRouteRouteChildren =
+  {
+    AuthenticatedChatappIndexRoute: AuthenticatedChatappIndexRoute,
+  }
+
+const AuthenticatedChatappRouteRouteWithChildren =
+  AuthenticatedChatappRouteRoute._addFileChildren(
+    AuthenticatedChatappRouteRouteChildren,
+  )
 
 interface AuthenticatedSettingRouteRouteChildren {
   AuthenticatedSettingIndexRoute: typeof AuthenticatedSettingIndexRoute
@@ -256,14 +288,14 @@ const AuthenticatedSettingRouteRouteWithChildren =
   )
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedChatappRouteRoute: typeof AuthenticatedChatappRouteRouteWithChildren
   AuthenticatedSettingRouteRoute: typeof AuthenticatedSettingRouteRouteWithChildren
-  AuthenticatedChatappIndexRoute: typeof AuthenticatedChatappIndexRoute
   AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedChatappRouteRoute: AuthenticatedChatappRouteRouteWithChildren,
   AuthenticatedSettingRouteRoute: AuthenticatedSettingRouteRouteWithChildren,
-  AuthenticatedChatappIndexRoute: AuthenticatedChatappIndexRoute,
   AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
 }
 
