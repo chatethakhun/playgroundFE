@@ -15,6 +15,7 @@ import Button from '@/components/ui/Button'
 import { uploadFile } from '@/services/upload/upload.service'
 import { getMe, updateProfile } from '@/services/auth/auth.service'
 import LoadingFullPage from '@/components/ui/LoadingFullPage'
+import Container from '@/components/ui/Container'
 
 const profileSchema = yup.object({
   fullName: yup.string().required('Full Name is required'),
@@ -131,7 +132,7 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="bg-primary h-full px-8 py-10 rounded-t-3xl flex flex-col gap-3">
+      <Container>
         <TextInput id="Email" placeholder="Email" value={email} disabled />
         <FormProvider {...method}>
           <Controller
@@ -171,7 +172,7 @@ function RouteComponent() {
             Save
           </Button>
         </FormProvider>
-      </div>
+      </Container>
       <ToastContainer />
     </PageContainer>
   )
