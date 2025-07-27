@@ -36,11 +36,11 @@ const ChatItem = ({ chat, unseenMessages = 0 }: ChatItemProps) => {
           <p className="text-xs text-white">Content</p>
         </div>
       </div>
-      <div className="ml-3">
+      <div className=" flex flex-col gap-2">
         {unseenMessages > 0 && (
           <p
             className={cn({
-              'bg-red-500 rounded-full w-5 h-5 text-sm flex items-center justify-center text-white font-bold  ml-auto':
+              'bg-red-500 rounded-full w-5 h-5 text-xs flex items-center justify-center text-white   ml-auto ':
                 unseenMessages > 0,
             })}
           >

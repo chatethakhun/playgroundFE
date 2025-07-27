@@ -8,7 +8,7 @@ const PageContainer = ({ children, noPadding }: PageContainerProps) => {
   return (
     <>
       <div
-        className={cn('flex flex-col w-full h-full ', {
+        className={cn('flex flex-col w-full h-[calc(100%-0px)] ', {
           'p-3': !noPadding,
         })}
       >

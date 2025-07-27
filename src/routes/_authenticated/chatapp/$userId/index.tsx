@@ -75,7 +75,7 @@ function RouteComponent() {
     socket.on('newMessage', (message: Message) => {
       handleNewMessage(message)
     })
-  }, [socket, userId])
+  }, [socket])
 
   const reciever = userData?.users.find((user) => user._id === userId)
 
@@ -92,7 +92,7 @@ function RouteComponent() {
       </div>
       <div
         id="chatMessages"
-        className=" border border-border rounded-md h-[calc(100%-500px)] overflow-y-auto  gap-4 px-2 py-4"
+        className=" border border-border rounded-md h-[570px] overflow-y-auto  gap-4 px-2 py-4"
         ref={scrollRef}
       >
         {(messagesData || []).map((message) => (
