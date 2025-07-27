@@ -32,7 +32,7 @@ const Navbar = () => {
 
   if (!authUser) return null
   return (
-    <div className="flex items-center justify-around w-full h-16 px-4 py-2 bg-white shadow-md absolute right-0 left-0 bottom-0 gap-2">
+    <div className="flex items-center justify-around w-full h-16 px-4 py-2 bg-white shadow-md absolute right-0 left-0 bottom-0 gap-2 border-t border-border">
       <div className="flex items-center justify-around gap-8">
         {navs.map((nv) => (
           <div

@@ -15,6 +15,9 @@ export const Route = createFileRoute('/_authenticated/chatapp/')({
 function RouteComponent() {
   const { users, unseenMessage } = useChat()
   const { authUser } = useAuth()
+
+  console.log({ unseenMessage })
+
   return (
     <PageContainer>
       <div className="flex justify-between items-center">
@@ -28,11 +31,7 @@ function RouteComponent() {
           <p className="text-center text-xl">No messages</p>
         )}
         {users.map((user) => (
-          <ChatItem
-            key={user._id}
-            chat={user}
-            unseenMessages={unseenMessage[user._id] || 0}
-          />
+          <ChatItem key={user._id} chat={user} unseenMessages={0} />
         ))}
       </Container>
     </PageContainer>

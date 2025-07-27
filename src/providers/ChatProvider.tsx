@@ -10,7 +10,9 @@ interface ChatContextType {
   socket: Socket | undefined
   onlineUserIds: Array<string>
   users: Array<User>
-  unseenMessage: Record<string, number>
+  unseenMessage:
+    | Record<string, { unreadMessages: number; lastMessage: Message }>
+    | undefined
 }
 
 export const ChatContext = React.createContext<ChatContextType | undefined>(
@@ -60,7 +62,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         socket: socketRef.current,
         onlineUserIds,
         users: usersData?.users || [],
-        unseenMessage: usersData?.unseenMessages || {},
+        unseenMessage: usersData?.unseenMessages,
       }}
     >
       {children}
