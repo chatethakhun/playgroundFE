@@ -8,6 +8,7 @@ export const login = async (email: string, password: string) => {
         email,
         password,
       },
+      { withCredentials: true },
     )
 
     if (response.status !== 200) {
@@ -39,6 +40,7 @@ export const signup = async ({
         email,
         password,
       },
+      { withCredentials: true },
     )
     if (response.status !== 201) {
       throw new Error('Invalid credentials')
@@ -61,6 +63,7 @@ export const getMe = async () => {
         headers: {
           Authorization: `${localStorage.getItem('token')}`,
         },
+        withCredentials: true,
       },
     )
 
@@ -90,7 +93,6 @@ export const updateProfile = async ({
     avatar,
   }
   try {
-    console.log({ token: localStorage.getItem('token') })
     const response = await axios.put<{ user: User }>(
       `${import.meta.env.VITE_API_URL}/api/auth/update-profile`,
       payload,
@@ -98,6 +100,7 @@ export const updateProfile = async ({
         headers: {
           Authorization: `${localStorage.getItem('token')}`,
         },
+        withCredentials: true,
       },
     )
 
