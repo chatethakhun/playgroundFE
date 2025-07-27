@@ -12,6 +12,7 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 import TextInput from '@/components/ui/TextInput'
 import Button from '@/components/ui/Button'
 import { login } from '@/services/auth/auth.service'
+import useAuth from '@/hooks/useAuth'
 
 const loginSchema = yup.object({
   email: yup.string().required('Email is required').email('Invalid email'),
@@ -29,12 +30,13 @@ export const Route = createFileRoute('/_public/login/')({
 
 function RouteComponent() {
   const { goTo } = useCustomRouter()
+  const { login: loginUser } = useAuth()
   // Access the client
   const mutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       login(email, password),
-    onSuccess: () => {
-      goTo('/chatapp')
+    onSuccess: (data) => {
+      loginUser({ user: data.user, token: data.token })
     },
     onError: (error) => {
       console.error(`error from login ${error}`)
@@ -51,7 +53,7 @@ function RouteComponent() {
 
   const { handleSubmit, control } = method
 
-  const onSumbit = useCallback(async (formValue: FormValues) => {
+  const onSumbit = useCallback((formValue: FormValues) => {
     const { email, password } = formValue
 
     mutation.mutate({ email, password })

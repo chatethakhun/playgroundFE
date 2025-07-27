@@ -14,8 +14,6 @@ export const login = async (email: string, password: string) => {
       throw new Error('Invalid credentials')
     }
 
-    localStorage.setItem('token', response.data.token)
-
     const data = response.data
     return data
   } catch (error) {
@@ -57,7 +55,7 @@ export const signup = async ({
 
 export const getMe = async () => {
   try {
-    const response = await axios.get<{ user: User }>(
+    const response = await axios.get<{ user: User; token: string }>(
       `${import.meta.env.VITE_API_URL}/api/auth/me`,
       {
         headers: {
@@ -70,8 +68,7 @@ export const getMe = async () => {
       throw new Error('Invalid credentials')
     }
 
-    const data = response.data
-    return data
+    return response.data
   } catch (error) {
     console.log(`Error from getMe service: ${error}`)
     throw error

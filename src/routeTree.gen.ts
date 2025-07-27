@@ -12,10 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedSettingRouteRouteImport } from './routes/_authenticated/setting/route'
 import { Route as ExampleQueryIndexRouteImport } from './routes/example/query/index'
 import { Route as ExampleIconsIndexRouteImport } from './routes/example/icons/index'
 import { Route as PublicSignupIndexRouteImport } from './routes/_public/signup/index'
 import { Route as PublicLoginIndexRouteImport } from './routes/_public/login/index'
+import { Route as AuthenticatedSettingIndexRouteImport } from './routes/_authenticated/setting/index'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile/index'
 import { Route as AuthenticatedChatappIndexRouteImport } from './routes/_authenticated/chatapp/index'
 
@@ -32,6 +34,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSettingRouteRoute =
+  AuthenticatedSettingRouteRouteImport.update({
+    id: '/setting',
+    path: '/setting',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const ExampleQueryIndexRoute = ExampleQueryIndexRouteImport.update({
   id: '/example/query/',
   path: '/example/query/',
@@ -52,6 +60,12 @@ const PublicLoginIndexRoute = PublicLoginIndexRouteImport.update({
   path: '/login/',
   getParentRoute: () => PublicRoute,
 } as any)
+const AuthenticatedSettingIndexRoute =
+  AuthenticatedSettingIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedSettingRouteRoute,
+  } as any)
 const AuthenticatedProfileIndexRoute =
   AuthenticatedProfileIndexRouteImport.update({
     id: '/profile/',
@@ -67,8 +81,10 @@ const AuthenticatedChatappIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/setting': typeof AuthenticatedSettingRouteRouteWithChildren
   '/chatapp': typeof AuthenticatedChatappIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
+  '/setting/': typeof AuthenticatedSettingIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
   '/example/icons': typeof ExampleIconsIndexRoute
@@ -78,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/chatapp': typeof AuthenticatedChatappIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
+  '/setting': typeof AuthenticatedSettingIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
   '/example/icons': typeof ExampleIconsIndexRoute
@@ -88,8 +105,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/_authenticated/setting': typeof AuthenticatedSettingRouteRouteWithChildren
   '/_authenticated/chatapp/': typeof AuthenticatedChatappIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
+  '/_authenticated/setting/': typeof AuthenticatedSettingIndexRoute
   '/_public/login/': typeof PublicLoginIndexRoute
   '/_public/signup/': typeof PublicSignupIndexRoute
   '/example/icons/': typeof ExampleIconsIndexRoute
@@ -99,8 +118,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/setting'
     | '/chatapp'
     | '/profile'
+    | '/setting/'
     | '/login'
     | '/signup'
     | '/example/icons'
@@ -110,6 +131,7 @@ export interface FileRouteTypes {
     | '/'
     | '/chatapp'
     | '/profile'
+    | '/setting'
     | '/login'
     | '/signup'
     | '/example/icons'
@@ -119,8 +141,10 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/_public'
+    | '/_authenticated/setting'
     | '/_authenticated/chatapp/'
     | '/_authenticated/profile/'
+    | '/_authenticated/setting/'
     | '/_public/login/'
     | '/_public/signup/'
     | '/example/icons/'
@@ -158,6 +182,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/setting': {
+      id: '/_authenticated/setting'
+      path: '/setting'
+      fullPath: '/setting'
+      preLoaderRoute: typeof AuthenticatedSettingRouteRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/example/query/': {
       id: '/example/query/'
       path: '/example/query'
@@ -186,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicLoginIndexRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_authenticated/setting/': {
+      id: '/_authenticated/setting/'
+      path: '/'
+      fullPath: '/setting/'
+      preLoaderRoute: typeof AuthenticatedSettingIndexRouteImport
+      parentRoute: typeof AuthenticatedSettingRouteRoute
+    }
     '/_authenticated/profile/': {
       id: '/_authenticated/profile/'
       path: '/profile'
@@ -203,12 +241,28 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedSettingRouteRouteChildren {
+  AuthenticatedSettingIndexRoute: typeof AuthenticatedSettingIndexRoute
+}
+
+const AuthenticatedSettingRouteRouteChildren: AuthenticatedSettingRouteRouteChildren =
+  {
+    AuthenticatedSettingIndexRoute: AuthenticatedSettingIndexRoute,
+  }
+
+const AuthenticatedSettingRouteRouteWithChildren =
+  AuthenticatedSettingRouteRoute._addFileChildren(
+    AuthenticatedSettingRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
+  AuthenticatedSettingRouteRoute: typeof AuthenticatedSettingRouteRouteWithChildren
   AuthenticatedChatappIndexRoute: typeof AuthenticatedChatappIndexRoute
   AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedSettingRouteRoute: AuthenticatedSettingRouteRouteWithChildren,
   AuthenticatedChatappIndexRoute: AuthenticatedChatappIndexRoute,
   AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
 }
