@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { io } from 'socket.io-client'
 import type { Socket } from 'socket.io-client'
@@ -18,9 +18,8 @@ export const ChatContext = React.createContext<ChatContextType | undefined>(
 )
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
-  const [socket, setSocket] = React.useState<Socket | undefined>(undefined)
   const { authUser } = useAuth()
-
+  const socketRef = useRef<Socket | undefined>(undefined)
   const [onlineUserIds, setOnlineUserIds] = React.useState<Array<string>>([])
 
   const { data: usersData } = useQuery({
@@ -29,7 +28,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   })
 
   const connectSocket = useCallback(() => {
-    if (socket?.connected || !authUser?._id) return
+    if (socketRef.current?.connected || !authUser?._id) return
 
     const newSocket = io(import.meta.env.VITE_API_URL, {
       query: {
@@ -38,8 +37,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     })
 
     newSocket.connect()
-    console.log('socket', newSocket)
-    setSocket(newSocket)
+
+    socketRef.current = newSocket
 
     newSocket.on('getOnlineUsers', (newUsers: Array<string>) => {
       setOnlineUserIds(newUsers)
@@ -48,12 +47,17 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     connectSocket()
+    return () => {
+      if (!socketRef.current) return
+
+      socketRef.current.disconnect()
+    }
   }, [connectSocket])
 
   return (
     <ChatContext.Provider
       value={{
-        socket,
+        socket: socketRef.current,
         onlineUserIds,
         users: usersData?.users || [],
         unseenMessage: usersData?.unseenMessages || {},
