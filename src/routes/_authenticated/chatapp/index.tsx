@@ -28,7 +28,11 @@ function RouteComponent() {
           <p className="text-center text-xl">No messages</p>
         )}
         {users.map((user) => (
-          <ChatItem chat={user} unseenMessages={unseenMessage[user._id] || 0} />
+          <ChatItem
+            key={user._id}
+            chat={user}
+            unseenMessages={unseenMessage[user._id] || 0}
+          />
         ))}
       </Container>
     </PageContainer>

@@ -1,4 +1,7 @@
+import { useMemo } from 'react'
 import Avatar from '@/components/ui/Avatar'
+import useChat from '@/hooks/useChat'
+import useCustomRouter from '@/hooks/useCustomRouter'
 import { cn } from '@/utils/cn'
 
 interface ChatItemProps {
@@ -6,10 +9,25 @@ interface ChatItemProps {
   unseenMessages: number
 }
 const ChatItem = ({ chat, unseenMessages = 0 }: ChatItemProps) => {
+  const { goTo } = useCustomRouter()
+  const { onlineUserIds } = useChat()
+
+  const isOnline = useMemo(
+    () => onlineUserIds.includes(chat._id),
+    [chat._id, onlineUserIds],
+  )
   return (
-    <div className="flex items-center justify-between">
+    <div
+      className="flex items-center justify-between"
+      onClick={() => goTo(`/chatapp/${chat._id}`)}
+    >
       <div className="flex items-center relative gap-4">
-        <Avatar size={50} src={chat.avatar} alt={chat.fullName} />
+        <div className="relative">
+          <Avatar size={50} src={chat.avatar} alt={chat.fullName} />
+          {isOnline && (
+            <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full z-10 border" />
+          )}
+        </div>
         <div className="flex flex-col ">
           <p className="text-sm font-bold text-l gap-2 text-white ">
             {chat.fullName}

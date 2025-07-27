@@ -1,8 +1,9 @@
-import PageContainer from '@/components/ui/PageContainer'
-import useAuth from '@/hooks/useAuth'
 import { createFileRoute } from '@tanstack/react-router'
 import { IoMdLogOut } from 'react-icons/io'
 import { MdOutlineNotificationsActive } from 'react-icons/md'
+import useAuth from '@/hooks/useAuth'
+import PageContainer from '@/components/ui/PageContainer'
+
 export const Route = createFileRoute('/_authenticated/setting/')({
   component: RouteComponent,
 })
