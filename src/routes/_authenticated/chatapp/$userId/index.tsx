@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
@@ -84,6 +84,17 @@ function RouteComponent() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
   }, [messagesData])
+
+  const uniqeMessage = useMemo(() => {
+    if (!messagesData) return []
+
+    return messagesData.reduce((acc, message) => {
+      if (!acc.find((m) => m._id === message._id)) {
+        acc.push(message)
+      }
+      return acc
+    }, [] as Array<Message>)
+  }, [messagesData])
   return (
     <PageContainer>
       <div id="chatHeader" className="flex items-center-safe gap-2">
@@ -95,7 +106,7 @@ function RouteComponent() {
         className=" border border-border rounded-md h-[570px] overflow-y-auto  gap-4 px-2 py-4"
         ref={scrollRef}
       >
-        {(messagesData || []).map((message) => (
+        {uniqeMessage.map((message) => (
           <MessageItem
             key={message._id}
             message={message}
