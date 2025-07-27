@@ -3,6 +3,7 @@ import Avatar from '@/components/ui/Avatar'
 import useChat from '@/hooks/useChat'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { cn } from '@/utils/cn'
+import { formatTimestamp } from '@/utils/date'
 
 interface ChatItemProps {
   chat: User
@@ -21,7 +22,7 @@ const ChatItem = ({ chat, unseenMessages = 0 }: ChatItemProps) => {
       className="flex items-center justify-between"
       onClick={() => goTo(`/chatapp/${chat._id}`)}
     >
-      <div className="flex items-center relative gap-4">
+      <div className="flex items-center relative gap-4 ">
         <div className="relative">
           <Avatar size={50} src={chat.avatar} alt={chat.fullName} />
           {isOnline && (
@@ -35,17 +36,18 @@ const ChatItem = ({ chat, unseenMessages = 0 }: ChatItemProps) => {
           <p className="text-xs text-white">Content</p>
         </div>
       </div>
-      <div className="ml-3">
+      <div className=" flex flex-col gap-2">
         {unseenMessages > 0 && (
           <p
             className={cn({
-              'bg-red-500 rounded-full w-5 h-5 text-sm flex items-center justify-center text-white font-bold':
+              'bg-red-500 rounded-full w-5 h-5 text-xs flex items-center justify-center text-white   ml-auto ':
                 unseenMessages > 0,
             })}
           >
             {unseenMessages}
           </p>
         )}
+        <p className="text-xs text-white"> {formatTimestamp(chat.createdAt)}</p>
       </div>
     </div>
   )
