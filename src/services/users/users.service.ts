@@ -4,7 +4,7 @@ export const getUsers = async () => {
   try {
     const response = await axios.get<{
       users: Array<User>
-      unseenMessages: number
+      unseenMessages: Record<string, number>
     }>(`${import.meta.env.VITE_API_URL}/api/users/all`)
 
     return response.data
