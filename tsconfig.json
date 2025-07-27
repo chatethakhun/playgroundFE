@@ -20,6 +20,9 @@
     "verbatimModuleSyntax": true,
     "noEmit": true,
 
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+
     /* Linting */
     "skipLibCheck": true,
     "strict": true,

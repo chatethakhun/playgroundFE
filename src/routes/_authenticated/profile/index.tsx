@@ -66,6 +66,7 @@ function RouteComponent() {
       if (e.target.files?.length === 0 || uploadMutation.isPending) return
       const file = (e.target.files || [])[0]
 
+      if (typeof file === 'undefined') return
       // limit file size to 1MB
       if (file.size > 1024 * 1024) {
         alert('File size must be less than 1MB')

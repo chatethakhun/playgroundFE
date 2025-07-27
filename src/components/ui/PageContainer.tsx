@@ -6,13 +6,15 @@ interface PageContainerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 const PageContainer = ({ children, noPadding }: PageContainerProps) => {
   return (
-    <div
-      className={cn('flex flex-col w-full h-full ', {
-        'p-3': !noPadding,
-      })}
-    >
-      <div className="flex-1 flex flex-col gap-4">{children}</div>
-    </div>
+    <>
+      <div
+        className={cn('flex flex-col w-full h-full ', {
+          'p-3': !noPadding,
+        })}
+      >
+        <div className="flex-1 flex flex-col gap-4">{children}</div>
+      </div>
+    </>
   )
 }
 
