@@ -12,6 +12,7 @@ import Avatar from '@/components/ui/Avatar'
 import useAuth from '@/hooks/useAuth'
 import { getUsers } from '@/services/users/users.service'
 import MessageItem from '@/components/ui/MessageItem'
+import LoadingFullPage from '@/components/ui/LoadingFullPage'
 
 export const Route = createFileRoute('/_authenticated/chatapp/$userId/')({
   component: RouteComponent,
@@ -29,7 +30,7 @@ function RouteComponent() {
     queryFn: getUsers,
   })
 
-  const { data: messagesData } = useQuery({
+  const { data: messagesData, isLoading } = useQuery({
     queryKey: ['messages', userId],
     queryFn: () => getMessageByUserId(userId),
     enabled: !!userId,
@@ -101,6 +102,8 @@ function RouteComponent() {
       return acc
     }, [] as Array<Message>)
   }, [messagesData])
+
+  if (isLoading) return <LoadingFullPage />
   return (
     <PageContainer>
       <div id="chatHeader" className="flex items-center-safe gap-2">
