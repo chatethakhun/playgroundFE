@@ -1,11 +1,11 @@
 import { FaRegBell } from 'react-icons/fa'
 import { cn } from '@/utils/cn'
 import useNotifications from '@/hooks/useNotifications'
+import { memo } from 'react'
 
 const NotificationBell = () => {
   const { notifications } = useNotifications()
 
-  console.log({ notifications })
   return (
     <div className="relative">
       <FaRegBell className={cn('text-2xl')} />
@@ -16,4 +16,6 @@ const NotificationBell = () => {
   )
 }
 
-export default NotificationBell
+const MemoizedNotificationBell = memo(NotificationBell)
+
+export default MemoizedNotificationBell
