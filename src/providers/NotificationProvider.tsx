@@ -1,11 +1,16 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createContext, useEffect } from 'react'
-import { getNotifications } from '@/services/notification/notification.service'
+import {
+  getNotifications,
+  markReadNotification as markRead,
+} from '@/services/notification/notification.service'
 
 import useSocket from '@/hooks/useSocket'
+import useCustomRouter from '@/hooks/useCustomRouter'
 
 interface NotificationContext {
   notifications: Array<AppNotification>
+  markReadNotification: (notificationId: string) => void
 }
 const NotificationContext = createContext<NotificationContext | undefined>(
   undefined,
@@ -17,8 +22,13 @@ const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
     queryFn: getNotifications,
   })
 
+  const markReadMutation = useMutation({
+    mutationFn: markRead,
+  })
+
   const socket = useSocket()
   const queryClient = useQueryClient()
+  const { goTo } = useCustomRouter()
 
   const handleNewNotification = (notification: AppNotification) => {
     queryClient.setQueryData(
@@ -27,6 +37,29 @@ const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
         return [...oldData, notification]
       },
     )
+  }
+
+  const markReadNotification = async (notificationId: string) => {
+    markReadMutation.mutate(notificationId)
+    queryClient.setQueryData(
+      ['notifications'],
+      (oldData: Array<AppNotification>) => {
+        return oldData.map((notification) => {
+          if (notification._id === notificationId) {
+            return {
+              ...notification,
+              read: true,
+            }
+          }
+          return notification
+        })
+      },
+    )
+    const notiication = notifications?.find(
+      (notification) => notification._id === notificationId,
+    )
+    if (!notiication) return
+    goTo(`/chatapp/${notiication.userId}`)
   }
   useEffect(() => {
     if (!socket) return
@@ -40,7 +73,7 @@ const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <NotificationContext.Provider
-      value={{ notifications: notifications || [] }}
+      value={{ notifications: notifications || [], markReadNotification }}
     >
       {children}
     </NotificationContext.Provider>

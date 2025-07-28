@@ -7,10 +7,12 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 const NotificationBell = () => {
   const { notifications } = useNotifications()
   const { goTo } = useCustomRouter()
+
+  const allRead = notifications.every((notification) => notification.read)
   return (
     <div className="relative" onClick={() => goTo('/notifications')}>
       <FaRegBell className={cn('text-2xl')} />
-      {notifications.length > 0 && (
+      {!allRead && (
         <div className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
       )}
     </div>

@@ -4,4 +4,5 @@ interface AppNotification {
   message: string
   createdAt?: string
   updatedAt?: string
+  read: boolean
 }
