@@ -64,6 +64,17 @@ function RouteComponent() {
     }
   }, [input, authUser])
 
+  const onKeydownToSend = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (input.length === 0) return
+
+      if (e.key === 'Enter') {
+        onSendMessage()
+      }
+    },
+    [input],
+  )
+
   useEffect(() => {
     if (!socket) return
 
@@ -117,6 +128,7 @@ function RouteComponent() {
           className="w-full focus:outline-none border py-2 px-4 rounded-md border-border"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={onKeydownToSend}
         />
         <button
           className="bg-primary text-white px-4 py-2 rounded-full"
