@@ -2,6 +2,7 @@ import Avatar from '@/components/ui/Avatar'
 import useAuth from '@/hooks/useAuth'
 import { cn } from '@/utils/cn'
 import { dateTimeDDMMYYYY } from '@/utils/date'
+import { memo } from 'react'
 
 interface MessageItemProps {
   message: Message
@@ -39,4 +40,6 @@ const MessageItem = ({ message, sender, reciever }: MessageItemProps) => {
   )
 }
 
-export default MessageItem
+const MemoMessageItem = memo(MessageItem)
+
+export default MemoMessageItem
