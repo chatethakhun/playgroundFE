@@ -7,7 +7,7 @@ export const getUsers = async () => {
       unseenMessages:
         | Record<string, { lastMessage: Message; unreadMessages: number }>
         | undefined
-    }>(`${import.meta.env.VITE_API_URL}/api/users/all`, {
+    }>(`${import.meta.env.VITE_API_URL}/api/users`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `${localStorage.getItem('token')}`,

@@ -8,8 +8,9 @@ import { formatTimestamp } from '@/utils/date'
 interface ChatItemProps {
   chat: User
   unseenMessages: number
+  lastMessage?: Message
 }
-const ChatItem = ({ chat, unseenMessages = 0 }: ChatItemProps) => {
+const ChatItem = ({ chat, unseenMessages = 0, lastMessage }: ChatItemProps) => {
   const { goTo } = useCustomRouter()
   const { onlineUserIds } = useChat()
 
@@ -33,7 +34,9 @@ const ChatItem = ({ chat, unseenMessages = 0 }: ChatItemProps) => {
           <p className="text-sm font-bold text-l gap-2 text-white ">
             {chat.fullName}
           </p>
-          <p className="text-xs text-white">Content</p>
+          <p className="text-xs text-white">
+            {lastMessage ? lastMessage.text : 'No Content'}
+          </p>
         </div>
       </div>
       <div className=" flex flex-col gap-2">

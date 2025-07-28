@@ -55,12 +55,7 @@ function RouteComponent() {
     if (!authUser || sendMessageMutation.isPending) return
     try {
       const message = {
-        _id: 'pendingMessage',
         text: input,
-        senderId: authUser._id,
-        recieveId: userId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
       }
       sendMessageMutation.mutate(message)
       setInput('')
