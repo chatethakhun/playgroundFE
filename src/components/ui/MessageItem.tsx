@@ -32,7 +32,7 @@ const MessageItem = ({ message, sender, reciever }: MessageItemProps) => {
             'text-right': isSender,
           })}
         >
-          {dateTimeDDMMYYYY(message.createdAt)}
+          {dateTimeDDMMYYYY(message.createdAt || '')}
         </p>
       </div>
     </div>
