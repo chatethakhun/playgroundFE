@@ -1,5 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { IoSearch } from 'react-icons/io5'
+import { useEffect } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useChat from '@/hooks/useChat'
 import PageContainer from '@/components/ui/PageContainer'
@@ -13,10 +15,29 @@ export const Route = createFileRoute('/_authenticated/chatapp/')({
 })
 
 function RouteComponent() {
-  const { users, unseenMessage } = useChat()
+  const { users, unseenMessage, socket } = useChat()
   const { authUser } = useAuth()
+  const queryClient = useQueryClient()
 
-  console.log({ unseenMessage })
+  const handleNewMessageForUpdateChatList = (newData: {
+    users: Array<User>
+    unseenMessages: any
+  }) => {
+    queryClient.setQueryData(['users'], () => {
+      return newData
+    })
+  }
+
+  useEffect(() => {
+    if (!socket) return
+    socket.on(
+      'chatListUpdate',
+      (newData: { users: Array<User>; unseenMessages: any }) => {
+        console.log('chatListUpdate')
+        handleNewMessageForUpdateChatList(newData)
+      },
+    )
+  }, [socket])
 
   return (
     <PageContainer>
@@ -36,6 +57,9 @@ function RouteComponent() {
             chat={user}
             unseenMessages={
               unseenMessage ? unseenMessage[user._id]?.unreadMessages || 0 : 0
+            }
+            lastMessage={
+              unseenMessage ? unseenMessage[user._id]?.lastMessage : undefined
             }
           />
         ))}
