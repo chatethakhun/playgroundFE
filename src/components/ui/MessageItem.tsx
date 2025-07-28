@@ -1,8 +1,8 @@
+import { memo } from 'react'
 import Avatar from '@/components/ui/Avatar'
 import useAuth from '@/hooks/useAuth'
 import { cn } from '@/utils/cn'
 import { dateTimeDDMMYYYY } from '@/utils/date'
-import { memo } from 'react'
 
 interface MessageItemProps {
   message: Message
