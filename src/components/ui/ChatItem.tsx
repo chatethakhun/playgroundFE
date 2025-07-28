@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import Avatar from '@/components/ui/Avatar'
 import useChat from '@/hooks/useChat'
 import useCustomRouter from '@/hooks/useCustomRouter'
@@ -56,4 +56,6 @@ const ChatItem = ({ chat, unseenMessages = 0, lastMessage }: ChatItemProps) => {
   )
 }
 
-export default ChatItem
+const memoChatItem = memo(ChatItem)
+
+export default memoChatItem
