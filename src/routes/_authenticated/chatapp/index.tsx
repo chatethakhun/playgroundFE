@@ -2,7 +2,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import { IoSearch } from 'react-icons/io5'
 import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { FaRegBell } from 'react-icons/fa'
 
 import useChat from '@/hooks/useChat'
 import PageContainer from '@/components/ui/PageContainer'
@@ -10,8 +9,7 @@ import useAuth from '@/hooks/useAuth'
 import Avatar from '@/components/ui/Avatar'
 import Container from '@/components/ui/Container'
 import ChatItem from '@/components/ui/ChatItem'
-import { cn } from '@/utils/cn'
-import useNotifications from '@/hooks/useNotifications'
+
 import NotificationBell from '@/components/ui/NotificationBell'
 
 export const Route = createFileRoute('/_authenticated/chatapp/')({
@@ -22,7 +20,6 @@ function RouteComponent() {
   const { users, unseenMessage, socket } = useChat()
   const { authUser } = useAuth()
   const queryClient = useQueryClient()
-  const { notifications } = useNotifications()
 
   const handleNewMessageForUpdateChatList = (newData: {
     users: Array<User>
