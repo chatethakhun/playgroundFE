@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { IoSearch } from 'react-icons/io5'
 import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import { FaRegBell } from 'react-icons/fa'
 
 import useChat from '@/hooks/useChat'
 import PageContainer from '@/components/ui/PageContainer'
@@ -9,6 +10,9 @@ import useAuth from '@/hooks/useAuth'
 import Avatar from '@/components/ui/Avatar'
 import Container from '@/components/ui/Container'
 import ChatItem from '@/components/ui/ChatItem'
+import { cn } from '@/utils/cn'
+import useNotifications from '@/hooks/useNotifications'
+import NotificationBell from '@/components/ui/NotificationBell'
 
 export const Route = createFileRoute('/_authenticated/chatapp/')({
   component: RouteComponent,
@@ -18,6 +22,7 @@ function RouteComponent() {
   const { users, unseenMessage, socket } = useChat()
   const { authUser } = useAuth()
   const queryClient = useQueryClient()
+  const { notifications } = useNotifications()
 
   const handleNewMessageForUpdateChatList = (newData: {
     users: Array<User>
@@ -33,7 +38,6 @@ function RouteComponent() {
     socket.on(
       'chatListUpdate',
       (newData: { users: Array<User>; unseenMessages: any }) => {
-        console.log('chatListUpdate')
         handleNewMessageForUpdateChatList(newData)
       },
     )
@@ -44,7 +48,10 @@ function RouteComponent() {
       <div className="flex justify-between items-center">
         <IoSearch className="text-2xl" />
         <h1 className="font-bold text-xl">Messages</h1>
-        <Avatar src={authUser?.avatar} alt={authUser?.fullName} size={40} />
+        <div className="flex items-center gap-2">
+          <NotificationBell />
+          <Avatar src={authUser?.avatar} alt={authUser?.fullName} size={40} />
+        </div>
       </div>
 
       <Container>
