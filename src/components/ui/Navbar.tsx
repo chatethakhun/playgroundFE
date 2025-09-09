@@ -1,29 +1,27 @@
-import { BiMessageRoundedDetail } from 'react-icons/bi'
-import { FaRegUserCircle } from 'react-icons/fa'
-import { MdOutlineSettings } from 'react-icons/md'
-
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { cn } from '@/utils/cn'
 import useAuth from '@/hooks/useAuth'
+
+import { MessageSquareText, User, Settings } from 'lucide-react'
 
 const navs = [
   {
     name: 'Message',
     path: '/chatapp',
     id: 'message',
-    icon: BiMessageRoundedDetail,
+    icon: MessageSquareText,
   },
   {
     name: 'Profile',
     path: '/profile',
     id: 'profile',
-    icon: FaRegUserCircle,
+    icon: User,
   },
   {
     name: 'Setting',
     path: '/setting',
     id: 'setting',
-    icon: MdOutlineSettings,
+    icon: Settings,
   },
 ]
 const Navbar = () => {

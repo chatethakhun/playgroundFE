@@ -14,8 +14,6 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedSettingRouteRouteImport } from './routes/_authenticated/setting/route'
 import { Route as AuthenticatedChatappRouteRouteImport } from './routes/_authenticated/chatapp/route'
-import { Route as ExampleQueryIndexRouteImport } from './routes/example/query/index'
-import { Route as ExampleIconsIndexRouteImport } from './routes/example/icons/index'
 import { Route as PublicSignupIndexRouteImport } from './routes/_public/signup/index'
 import { Route as PublicLoginIndexRouteImport } from './routes/_public/login/index'
 import { Route as AuthenticatedSettingIndexRouteImport } from './routes/_authenticated/setting/index'
@@ -49,16 +47,6 @@ const AuthenticatedChatappRouteRoute =
     path: '/chatapp',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const ExampleQueryIndexRoute = ExampleQueryIndexRouteImport.update({
-  id: '/example/query/',
-  path: '/example/query/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExampleIconsIndexRoute = ExampleIconsIndexRouteImport.update({
-  id: '/example/icons/',
-  path: '/example/icons/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PublicSignupIndexRoute = PublicSignupIndexRouteImport.update({
   id: '/signup/',
   path: '/signup/',
@@ -110,8 +98,6 @@ export interface FileRoutesByFullPath {
   '/setting/': typeof AuthenticatedSettingIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
-  '/example/icons': typeof ExampleIconsIndexRoute
-  '/example/query': typeof ExampleQueryIndexRoute
   '/chatapp/$userId': typeof AuthenticatedChatappUserIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -122,8 +108,6 @@ export interface FileRoutesByTo {
   '/setting': typeof AuthenticatedSettingIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
-  '/example/icons': typeof ExampleIconsIndexRoute
-  '/example/query': typeof ExampleQueryIndexRoute
   '/chatapp/$userId': typeof AuthenticatedChatappUserIdIndexRoute
 }
 export interface FileRoutesById {
@@ -139,8 +123,6 @@ export interface FileRoutesById {
   '/_authenticated/setting/': typeof AuthenticatedSettingIndexRoute
   '/_public/login/': typeof PublicLoginIndexRoute
   '/_public/signup/': typeof PublicSignupIndexRoute
-  '/example/icons/': typeof ExampleIconsIndexRoute
-  '/example/query/': typeof ExampleQueryIndexRoute
   '/_authenticated/chatapp/$userId/': typeof AuthenticatedChatappUserIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -155,8 +137,6 @@ export interface FileRouteTypes {
     | '/setting/'
     | '/login'
     | '/signup'
-    | '/example/icons'
-    | '/example/query'
     | '/chatapp/$userId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -167,8 +147,6 @@ export interface FileRouteTypes {
     | '/setting'
     | '/login'
     | '/signup'
-    | '/example/icons'
-    | '/example/query'
     | '/chatapp/$userId'
   id:
     | '__root__'
@@ -183,8 +161,6 @@ export interface FileRouteTypes {
     | '/_authenticated/setting/'
     | '/_public/login/'
     | '/_public/signup/'
-    | '/example/icons/'
-    | '/example/query/'
     | '/_authenticated/chatapp/$userId/'
   fileRoutesById: FileRoutesById
 }
@@ -192,8 +168,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
-  ExampleIconsIndexRoute: typeof ExampleIconsIndexRoute
-  ExampleQueryIndexRoute: typeof ExampleQueryIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -232,20 +206,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/chatapp'
       preLoaderRoute: typeof AuthenticatedChatappRouteRouteImport
       parentRoute: typeof AuthenticatedRoute
-    }
-    '/example/query/': {
-      id: '/example/query/'
-      path: '/example/query'
-      fullPath: '/example/query'
-      preLoaderRoute: typeof ExampleQueryIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/example/icons/': {
-      id: '/example/icons/'
-      path: '/example/icons'
-      fullPath: '/example/icons'
-      preLoaderRoute: typeof ExampleIconsIndexRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/_public/signup/': {
       id: '/_public/signup/'
@@ -364,8 +324,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
-  ExampleIconsIndexRoute: ExampleIconsIndexRoute,
-  ExampleQueryIndexRoute: ExampleQueryIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

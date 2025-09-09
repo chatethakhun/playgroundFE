@@ -56,6 +56,11 @@ const ChatItem = ({ chat, unseenMessages = 0, lastMessage }: ChatItemProps) => {
   )
 }
 
-const memoChatItem = memo(ChatItem)
+const memoChatItem = memo(ChatItem, (prev, next) => {
+  return (
+    prev.chat._id === next.chat._id &&
+    prev.unseenMessages === next.unseenMessages
+  )
+})
 
 export default memoChatItem

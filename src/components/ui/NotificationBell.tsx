@@ -1,9 +1,8 @@
-import { FaRegBell } from 'react-icons/fa'
 import { cn } from '@/utils/cn'
 import useNotifications from '@/hooks/useNotifications'
 import { memo } from 'react'
 import useCustomRouter from '@/hooks/useCustomRouter'
-
+import { Bell as FaRegBell } from 'lucide-react'
 const NotificationBell = () => {
   const { notifications } = useNotifications()
   const { goTo } = useCustomRouter()

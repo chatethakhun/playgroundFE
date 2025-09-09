@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastContainer, toast } from 'react-toastify'
 import PageContainer from '@/components/ui/PageContainer'
@@ -16,6 +16,7 @@ import { uploadFile } from '@/services/upload/upload.service'
 import { getMe, updateProfile } from '@/services/auth/auth.service'
 import LoadingFullPage from '@/components/ui/LoadingFullPage'
 import Container from '@/components/ui/Container'
+import { Loader as AiOutlineLoading3Quarters } from 'lucide-react'
 
 const profileSchema = yup.object({
   fullName: yup.string().required('Full Name is required'),

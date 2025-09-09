@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { IoIosArrowBack } from 'react-icons/io'
+
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -13,6 +13,7 @@ import TextInput from '@/components/ui/TextInput'
 import Button from '@/components/ui/Button'
 import { login } from '@/services/auth/auth.service'
 import useAuth from '@/hooks/useAuth'
+import { ChevronLeft as IoIosArrowBack } from 'lucide-react'
 
 const loginSchema = yup.object({
   email: yup.string().required('Email is required').email('Invalid email'),

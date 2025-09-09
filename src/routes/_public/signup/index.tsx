@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { IoIosArrowBack } from 'react-icons/io'
+
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { useCallback } from 'react'
 import * as yup from 'yup'
@@ -12,7 +12,7 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 import TextInput from '@/components/ui/TextInput'
 import Button from '@/components/ui/Button'
 import { signup } from '@/services/auth/auth.service'
-
+import { ChevronLeft as IoIosArrowBack } from 'lucide-react'
 const signupSchema = yup.object({
   fullName: yup.string().required('Full name is required'),
   email: yup.string().required('Email is required').email('Invalid email'),

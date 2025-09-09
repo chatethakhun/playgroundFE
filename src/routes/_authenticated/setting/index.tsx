@@ -1,8 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { IoMdLogOut } from 'react-icons/io'
-import { MdOutlineNotificationsActive } from 'react-icons/md'
+
 import useAuth from '@/hooks/useAuth'
 import PageContainer from '@/components/ui/PageContainer'
+import {
+  LogOut as IoMdLogOut,
+  BellDot as MdOutlineNotificationsActive,
+} from 'lucide-react'
 
 export const Route = createFileRoute('/_authenticated/setting/')({
   component: RouteComponent,

@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { IoSearch } from 'react-icons/io5'
+
 import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -11,6 +11,7 @@ import Container from '@/components/ui/Container'
 import ChatItem from '@/components/ui/ChatItem'
 
 import NotificationBell from '@/components/ui/NotificationBell'
+import { Search as IoSearch } from 'lucide-react'
 
 export const Route = createFileRoute('/_authenticated/chatapp/')({
   component: RouteComponent,

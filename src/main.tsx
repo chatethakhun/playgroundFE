@@ -25,6 +25,12 @@ declare module '@tanstack/react-router' {
   }
 }
 
+if (process.env.NODE_ENV === 'development') {
+  import('react-scan').then((mod) => {
+    mod.scan()
+  })
+}
+
 // Render the app
 const rootElement = document.getElementById('app')
 if (rootElement && !rootElement.innerHTML) {
