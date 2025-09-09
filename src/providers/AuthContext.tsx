@@ -27,7 +27,7 @@ const AuthProvider = ({ children }: Props) => {
   const login = useCallback((userData: { user: User; token: string }) => {
     setAuthUser(userData.user)
     localStorage.setItem('token', userData.token)
-    goTo('/chatapp')
+    goTo('/apps')
   }, [])
 
   const logout = useCallback(() => {
