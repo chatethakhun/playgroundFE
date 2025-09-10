@@ -6,6 +6,7 @@ import Button from '../Button'
 import { memo, useCallback } from 'react'
 import { createWorkoutSession } from '@/services/workoutSession/workoutSession.service'
 import useCustomRouter from '@/hooks/useCustomRouter'
+import { useMutation } from '@tanstack/react-query'
 const schema = yup.object({
   title: yup.string().required('Title is required'),
   focus: yup.string().required('Focus is required'),
@@ -22,13 +23,18 @@ const WorkoutSessionForm = memo(() => {
     resolver: yupResolver(schema),
   })
 
+  const createSession = useMutation({
+    mutationFn: (data: Data) => createWorkoutSession(data),
+    onSuccess: (data) => {
+      goTo(`/fitnesstracker/${data._id}`)
+    },
+  })
+
   const { handleSubmit } = methods
 
   const onSubmit = useCallback(async (data: Data) => {
-    console.log(data)
     try {
-      const { _id } = await createWorkoutSession(data)
-      goTo(`/fitnesstracker/${_id}`)
+      createSession.mutate(data)
     } catch (error) {
       console.error(error)
     }
@@ -65,7 +71,12 @@ const WorkoutSessionForm = memo(() => {
           )}
         />
 
-        <Button onClick={handleSubmit(onSubmit)}>Start session</Button>
+        <Button
+          disabled={createSession.isPending}
+          onClick={handleSubmit(onSubmit)}
+        >
+          Start session
+        </Button>
       </div>
     </FormProvider>
   )

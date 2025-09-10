@@ -59,20 +59,34 @@ export const getListWorkoutSession = async ({
 export const getWorkoutSession = async (id: string) => {
   try {
     const response = await axios.get<{
-      data: {
-        _id: string
-        focus: string
-        startedAt: string
-        title: string
-        userId: string
-      }
+      workoutSession: WorkoutSession
     }>(`${import.meta.env.VITE_API_URL}/api/workout-session/${id}`, {
       headers: {
         Authorization: `${localStorage.getItem('token')}`,
       },
     })
 
-    return response.data.data
+    return response.data.workoutSession
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const endSession = async (id: string) => {
+  try {
+    const response = await axios.put<{
+      workoutSession: WorkoutSession
+    }>(
+      `${import.meta.env.VITE_API_URL}/api/workout-session/end/${id}`,
+      {},
+      {
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      },
+    )
+
+    return response.data.workoutSession
   } catch (error) {
     console.error(error)
   }
