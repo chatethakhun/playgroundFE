@@ -5,7 +5,7 @@ export const Route = createFileRoute('/_public')({
   beforeLoad: () => {
     if (isAuthenticate()) {
       throw redirect({
-        to: '/chatapp',
+        to: '/apps',
       })
     }
   },
