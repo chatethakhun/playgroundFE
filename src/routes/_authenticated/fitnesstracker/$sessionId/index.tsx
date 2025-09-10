@@ -1,4 +1,5 @@
 import Button from '@/components/ui/Button'
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import PageContainer from '@/components/ui/PageContainer'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { useElapsedDuration } from '@/hooks/useElapsedDuration'
@@ -29,7 +30,7 @@ const Timer = memo(
 function RouteComponent() {
   const { sessionId } = Route.useParams()
   const { goTo } = useCustomRouter()
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['WorkoutSession'],
     queryFn: () => getWorkoutSession(sessionId),
   })
@@ -46,6 +47,8 @@ function RouteComponent() {
   }, [])
 
   const isEnded = !!data?.endedAt
+
+  if (isLoading) return <LoadingSpinner />
 
   return (
     <PageContainer>

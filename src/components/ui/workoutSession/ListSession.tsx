@@ -4,6 +4,7 @@ import { memo, useCallback, useState } from 'react'
 import MenuTab from '../MenuTab'
 import { formatTimestamp } from '@/utils/date'
 import useCustomRouter from '@/hooks/useCustomRouter'
+import LoadingSpinner from '../LoadingSpinner'
 
 const TABS = ['Working', 'Completed']
 
@@ -39,7 +40,7 @@ const SessionItem = memo(
 const ListSession = memo(function ListSession() {
   const [isCompleted, setIsCompleted] = useState<boolean>(false)
   const { goTo } = useCustomRouter()
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['WorkoutSession', isCompleted],
     queryFn: () => getListWorkoutSession({ isCompleted }),
   })
@@ -58,6 +59,8 @@ const ListSession = memo(function ListSession() {
           setIsCompleted(index === 1)
         }}
       />
+
+      {isLoading && <LoadingSpinner />}
 
       <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
         {data?.length === 0 && (
