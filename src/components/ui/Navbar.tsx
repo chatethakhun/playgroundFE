@@ -3,6 +3,7 @@ import { cn } from '@/utils/cn'
 import useAuth from '@/hooks/useAuth'
 
 import { MessageSquareText, User, Settings } from 'lucide-react'
+import { memo } from 'react'
 
 const navs = [
   {
@@ -24,11 +25,11 @@ const navs = [
     icon: Settings,
   },
 ]
-const Navbar = () => {
+const Navbar = memo(() => {
   const { currentPathName, goTo } = useCustomRouter()
   const { authUser } = useAuth()
 
-  if (!authUser || currentPathName === '/apps') return null
+  if (!authUser || currentPathName !== '/chatapps') return null
   return (
     <div className="flex items-center justify-around w-full h-16 px-4 py-2 bg-white shadow-md absolute right-0 left-0 bottom-0 gap-2 border-t border-border">
       <div className="flex items-center justify-around gap-8">
@@ -59,6 +60,6 @@ const Navbar = () => {
       </div>
     </div>
   )
-}
+})
 
 export default Navbar

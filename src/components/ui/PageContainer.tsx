@@ -1,10 +1,11 @@
 import { cn } from '@/utils/cn'
+import { memo } from 'react'
 
 interface PageContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   noPadding?: boolean
   children: React.ReactNode
 }
-const PageContainer = ({ children, noPadding }: PageContainerProps) => {
+const PageContainer = memo(({ children, noPadding }: PageContainerProps) => {
   return (
     <>
       <div
@@ -16,6 +17,6 @@ const PageContainer = ({ children, noPadding }: PageContainerProps) => {
       </div>
     </>
   )
-}
+})
 
 export default PageContainer
