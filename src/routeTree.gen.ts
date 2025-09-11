@@ -22,9 +22,12 @@ import { Route as AuthenticatedNotificationsIndexRouteImport } from './routes/_a
 import { Route as AuthenticatedFitnesstrackerIndexRouteImport } from './routes/_authenticated/fitnesstracker/index'
 import { Route as AuthenticatedChatappIndexRouteImport } from './routes/_authenticated/chatapp/index'
 import { Route as AuthenticatedAppsIndexRouteImport } from './routes/_authenticated/apps/index'
+import { Route as AuthenticatedFitnesstrackerWorkoutIndexRouteImport } from './routes/_authenticated/fitnesstracker/workout/index'
 import { Route as AuthenticatedFitnesstrackerHistoryIndexRouteImport } from './routes/_authenticated/fitnesstracker/history/index'
 import { Route as AuthenticatedFitnesstrackerSessionIdIndexRouteImport } from './routes/_authenticated/fitnesstracker/$sessionId/index'
 import { Route as AuthenticatedChatappUserIdIndexRouteImport } from './routes/_authenticated/chatapp/$userId/index'
+import { Route as AuthenticatedFitnesstrackerWorkoutNewRouteImport } from './routes/_authenticated/fitnesstracker/workout/new'
+import { Route as AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRouteImport } from './routes/_authenticated/fitnesstracker/workout/edit/$workoutId'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -96,6 +99,12 @@ const AuthenticatedAppsIndexRoute = AuthenticatedAppsIndexRouteImport.update({
   path: '/apps/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedFitnesstrackerWorkoutIndexRoute =
+  AuthenticatedFitnesstrackerWorkoutIndexRouteImport.update({
+    id: '/fitnesstracker/workout/',
+    path: '/fitnesstracker/workout/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedFitnesstrackerHistoryIndexRoute =
   AuthenticatedFitnesstrackerHistoryIndexRouteImport.update({
     id: '/fitnesstracker/history/',
@@ -114,6 +123,18 @@ const AuthenticatedChatappUserIdIndexRoute =
     path: '/$userId/',
     getParentRoute: () => AuthenticatedChatappRouteRoute,
   } as any)
+const AuthenticatedFitnesstrackerWorkoutNewRoute =
+  AuthenticatedFitnesstrackerWorkoutNewRouteImport.update({
+    id: '/fitnesstracker/workout/new',
+    path: '/fitnesstracker/workout/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute =
+  AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRouteImport.update({
+    id: '/fitnesstracker/workout/edit/$workoutId',
+    path: '/fitnesstracker/workout/edit/$workoutId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -127,9 +148,12 @@ export interface FileRoutesByFullPath {
   '/setting/': typeof AuthenticatedSettingIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
+  '/fitnesstracker/workout/new': typeof AuthenticatedFitnesstrackerWorkoutNewRoute
   '/chatapp/$userId': typeof AuthenticatedChatappUserIdIndexRoute
   '/fitnesstracker/$sessionId': typeof AuthenticatedFitnesstrackerSessionIdIndexRoute
   '/fitnesstracker/history': typeof AuthenticatedFitnesstrackerHistoryIndexRoute
+  '/fitnesstracker/workout': typeof AuthenticatedFitnesstrackerWorkoutIndexRoute
+  '/fitnesstracker/workout/edit/$workoutId': typeof AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -141,9 +165,12 @@ export interface FileRoutesByTo {
   '/setting': typeof AuthenticatedSettingIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
+  '/fitnesstracker/workout/new': typeof AuthenticatedFitnesstrackerWorkoutNewRoute
   '/chatapp/$userId': typeof AuthenticatedChatappUserIdIndexRoute
   '/fitnesstracker/$sessionId': typeof AuthenticatedFitnesstrackerSessionIdIndexRoute
   '/fitnesstracker/history': typeof AuthenticatedFitnesstrackerHistoryIndexRoute
+  '/fitnesstracker/workout': typeof AuthenticatedFitnesstrackerWorkoutIndexRoute
+  '/fitnesstracker/workout/edit/$workoutId': typeof AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -160,9 +187,12 @@ export interface FileRoutesById {
   '/_authenticated/setting/': typeof AuthenticatedSettingIndexRoute
   '/_public/login/': typeof PublicLoginIndexRoute
   '/_public/signup/': typeof PublicSignupIndexRoute
+  '/_authenticated/fitnesstracker/workout/new': typeof AuthenticatedFitnesstrackerWorkoutNewRoute
   '/_authenticated/chatapp/$userId/': typeof AuthenticatedChatappUserIdIndexRoute
   '/_authenticated/fitnesstracker/$sessionId/': typeof AuthenticatedFitnesstrackerSessionIdIndexRoute
   '/_authenticated/fitnesstracker/history/': typeof AuthenticatedFitnesstrackerHistoryIndexRoute
+  '/_authenticated/fitnesstracker/workout/': typeof AuthenticatedFitnesstrackerWorkoutIndexRoute
+  '/_authenticated/fitnesstracker/workout/edit/$workoutId': typeof AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -178,9 +208,12 @@ export interface FileRouteTypes {
     | '/setting/'
     | '/login'
     | '/signup'
+    | '/fitnesstracker/workout/new'
     | '/chatapp/$userId'
     | '/fitnesstracker/$sessionId'
     | '/fitnesstracker/history'
+    | '/fitnesstracker/workout'
+    | '/fitnesstracker/workout/edit/$workoutId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -192,9 +225,12 @@ export interface FileRouteTypes {
     | '/setting'
     | '/login'
     | '/signup'
+    | '/fitnesstracker/workout/new'
     | '/chatapp/$userId'
     | '/fitnesstracker/$sessionId'
     | '/fitnesstracker/history'
+    | '/fitnesstracker/workout'
+    | '/fitnesstracker/workout/edit/$workoutId'
   id:
     | '__root__'
     | '/'
@@ -210,9 +246,12 @@ export interface FileRouteTypes {
     | '/_authenticated/setting/'
     | '/_public/login/'
     | '/_public/signup/'
+    | '/_authenticated/fitnesstracker/workout/new'
     | '/_authenticated/chatapp/$userId/'
     | '/_authenticated/fitnesstracker/$sessionId/'
     | '/_authenticated/fitnesstracker/history/'
+    | '/_authenticated/fitnesstracker/workout/'
+    | '/_authenticated/fitnesstracker/workout/edit/$workoutId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -314,6 +353,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/fitnesstracker/workout/': {
+      id: '/_authenticated/fitnesstracker/workout/'
+      path: '/fitnesstracker/workout'
+      fullPath: '/fitnesstracker/workout'
+      preLoaderRoute: typeof AuthenticatedFitnesstrackerWorkoutIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/fitnesstracker/history/': {
       id: '/_authenticated/fitnesstracker/history/'
       path: '/fitnesstracker/history'
@@ -334,6 +380,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/chatapp/$userId'
       preLoaderRoute: typeof AuthenticatedChatappUserIdIndexRouteImport
       parentRoute: typeof AuthenticatedChatappRouteRoute
+    }
+    '/_authenticated/fitnesstracker/workout/new': {
+      id: '/_authenticated/fitnesstracker/workout/new'
+      path: '/fitnesstracker/workout/new'
+      fullPath: '/fitnesstracker/workout/new'
+      preLoaderRoute: typeof AuthenticatedFitnesstrackerWorkoutNewRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/fitnesstracker/workout/edit/$workoutId': {
+      id: '/_authenticated/fitnesstracker/workout/edit/$workoutId'
+      path: '/fitnesstracker/workout/edit/$workoutId'
+      fullPath: '/fitnesstracker/workout/edit/$workoutId'
+      preLoaderRoute: typeof AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
   }
 }
@@ -375,8 +435,11 @@ interface AuthenticatedRouteChildren {
   AuthenticatedFitnesstrackerIndexRoute: typeof AuthenticatedFitnesstrackerIndexRoute
   AuthenticatedNotificationsIndexRoute: typeof AuthenticatedNotificationsIndexRoute
   AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
+  AuthenticatedFitnesstrackerWorkoutNewRoute: typeof AuthenticatedFitnesstrackerWorkoutNewRoute
   AuthenticatedFitnesstrackerSessionIdIndexRoute: typeof AuthenticatedFitnesstrackerSessionIdIndexRoute
   AuthenticatedFitnesstrackerHistoryIndexRoute: typeof AuthenticatedFitnesstrackerHistoryIndexRoute
+  AuthenticatedFitnesstrackerWorkoutIndexRoute: typeof AuthenticatedFitnesstrackerWorkoutIndexRoute
+  AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute: typeof AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -386,10 +449,16 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedFitnesstrackerIndexRoute: AuthenticatedFitnesstrackerIndexRoute,
   AuthenticatedNotificationsIndexRoute: AuthenticatedNotificationsIndexRoute,
   AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
+  AuthenticatedFitnesstrackerWorkoutNewRoute:
+    AuthenticatedFitnesstrackerWorkoutNewRoute,
   AuthenticatedFitnesstrackerSessionIdIndexRoute:
     AuthenticatedFitnesstrackerSessionIdIndexRoute,
   AuthenticatedFitnesstrackerHistoryIndexRoute:
     AuthenticatedFitnesstrackerHistoryIndexRoute,
+  AuthenticatedFitnesstrackerWorkoutIndexRoute:
+    AuthenticatedFitnesstrackerWorkoutIndexRoute,
+  AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute:
+    AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

@@ -23,6 +23,7 @@
     "lucide-react": "^0.543.0",
     "omoo-icons": "^1.0.7",
     "react": "^19.0.0",
+    "react-confirm": "^0.5.0-1",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.61.1",
     "react-scan": "^0.4.3",

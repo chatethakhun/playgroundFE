@@ -2,7 +2,6 @@ import { cn } from '@/utils/cn'
 
 interface ITextInput extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
-  placeholder: string
   id: string
   icon?: React.ReactNode
   errorMessage?: string
