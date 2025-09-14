@@ -9,7 +9,7 @@ const PageContainer = memo(({ children, noPadding }: PageContainerProps) => {
   return (
     <>
       <div
-        className={cn('flex flex-col w-full h-[740px] overflow-auto ', {
+        className={cn('flex flex-col w-full h-[100dvh] overflow-auto ', {
           'p-3': !noPadding,
         })}
       >

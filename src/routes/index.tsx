@@ -11,7 +11,7 @@ function RouteComponent() {
   const { goTo } = useCustomRouter()
   return (
     <div
-      className="h-full p-3 pb-30"
+      className="h-[100vdh] p-3 pb-30"
       style={{ backgroundImage: `url(${loginBg})` }}
     >
       <div className="flex flex-col items-center justify-end h-full gap-2 ">

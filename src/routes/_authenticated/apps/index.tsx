@@ -17,11 +17,11 @@ const apps = [
     desc: 'Chat apps are a great way to connect with your customers. They are easy to use, and they can be used on multiple devices.',
   },
   {
-    name: 'FitnessTracker',
-    path: '/fitnesstracker',
+    name: 'Gunpla Kits',
+    path: '/gunpla-kits/kits',
     icon: Dumbbell,
     image: '/images/fitness.jpg',
-    desc: 'Fitness trackers are a great way to keep track of your fitness goals. They are easy to use, and they can be used on multiple devices.',
+    desc: 'Gunpla Kits are a great way to stay fit and healthy. They are easy to use, and they can be used on multiple devices.',
   },
 ]
 
