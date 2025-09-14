@@ -86,10 +86,17 @@ export const getKitParts = async (kitId: string) => {
   }
 }
 
-export const createKitPart = async (data: Partial<KitPart>, kitId: string) => {
+export const createKitPart = async (data: {
+  name: string
+  subassembly: string
+  kit: string
+  requires: {
+    runner: string
+    gate: string
+  }[]
+}) => {
   try {
-    return (await axiosInstance.post<KitPart>(`/kits/${kitId}/parts`, data))
-      .data
+    return (await axiosInstance.post<KitPart>(`/parts`, data)).data
   } catch (error) {
     console.error(error)
     throw error

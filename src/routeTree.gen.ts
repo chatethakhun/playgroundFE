@@ -28,11 +28,12 @@ import { Route as AuthenticatedFitnesstrackerHistoryIndexRouteImport } from './r
 import { Route as AuthenticatedFitnesstrackerSessionIdIndexRouteImport } from './routes/_authenticated/fitnesstracker/$sessionId/index'
 import { Route as AuthenticatedChatappUserIdIndexRouteImport } from './routes/_authenticated/chatapp/$userId/index'
 import { Route as AuthenticatedGunplaKitsKitsNewRouteImport } from './routes/_authenticated/gunpla-kits/kits/new'
-import { Route as AuthenticatedGunplaKitsKitsKitIdRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId'
 import { Route as AuthenticatedFitnesstrackerWorkoutNewRouteImport } from './routes/_authenticated/fitnesstracker/workout/new'
 import { Route as AuthenticatedGunplaKitsKitsColorsIndexRouteImport } from './routes/_authenticated/gunpla-kits/kits/colors/index'
+import { Route as AuthenticatedGunplaKitsKitsKitIdIndexRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/index'
 import { Route as AuthenticatedGunplaKitsKitsColorsNewRouteImport } from './routes/_authenticated/gunpla-kits/kits/colors/new'
 import { Route as AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRouteImport } from './routes/_authenticated/fitnesstracker/workout/edit/$workoutId'
+import { Route as AuthenticatedGunplaKitsKitsKitIdPartNewRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/part/new'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -140,12 +141,6 @@ const AuthenticatedGunplaKitsKitsNewRoute =
     path: '/gunpla-kits/kits/new',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedGunplaKitsKitsKitIdRoute =
-  AuthenticatedGunplaKitsKitsKitIdRouteImport.update({
-    id: '/gunpla-kits/kits/$kitId',
-    path: '/gunpla-kits/kits/$kitId',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
 const AuthenticatedFitnesstrackerWorkoutNewRoute =
   AuthenticatedFitnesstrackerWorkoutNewRouteImport.update({
     id: '/fitnesstracker/workout/new',
@@ -158,6 +153,12 @@ const AuthenticatedGunplaKitsKitsColorsIndexRoute =
     path: '/gunpla-kits/kits/colors/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedGunplaKitsKitsKitIdIndexRoute =
+  AuthenticatedGunplaKitsKitsKitIdIndexRouteImport.update({
+    id: '/gunpla-kits/kits/$kitId/',
+    path: '/gunpla-kits/kits/$kitId/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedGunplaKitsKitsColorsNewRoute =
   AuthenticatedGunplaKitsKitsColorsNewRouteImport.update({
     id: '/gunpla-kits/kits/colors/new',
@@ -168,6 +169,12 @@ const AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute =
   AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRouteImport.update({
     id: '/fitnesstracker/workout/edit/$workoutId',
     path: '/fitnesstracker/workout/edit/$workoutId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedGunplaKitsKitsKitIdPartNewRoute =
+  AuthenticatedGunplaKitsKitsKitIdPartNewRouteImport.update({
+    id: '/gunpla-kits/kits/$kitId/part/new',
+    path: '/gunpla-kits/kits/$kitId/part/new',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -184,7 +191,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
   '/fitnesstracker/workout/new': typeof AuthenticatedFitnesstrackerWorkoutNewRoute
-  '/gunpla-kits/kits/$kitId': typeof AuthenticatedGunplaKitsKitsKitIdRoute
   '/gunpla-kits/kits/new': typeof AuthenticatedGunplaKitsKitsNewRoute
   '/chatapp/$userId': typeof AuthenticatedChatappUserIdIndexRoute
   '/fitnesstracker/$sessionId': typeof AuthenticatedFitnesstrackerSessionIdIndexRoute
@@ -193,7 +199,9 @@ export interface FileRoutesByFullPath {
   '/gunpla-kits/kits': typeof AuthenticatedGunplaKitsKitsIndexRoute
   '/fitnesstracker/workout/edit/$workoutId': typeof AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute
   '/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
+  '/gunpla-kits/kits/$kitId': typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   '/gunpla-kits/kits/colors': typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
+  '/gunpla-kits/kits/$kitId/part/new': typeof AuthenticatedGunplaKitsKitsKitIdPartNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -206,7 +214,6 @@ export interface FileRoutesByTo {
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
   '/fitnesstracker/workout/new': typeof AuthenticatedFitnesstrackerWorkoutNewRoute
-  '/gunpla-kits/kits/$kitId': typeof AuthenticatedGunplaKitsKitsKitIdRoute
   '/gunpla-kits/kits/new': typeof AuthenticatedGunplaKitsKitsNewRoute
   '/chatapp/$userId': typeof AuthenticatedChatappUserIdIndexRoute
   '/fitnesstracker/$sessionId': typeof AuthenticatedFitnesstrackerSessionIdIndexRoute
@@ -215,7 +222,9 @@ export interface FileRoutesByTo {
   '/gunpla-kits/kits': typeof AuthenticatedGunplaKitsKitsIndexRoute
   '/fitnesstracker/workout/edit/$workoutId': typeof AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute
   '/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
+  '/gunpla-kits/kits/$kitId': typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   '/gunpla-kits/kits/colors': typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
+  '/gunpla-kits/kits/$kitId/part/new': typeof AuthenticatedGunplaKitsKitsKitIdPartNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -233,7 +242,6 @@ export interface FileRoutesById {
   '/_public/login/': typeof PublicLoginIndexRoute
   '/_public/signup/': typeof PublicSignupIndexRoute
   '/_authenticated/fitnesstracker/workout/new': typeof AuthenticatedFitnesstrackerWorkoutNewRoute
-  '/_authenticated/gunpla-kits/kits/$kitId': typeof AuthenticatedGunplaKitsKitsKitIdRoute
   '/_authenticated/gunpla-kits/kits/new': typeof AuthenticatedGunplaKitsKitsNewRoute
   '/_authenticated/chatapp/$userId/': typeof AuthenticatedChatappUserIdIndexRoute
   '/_authenticated/fitnesstracker/$sessionId/': typeof AuthenticatedFitnesstrackerSessionIdIndexRoute
@@ -242,7 +250,9 @@ export interface FileRoutesById {
   '/_authenticated/gunpla-kits/kits/': typeof AuthenticatedGunplaKitsKitsIndexRoute
   '/_authenticated/fitnesstracker/workout/edit/$workoutId': typeof AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute
   '/_authenticated/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
+  '/_authenticated/gunpla-kits/kits/$kitId/': typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   '/_authenticated/gunpla-kits/kits/colors/': typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
+  '/_authenticated/gunpla-kits/kits/$kitId/part/new': typeof AuthenticatedGunplaKitsKitsKitIdPartNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -259,7 +269,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/fitnesstracker/workout/new'
-    | '/gunpla-kits/kits/$kitId'
     | '/gunpla-kits/kits/new'
     | '/chatapp/$userId'
     | '/fitnesstracker/$sessionId'
@@ -268,7 +277,9 @@ export interface FileRouteTypes {
     | '/gunpla-kits/kits'
     | '/fitnesstracker/workout/edit/$workoutId'
     | '/gunpla-kits/kits/colors/new'
+    | '/gunpla-kits/kits/$kitId'
     | '/gunpla-kits/kits/colors'
+    | '/gunpla-kits/kits/$kitId/part/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -281,7 +292,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/fitnesstracker/workout/new'
-    | '/gunpla-kits/kits/$kitId'
     | '/gunpla-kits/kits/new'
     | '/chatapp/$userId'
     | '/fitnesstracker/$sessionId'
@@ -290,7 +300,9 @@ export interface FileRouteTypes {
     | '/gunpla-kits/kits'
     | '/fitnesstracker/workout/edit/$workoutId'
     | '/gunpla-kits/kits/colors/new'
+    | '/gunpla-kits/kits/$kitId'
     | '/gunpla-kits/kits/colors'
+    | '/gunpla-kits/kits/$kitId/part/new'
   id:
     | '__root__'
     | '/'
@@ -307,7 +319,6 @@ export interface FileRouteTypes {
     | '/_public/login/'
     | '/_public/signup/'
     | '/_authenticated/fitnesstracker/workout/new'
-    | '/_authenticated/gunpla-kits/kits/$kitId'
     | '/_authenticated/gunpla-kits/kits/new'
     | '/_authenticated/chatapp/$userId/'
     | '/_authenticated/fitnesstracker/$sessionId/'
@@ -316,7 +327,9 @@ export interface FileRouteTypes {
     | '/_authenticated/gunpla-kits/kits/'
     | '/_authenticated/fitnesstracker/workout/edit/$workoutId'
     | '/_authenticated/gunpla-kits/kits/colors/new'
+    | '/_authenticated/gunpla-kits/kits/$kitId/'
     | '/_authenticated/gunpla-kits/kits/colors/'
+    | '/_authenticated/gunpla-kits/kits/$kitId/part/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -460,13 +473,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGunplaKitsKitsNewRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/gunpla-kits/kits/$kitId': {
-      id: '/_authenticated/gunpla-kits/kits/$kitId'
-      path: '/gunpla-kits/kits/$kitId'
-      fullPath: '/gunpla-kits/kits/$kitId'
-      preLoaderRoute: typeof AuthenticatedGunplaKitsKitsKitIdRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/_authenticated/fitnesstracker/workout/new': {
       id: '/_authenticated/fitnesstracker/workout/new'
       path: '/fitnesstracker/workout/new'
@@ -481,6 +487,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGunplaKitsKitsColorsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/gunpla-kits/kits/$kitId/': {
+      id: '/_authenticated/gunpla-kits/kits/$kitId/'
+      path: '/gunpla-kits/kits/$kitId'
+      fullPath: '/gunpla-kits/kits/$kitId'
+      preLoaderRoute: typeof AuthenticatedGunplaKitsKitsKitIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/gunpla-kits/kits/colors/new': {
       id: '/_authenticated/gunpla-kits/kits/colors/new'
       path: '/gunpla-kits/kits/colors/new'
@@ -493,6 +506,13 @@ declare module '@tanstack/react-router' {
       path: '/fitnesstracker/workout/edit/$workoutId'
       fullPath: '/fitnesstracker/workout/edit/$workoutId'
       preLoaderRoute: typeof AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/gunpla-kits/kits/$kitId/part/new': {
+      id: '/_authenticated/gunpla-kits/kits/$kitId/part/new'
+      path: '/gunpla-kits/kits/$kitId/part/new'
+      fullPath: '/gunpla-kits/kits/$kitId/part/new'
+      preLoaderRoute: typeof AuthenticatedGunplaKitsKitsKitIdPartNewRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
   }
@@ -536,7 +556,6 @@ interface AuthenticatedRouteChildren {
   AuthenticatedNotificationsIndexRoute: typeof AuthenticatedNotificationsIndexRoute
   AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
   AuthenticatedFitnesstrackerWorkoutNewRoute: typeof AuthenticatedFitnesstrackerWorkoutNewRoute
-  AuthenticatedGunplaKitsKitsKitIdRoute: typeof AuthenticatedGunplaKitsKitsKitIdRoute
   AuthenticatedGunplaKitsKitsNewRoute: typeof AuthenticatedGunplaKitsKitsNewRoute
   AuthenticatedFitnesstrackerSessionIdIndexRoute: typeof AuthenticatedFitnesstrackerSessionIdIndexRoute
   AuthenticatedFitnesstrackerHistoryIndexRoute: typeof AuthenticatedFitnesstrackerHistoryIndexRoute
@@ -544,7 +563,9 @@ interface AuthenticatedRouteChildren {
   AuthenticatedGunplaKitsKitsIndexRoute: typeof AuthenticatedGunplaKitsKitsIndexRoute
   AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute: typeof AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute
   AuthenticatedGunplaKitsKitsColorsNewRoute: typeof AuthenticatedGunplaKitsKitsColorsNewRoute
+  AuthenticatedGunplaKitsKitsKitIdIndexRoute: typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   AuthenticatedGunplaKitsKitsColorsIndexRoute: typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
+  AuthenticatedGunplaKitsKitsKitIdPartNewRoute: typeof AuthenticatedGunplaKitsKitsKitIdPartNewRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -556,7 +577,6 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
   AuthenticatedFitnesstrackerWorkoutNewRoute:
     AuthenticatedFitnesstrackerWorkoutNewRoute,
-  AuthenticatedGunplaKitsKitsKitIdRoute: AuthenticatedGunplaKitsKitsKitIdRoute,
   AuthenticatedGunplaKitsKitsNewRoute: AuthenticatedGunplaKitsKitsNewRoute,
   AuthenticatedFitnesstrackerSessionIdIndexRoute:
     AuthenticatedFitnesstrackerSessionIdIndexRoute,
@@ -569,8 +589,12 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
     AuthenticatedFitnesstrackerWorkoutEditWorkoutIdRoute,
   AuthenticatedGunplaKitsKitsColorsNewRoute:
     AuthenticatedGunplaKitsKitsColorsNewRoute,
+  AuthenticatedGunplaKitsKitsKitIdIndexRoute:
+    AuthenticatedGunplaKitsKitsKitIdIndexRoute,
   AuthenticatedGunplaKitsKitsColorsIndexRoute:
     AuthenticatedGunplaKitsKitsColorsIndexRoute,
+  AuthenticatedGunplaKitsKitsKitIdPartNewRoute:
+    AuthenticatedGunplaKitsKitsKitIdPartNewRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

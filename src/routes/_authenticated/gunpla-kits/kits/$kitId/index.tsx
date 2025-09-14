@@ -7,7 +7,7 @@ import PageContainer from '@/components/ui/PageContainer'
 import { createFileRoute } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
 
-export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/$kitId')(
+export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/$kitId/')(
   {
     component: RouteComponent,
   },
