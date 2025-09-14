@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
-
+import Modal from 'react-modal'
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
@@ -33,6 +33,9 @@ if (process.env.NODE_ENV === 'development') {
 
 // Render the app
 const rootElement = document.getElementById('app')
+
+Modal.setAppElement('#app')
+
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(

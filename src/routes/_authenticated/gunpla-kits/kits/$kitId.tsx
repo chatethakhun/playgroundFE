@@ -3,7 +3,7 @@ import Runners from '@/components/ui/Kits/Runners'
 import MenuTab from '@/components/ui/MenuTab'
 import PageContainer from '@/components/ui/PageContainer'
 import { createFileRoute } from '@tanstack/react-router'
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/$kitId')(
   {
