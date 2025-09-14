@@ -136,7 +136,7 @@ const KitPartForm = memo(
             </button>
           </div>
           {fields.map((field, index) => (
-            <div key={field.id} className="flex gap-4">
+            <div key={field.id} className="flex md:flex-row gap-4 flex-col">
               <div className="flex-grow ">
                 <Controller
                   name={`requires.${index}.runner`}
