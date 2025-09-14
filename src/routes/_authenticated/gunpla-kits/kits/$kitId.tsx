@@ -1,3 +1,4 @@
+import KitPart from '@/components/ui/Kits/KitPart'
 import KitSubassembly from '@/components/ui/Kits/KitSubassembly'
 import Overview from '@/components/ui/Kits/Overview'
 import Runners from '@/components/ui/Kits/Runners'
@@ -26,7 +27,7 @@ function RouteComponent() {
       case 2:
         return <KitSubassembly kitId={kitId} />
       case 3:
-        return <div>Parts</div>
+        return <KitPart kitId={kitId} />
       case 4:
         return <div>BOM Summary</div>
       default:

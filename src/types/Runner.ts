@@ -5,7 +5,6 @@ interface Piece {
 
 interface Runner {
   _id: string
-  name: string
   color: Color | string
   kit: Kit
   code: string
