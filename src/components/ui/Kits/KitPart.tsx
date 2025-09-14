@@ -1,17 +1,14 @@
 import { getKitParts } from '@/services/gunplaKits/kit.service'
 import { useQuery } from '@tanstack/react-query'
-import { lazy, memo } from 'react'
+import { memo } from 'react'
 import ListItemContainer from '../ListItemContainer'
 import useCollapse from '@/hooks/useCollapse'
 import { ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import LoadingSpinner from '../LoadingSpinner'
 import FloatButton from '../FloatButton'
-import useModal from '@/hooks/useModal'
-import KitPartForm from './KitPartForm'
-import useCustomRouter from '@/hooks/useCustomRouter'
 
-const CustomModal = lazy(() => import('@/components/ui/Modal'))
+import useCustomRouter from '@/hooks/useCustomRouter'
 
 const RequireItem = memo(({ req }: { req: KitRequirement }) => (
   <div>
@@ -66,30 +63,26 @@ const KitPartItem = memo(
   (prev, next) => prev.part._id === next.part._id,
 )
 
-const KitPart = memo(
-  ({ kitId, subAssemblyId }: { kitId: string; subAssemblyId?: string }) => {
-    const { data, isLoading } = useQuery({
-      queryKey: ['kit', kitId, 'parts'],
-      queryFn: () => getKitParts(kitId),
-      enabled: !!kitId,
-    })
+const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['kit', kitId, 'parts'],
+    queryFn: () => getKitParts(kitId),
+    enabled: !!kitId,
+  })
 
-    const { goTo } = useCustomRouter()
-    if (isLoading) return <LoadingSpinner />
-    return (
-      <>
-        {data?.map((part, index) => (
-          <KitPartItem key={index} part={part} />
-        ))}
+  const { goTo } = useCustomRouter()
+  if (isLoading) return <LoadingSpinner />
+  return (
+    <>
+      {data?.map((part, index) => (
+        <KitPartItem key={index} part={part} />
+      ))}
 
-        <FloatButton
-          onClick={() => goTo(`/gunpla-kits/kits/${kitId}/part/new`)}
-        >
-          <Plus className="w-5 h-5" />
-        </FloatButton>
-      </>
-    )
-  },
-)
+      <FloatButton onClick={() => goTo(`/gunpla-kits/kits/${kitId}/part/new`)}>
+        <Plus className="w-5 h-5" />
+      </FloatButton>
+    </>
+  )
+})
 
 export default KitPart
