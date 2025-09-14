@@ -1,18 +1,24 @@
-import { memo } from 'react'
+import { lazy, memo } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
 import { getKitRunners } from '@/services/gunplaKits/kit.service'
 import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import FloatButton from '../FloatButton'
+import useModal from '@/hooks/useModal'
+import RunnerForm from './RunnerForm'
+
+const CustomModal = lazy(() => import('../Modal'))
 
 const RunnerItem = memo(
   ({ runner }: { runner: Runner }) => {
+    const backgroundColor =
+      typeof runner.color === 'string' ? '#ffffff' : runner.color.hex
     return (
       <div className="flex gap-2 items-center">
         <span
           className="text-gray-500 text-sm w-4 h-4 border rounded-sm"
           style={{
-            backgroundColor: runner.color.hex,
+            backgroundColor,
           }}
         ></span>
         {runner.code}
@@ -32,13 +38,18 @@ const Runners = memo(({ kitId }: { kitId: string }) => {
     enabled: !!kitId,
   })
 
+  const { isOpen, openModal, closeModal } = useModal()
+
   if (isLoading) return <LoadingFullPage />
   return (
     <>
       {data?.map((runner) => (
         <RunnerItem key={runner._id} runner={runner} />
       ))}
-      <FloatButton>
+      <CustomModal modalIsOpen={isOpen} onClose={closeModal}>
+        <RunnerForm kitId={kitId} />
+      </CustomModal>
+      <FloatButton onClick={() => openModal()}>
         <Plus className="w-6 h-6" strokeWidth={2} />
       </FloatButton>
     </>
