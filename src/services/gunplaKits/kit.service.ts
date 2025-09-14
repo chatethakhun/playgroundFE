@@ -17,3 +17,21 @@ export const getKits = async () => {
     throw error
   }
 }
+
+export const getKit = async (id: string) => {
+  try {
+    return (await axiosInstance.get<Kit>(`/kits/${id}`)).data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}
+
+export const getKitRunners = async (id: string) => {
+  try {
+    return (await axiosInstance.get<Array<Runner>>(`/kits/${id}/runner`)).data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}
