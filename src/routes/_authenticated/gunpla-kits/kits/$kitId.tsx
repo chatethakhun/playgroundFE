@@ -1,3 +1,4 @@
+import KitSubassembly from '@/components/ui/Kits/KitSubassembly'
 import Overview from '@/components/ui/Kits/Overview'
 import Runners from '@/components/ui/Kits/Runners'
 import MenuTab from '@/components/ui/MenuTab'
@@ -23,7 +24,7 @@ function RouteComponent() {
       case 1:
         return <Runners kitId={kitId} />
       case 2:
-        return <div>Subassemblies</div>
+        return <KitSubassembly kitId={kitId} />
       case 3:
         return <div>Parts</div>
       case 4:

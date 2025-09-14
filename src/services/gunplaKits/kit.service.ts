@@ -46,9 +46,30 @@ export const createKitRunner = async (data: Partial<Runner>, kitId: string) => {
   }
 }
 
-export const updateKitRunner = async (id: string, data: Partial<Runner>) => {
+export const getKitSubassemblies = async (kitId: string) => {
   try {
-    return (await axiosInstance.put<Runner>(`/kits/runner/${id}`, data)).data
+    return (
+      await axiosInstance.get<Array<KitSubassembly>>(
+        `/kits/${kitId}/subassembly`,
+      )
+    ).data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}
+
+export const createKitSubassembly = async (
+  data: Partial<KitSubassembly>,
+  kitId: string,
+) => {
+  try {
+    return (
+      await axiosInstance.post<KitSubassembly>(
+        `/kits/${kitId}/subassembly`,
+        data,
+      )
+    ).data
   } catch (error) {
     console.error(error)
     throw error
