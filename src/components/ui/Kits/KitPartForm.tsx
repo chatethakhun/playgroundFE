@@ -57,7 +57,12 @@ const KitPartForm = memo(
         name: '',
         subassembly: '',
         kit: kitId,
-        requires: [],
+        requires: [
+          {
+            gate: '',
+            runner: '',
+          },
+        ],
       },
     })
 
@@ -81,7 +86,6 @@ const KitPartForm = memo(
     })
 
     const onSubmit = useCallback((data: KitPartFormData) => {
-      console.log(data)
       addKitPart(data)
     }, [])
 

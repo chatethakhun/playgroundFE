@@ -14,8 +14,9 @@ const RequireItem = memo(({ req }: { req: KitRequirement }) => (
   <div>
     <p className="font-bold">
       <span className="text-xs font-light">Runner:</span>{' '}
-      {req.runner?.code ?? ''} <span className="text-xs font-light">Qty: </span>
-      {req.qty}
+      {req.runner?.code ?? ''}{' '}
+      <span className="text-xs font-light">Number: </span>
+      {req.gate}
     </p>
   </div>
 ))
