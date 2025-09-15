@@ -1,12 +1,13 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
   createKitPart,
   getKitRunners,
   getKitSubassemblies,
+  updateKitPart,
 } from '@/services/gunplaKits/kit.service'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import LoadingSpinner from '../LoadingSpinner'
 import {
   Controller,
@@ -39,8 +40,16 @@ const schema = Yup.object().shape({
 type KitPartFormData = Yup.Asserts<typeof schema>
 
 const KitPartForm = memo(
-  ({ kitId }: { kitId: string; subAssemblyId?: string }) => {
+  ({
+    kitId,
+    part,
+  }: {
+    kitId: string
+    subAssemblyId?: string
+    part?: KitPart
+  }) => {
     const { goTo } = useCustomRouter()
+    const queryClient = useQueryClient()
     const { data: kitSubAssembly, isLoading: isLoadingSubAssembly } = useQuery({
       queryKey: ['kit', kitId, 'subAssembly'],
       queryFn: () => getKitSubassemblies(kitId),
@@ -53,17 +62,27 @@ const KitPartForm = memo(
       queryKey: ['kit', kitId, 'runners'],
     })
 
-    const form = useForm({
-      resolver: yupResolver(schema),
-      defaultValues: {
-        subassembly: '',
-        kit: kitId,
-        requires: [
+    const requies = useMemo(() => {
+      if (!part)
+        return [
           {
             gate: [],
             runner: '',
           },
-        ],
+        ]
+
+      return part.requires.map((req) => ({
+        gate: req.gate.split(','),
+        runner: req.runner._id,
+      }))
+    }, [part?.requires])
+
+    const form = useForm({
+      resolver: yupResolver(schema),
+      defaultValues: {
+        subassembly: part?.subassembly._id || '',
+        kit: kitId,
+        requires: requies,
       },
     })
 
@@ -86,9 +105,31 @@ const KitPartForm = memo(
       },
     })
 
-    const onSubmit = useCallback((data: KitPartFormData) => {
-      addKitPart(data)
-    }, [])
+    const { mutate: editKitPart } = useMutation({
+      mutationFn: (data: KitPartFormData) =>
+        updateKitPart(
+          {
+            ...data,
+            requires: (data.requires || []).map((req) => ({
+              runner: req.runner,
+              gate: (req.gate || []).join(','),
+            })),
+          },
+          part?._id!,
+        ),
+      onSuccess: () => {
+        queryClient.refetchQueries({
+          queryKey: ['kit', kitId, 'parts'],
+        })
+      },
+    })
+
+    const onSubmit = useCallback(
+      (data: KitPartFormData) => {
+        !part ? addKitPart(data) : editKitPart(data)
+      },
+      [part],
+    )
 
     if (isLoadingSubAssembly || isLoadingRunners) return <LoadingSpinner />
     return (

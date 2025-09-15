@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { memo } from 'react'
 import ListItemContainer from '../ListItemContainer'
 import useCollapse from '@/hooks/useCollapse'
-import { ChevronDown, ChevronUp, Plus } from 'lucide-react'
+import { ChevronDown, ChevronUp, Plus, Pen } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import LoadingSpinner from '../LoadingSpinner'
 import FloatButton from '../FloatButton'
@@ -24,6 +24,7 @@ const RequireItem = memo(({ req }: { req: KitRequirement }) => (
 const KitPartItem = memo(
   ({ part }: { part: KitPart }) => {
     const { isCollapsed, toggleCollapse } = useCollapse(false)
+    const { goTo } = useCustomRouter()
     return (
       <ListItemContainer>
         <div className="flex flex-col justify-center flex-grow">
@@ -32,12 +33,20 @@ const KitPartItem = memo(
               {part.subassembly.name}
             </h4>
             <div className="flex gap-2">
+              <button
+                className="btn btn-ghost btn-xs"
+                onClick={() =>
+                  goTo(`/gunpla-kits/kits/${part.kit}/part/${part._id}`)
+                }
+              >
+                <Pen className="w-5 h-5 text-blue-500" />
+              </button>
               {isCollapsed && part.requires.length > 0 && (
                 <button
                   className="btn btn-ghost btn-xs"
                   onClick={() => toggleCollapse()}
                 >
-                  <ChevronUp className="w-3 h-3" />
+                  <ChevronUp className="w-5 h-5" />
                 </button>
               )}
               {!isCollapsed && part.requires.length > 0 && (
@@ -45,7 +54,7 @@ const KitPartItem = memo(
                   className="btn btn-ghost btn-xs"
                   onClick={() => toggleCollapse()}
                 >
-                  <ChevronDown className="w-3 h-3" />
+                  <ChevronDown className="w-5 h-5" />
                 </button>
               )}
             </div>

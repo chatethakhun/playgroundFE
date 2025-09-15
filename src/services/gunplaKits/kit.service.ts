@@ -101,3 +101,31 @@ export const createKitPart = async (data: {
     throw error
   }
 }
+
+export const getKitPart = async (partId: string) => {
+  try {
+    return (await axiosInstance.get<KitPart>(`/parts/${partId}`)).data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}
+
+export const updateKitPart = async (
+  data: {
+    subassembly: string
+    kit: string
+    requires: {
+      runner: string
+      gate: string
+    }[]
+  },
+  partId: string,
+) => {
+  try {
+    return (await axiosInstance.put<KitPart>(`/parts/${partId}`, data)).data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}
