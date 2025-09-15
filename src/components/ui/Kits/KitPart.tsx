@@ -11,7 +11,16 @@ import FloatButton from '../FloatButton'
 import useCustomRouter from '@/hooks/useCustomRouter'
 
 const RequireItem = memo(({ req }: { req: KitRequirement }) => (
-  <div>
+  <div className="flex gap-2 items-center">
+    <div
+      style={{
+        backgroundColor:
+          (typeof req.runner?.color !== 'string'
+            ? (req.runner?.color.hex as string)
+            : '#fff') || '',
+      }}
+      className="w-4 h-4 rounded-sm border"
+    ></div>
     <p className="font-bold">
       <span className="text-xs font-light">Runner:</span>{' '}
       {req.runner?.code ?? ''}{' '}
