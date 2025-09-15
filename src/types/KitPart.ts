@@ -4,4 +4,5 @@ interface KitPart {
   subassembly: KitSubassembly
   paints: Array<string>
   requires: Array<KitRequirement>
+  isCut: boolean
 }

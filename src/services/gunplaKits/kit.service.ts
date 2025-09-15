@@ -119,11 +119,30 @@ export const updateKitPart = async (
       runner: string
       gate: string
     }[]
+    isCut: boolean
   },
   partId: string,
 ) => {
   try {
     return (await axiosInstance.put<KitPart>(`/parts/${partId}`, data)).data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}
+
+export const updateCutInRequires = async (
+  partId: string,
+  requiredIndex: number,
+  isCut = false,
+) => {
+  try {
+    return (
+      await axiosInstance.put<KitPart>(
+        `/parts/${partId}/require/${requiredIndex}/cut`,
+        { isCut },
+      )
+    ).data
   } catch (error) {
     console.error(error)
     throw error
