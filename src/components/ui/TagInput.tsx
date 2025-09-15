@@ -17,7 +17,8 @@ const TagItem = memo(
       </li>
     )
   },
-  (prev, next) => prev.tag === next.tag,
+  (prev, next) =>
+    prev.tag === next.tag && prev.onRemoveTag === next.onRemoveTag,
 )
 const TagInput = ({
   tags,
