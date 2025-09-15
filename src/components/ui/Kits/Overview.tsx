@@ -22,6 +22,12 @@ const Overview = memo(({ kitId }: { kitId: string }) => {
         <h6 className="text-primary font-bold">Kit grade: </h6>
         <span className="text-gray-500 text-sm font-bold">{data?.grade}</span>
       </ListItemContainer>
+      <ListItemContainer>
+        <h6 className="text-primary font-bold">Number of runners: </h6>
+        <span className="text-gray-500 text-sm font-bold">
+          {data?.runners.length}
+        </span>
+      </ListItemContainer>
     </div>
   )
 })
