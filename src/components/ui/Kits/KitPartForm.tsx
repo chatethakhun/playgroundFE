@@ -21,6 +21,7 @@ import Button from '../Button'
 import { Plus, Trash } from 'lucide-react'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import TagInput from '../TagInput'
+import { sortStringArray } from '@/utils/array'
 
 const schema = Yup.object().shape({
   subassembly: Yup.string().required('KitPart subAssemblyId is required'),
@@ -97,7 +98,7 @@ const KitPartForm = memo(
           ...data,
           requires: (data.requires || []).map((req) => ({
             runner: req.runner,
-            gate: (req.gate || []).join(','),
+            gate: sortStringArray(req.gate || []).join(','),
           })),
         }),
       onSuccess: () => {
@@ -112,7 +113,7 @@ const KitPartForm = memo(
             ...data,
             requires: (data.requires || []).map((req) => ({
               runner: req.runner,
-              gate: (req.gate || []).join(','),
+              gate: sortStringArray(req.gate || []).join(','),
             })),
           },
           part?._id!,
