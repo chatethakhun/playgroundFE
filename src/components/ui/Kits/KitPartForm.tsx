@@ -115,6 +115,7 @@ const KitPartForm = memo(
               runner: req.runner,
               gate: sortStringArray(req.gate || []).join(','),
             })),
+            isCut: part?.isCut || false,
           },
           part?._id!,
         ),
