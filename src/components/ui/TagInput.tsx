@@ -1,5 +1,13 @@
 import { memo, useRef } from 'react'
 import { X } from 'lucide-react'
+import { cn } from '@/utils/cn'
+
+interface ITagInput extends React.InputHTMLAttributes<HTMLInputElement> {
+  tags: Array<string>
+  handleTag: (tags: Array<string>) => void
+  label?: string
+  errorMessage?: string
+}
 const TagItem = memo(
   ({ tag, onRemoveTag }: { tag: string; onRemoveTag?: () => void }) => {
     return (
@@ -13,15 +21,14 @@ const TagItem = memo(
 )
 const TagInput = ({
   tags,
-  onChange,
+  handleTag: onChange,
   label,
   placeholder,
-}: {
-  tags: Array<string>
-  onChange: (tags: Array<string>) => void
-  label?: string
-  placeholder?: string
-}) => {
+  id,
+  name,
+  errorMessage,
+  disabled,
+}: ITagInput) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const addTag = (tag: string) => {
@@ -55,7 +62,15 @@ const TagInput = ({
   return (
     <fieldset className="flex flex-col gap-2 relative">
       {label && <label className="text-dark">{label}</label>}
-      <div className="input-tag rounded-md border-border border-1 bg-white p-2 text-dark rounde-lg focus:outline-dark-gray">
+      <div
+        className={cn(
+          'rounded-md border-border border-1 bg-white py-2 px-4 text-dark rounde-lg focus:outline-dark-gray',
+          {
+            'bg-light-gray': disabled,
+            'border-red-500 border-2': errorMessage,
+          },
+        )}
+      >
         <ul className="input-tag__tags flex gap-1 flex-wrap">
           {tags.map((tag, i) => (
             <TagItem
@@ -66,6 +81,8 @@ const TagInput = ({
           ))}
           <li className="input-tag__tags__input">
             <input
+              id={id}
+              name={name}
               type="text"
               onKeyDown={onKeyDown}
               ref={(c) => {
@@ -77,6 +94,9 @@ const TagInput = ({
           </li>
         </ul>
       </div>
+      {errorMessage && (
+        <p className="text-red-500 text-sm font-bold px-1">{errorMessage}</p>
+      )}
     </fieldset>
   )
 }

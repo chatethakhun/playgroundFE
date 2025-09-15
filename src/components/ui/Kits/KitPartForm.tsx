@@ -29,7 +29,9 @@ const schema = Yup.object().shape({
     .of(
       Yup.object().shape({
         runner: Yup.string().required('Runner is required'),
-        gate: Yup.array().of(Yup.string().required('Gate is required')),
+        gate: Yup.array()
+          .of(Yup.string().required('Gate is required'))
+          .min(1, 'Gate is required'),
       }),
     )
     .min(1, 'KitPart requires is required'),
@@ -191,8 +193,11 @@ const KitPartForm = memo(
                   }) => (
                     <TagInput
                       tags={value || []}
-                      onChange={(tags) => onChange(tags.map((t) => t))}
+                      handleTag={(tags) => onChange(tags.map((t) => t))}
                       label="Gates"
+                      id={name}
+                      name={name}
+                      errorMessage={fieldState.error?.message}
                     />
                   )}
                 />
