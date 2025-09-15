@@ -19,6 +19,7 @@ import DropDown from '../Dropdown'
 import Button from '../Button'
 import { Plus, Trash } from 'lucide-react'
 import useCustomRouter from '@/hooks/useCustomRouter'
+import TagInput from '../TagInput'
 
 const schema = Yup.object().shape({
   name: Yup.string().required('KitPart name is required'),
@@ -28,7 +29,7 @@ const schema = Yup.object().shape({
     .of(
       Yup.object().shape({
         runner: Yup.string().required('Runner is required'),
-        gate: Yup.string().required('Gate is required'),
+        gate: Yup.array().of(Yup.string().required('Gate is required')),
       }),
     )
     .min(1, 'KitPart requires is required'),
@@ -59,7 +60,7 @@ const KitPartForm = memo(
         kit: kitId,
         requires: [
           {
-            gate: '',
+            gate: [],
             runner: '',
           },
         ],
@@ -77,7 +78,7 @@ const KitPartForm = memo(
           ...data,
           requires: (data.requires || []).map((req) => ({
             runner: req.runner,
-            gate: req.gate,
+            gate: (req.gate || []).join(','),
           })),
         }),
       onSuccess: () => {
@@ -132,7 +133,7 @@ const KitPartForm = memo(
               onClick={() => {
                 append({
                   runner: '',
-                  gate: '',
+                  gate: [],
                 })
               }}
             >
@@ -159,7 +160,7 @@ const KitPartForm = memo(
                   )}
                 />
               </div>
-              <div className="flex-grow">
+              {/*<div className="flex-grow">
                 <Controller
                   key={index}
                   name={`requires.${index}.gate`}
@@ -175,6 +176,23 @@ const KitPartForm = memo(
                       value={value}
                       errorMessage={fieldState.error?.message}
                       label="Kit Runner gate"
+                    />
+                  )}
+                />
+              </div>*/}
+              <div className="basis-1/2">
+                <Controller
+                  key={index}
+                  name={`requires.${index}.gate`}
+                  control={form.control}
+                  render={({
+                    field: { onChange, value, name },
+                    fieldState,
+                  }) => (
+                    <TagInput
+                      tags={value || []}
+                      onChange={(tags) => onChange(tags.map((t) => t))}
+                      label="Gates"
                     />
                   )}
                 />
