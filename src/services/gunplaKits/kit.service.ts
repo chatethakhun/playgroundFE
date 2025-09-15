@@ -87,7 +87,6 @@ export const getKitParts = async (kitId: string) => {
 }
 
 export const createKitPart = async (data: {
-  name: string
   subassembly: string
   kit: string
   requires: {

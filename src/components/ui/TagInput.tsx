@@ -89,7 +89,7 @@ const TagInput = ({
                 inputRef.current = c
               }}
               placeholder={placeholder || 'Add a tag'}
-              className="px-2 focus:outline-none"
+              className=" focus:outline-none"
             />
           </li>
         </ul>

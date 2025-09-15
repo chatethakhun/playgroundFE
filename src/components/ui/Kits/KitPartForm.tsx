@@ -14,7 +14,7 @@ import {
   useFieldArray,
   useForm,
 } from 'react-hook-form'
-import TextInput from '../TextInput'
+
 import DropDown from '../Dropdown'
 import Button from '../Button'
 import { Plus, Trash } from 'lucide-react'
@@ -22,7 +22,6 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 import TagInput from '../TagInput'
 
 const schema = Yup.object().shape({
-  name: Yup.string().required('KitPart name is required'),
   subassembly: Yup.string().required('KitPart subAssemblyId is required'),
   kit: Yup.string().required('KitPart kitId is required'),
   requires: Yup.array()
@@ -57,7 +56,6 @@ const KitPartForm = memo(
     const form = useForm({
       resolver: yupResolver(schema),
       defaultValues: {
-        name: '',
         subassembly: '',
         kit: kitId,
         requires: [
@@ -96,20 +94,6 @@ const KitPartForm = memo(
     return (
       <div className="flex flex-col gap-4">
         <FormProvider {...form}>
-          <Controller
-            control={form.control}
-            name="name"
-            render={({ field, fieldState }) => (
-              <TextInput
-                name={field.name}
-                id={field.name}
-                label="KitPart name"
-                errorMessage={fieldState.error?.message}
-                onChange={(e) => field.onChange(e.target.value)}
-              />
-            )}
-          />
-
           <Controller
             control={form.control}
             name="subassembly"
