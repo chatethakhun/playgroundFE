@@ -28,7 +28,9 @@ const KitPartItem = memo(
       <ListItemContainer>
         <div className="flex flex-col justify-center flex-grow">
           <div className="flex justify-between items-center ">
-            <h4>{part.name}</h4>
+            <h4 className="text-primary font-bold text-2xl">
+              {part.subassembly.name}
+            </h4>
             <div className="flex gap-2">
               {isCollapsed && part.requires.length > 0 && (
                 <button
