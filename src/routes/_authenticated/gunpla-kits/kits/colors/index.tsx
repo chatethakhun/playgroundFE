@@ -1,11 +1,15 @@
 import FloatButton from '@/components/ui/FloatButton'
 import ColorForm from '@/components/ui/Kits/ColorForm'
 import ListColors from '@/components/ui/Kits/ListColor'
-import CustomModal from '@/components/ui/Modal'
+
 import PageContainer from '@/components/ui/PageContainer'
 import useModal from '@/hooks/useModal'
 import { createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
+import { lazy } from 'react'
+
+const CustomModal = lazy(() => import('@/components/ui/Modal'))
+
 export const Route = createFileRoute(
   '/_authenticated/gunpla-kits/kits/colors/',
 )({
