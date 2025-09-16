@@ -82,11 +82,16 @@ export const deleteKitRunner = async (kitId: string, runnerId: string) => {
   }
 }
 
-export const getKitSubassemblies = async (kitId: string) => {
+export const getKitSubassemblies = async (
+  kitId: string,
+  usedInPart = false,
+) => {
   try {
+    const params = new URLSearchParams()
+    params.append('notUsedInPart', usedInPart.toString())
     return (
       await axiosInstance.get<Array<KitSubassembly>>(
-        `/kits/${kitId}/subassembly`,
+        `/kits/${kitId}/subassembly?${params.toString()}`,
       )
     ).data
   } catch (error) {
