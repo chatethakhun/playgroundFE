@@ -13,6 +13,7 @@ import LoadingSpinner from '../LoadingSpinner'
 import FloatButton from '../FloatButton'
 
 import useCustomRouter from '@/hooks/useCustomRouter'
+import { Checkbox } from '../checkbox'
 
 const RequireItem = memo(
   ({
@@ -24,12 +25,11 @@ const RequireItem = memo(
   }) => {
     return (
       <div className="flex gap-2 items-center">
-        <input
-          type="checkbox"
+        <Checkbox
           name={req.gate}
           checked={req.isCut}
-          onChange={(e) => {
-            const isChecked = e.target.checked
+          onCheckedChange={(e) => {
+            const isChecked = Boolean(e)
             onChecked?.(isChecked)
             req.isCut = isChecked
           }}
@@ -57,6 +57,8 @@ const RequireItem = memo(
       </div>
     )
   },
+  (prev, next) =>
+    prev.req.isCut === next.req.isCut && prev.onChecked === next.onChecked,
 )
 
 const KitPartItem = memo(
@@ -97,12 +99,11 @@ const KitPartItem = memo(
         <div className="flex flex-col justify-center flex-grow">
           <div className="flex justify-between items-center ">
             <div className="flex gap-2 items-center">
-              <input
-                type="checkbox"
+              <Checkbox
                 name={part._id}
                 checked={part.isCut}
-                onChange={(e) => {
-                  const isChecked = e.target.checked
+                onCheckedChange={(e) => {
+                  const isChecked = Boolean(e)
                   checkedPart(isChecked)
                   part.isCut = isChecked
                 }}
