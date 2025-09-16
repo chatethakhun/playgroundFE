@@ -2,15 +2,17 @@ import { lazy, memo } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
 import { getKitRunners } from '@/services/gunplaKits/kit.service'
 import { useQuery } from '@tanstack/react-query'
-import { Plus } from 'lucide-react'
+import { Plus, PencilIcon } from 'lucide-react'
 import FloatButton from '../FloatButton'
 import useModal from '@/hooks/useModal'
 import RunnerForm from './RunnerForm'
+import useCustomRouter from '@/hooks/useCustomRouter'
 
 const CustomModal = lazy(() => import('../Modal'))
 
 const RunnerItem = memo(
   ({ runner }: { runner: Runner }) => {
+    const { goTo } = useCustomRouter()
     const backgroundColor =
       typeof runner.color === 'string' ? '#ffffff' : runner.color.hex
     return (
@@ -25,6 +27,16 @@ const RunnerItem = memo(
         <span className="text-gray-500 text-sm">
           QTY: <span className="font-bold text-primary">{runner.qty}</span>
         </span>
+
+        <div>
+          <PencilIcon
+            className="w-6 h-6 cursor-pointer text-primary"
+            onClick={() => {
+              console.log('edit')
+              goTo(`/gunpla-kits/kits/${runner.kit}/runners/${runner._id}`)
+            }}
+          />
+        </div>
       </div>
     )
   },
