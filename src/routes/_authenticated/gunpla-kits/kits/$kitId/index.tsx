@@ -7,13 +7,13 @@ import PageContainer from '@/components/ui/PageContainer'
 import { createFileRoute } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
 
-export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/$kitId/')(
-  {
-    component: RouteComponent,
-  },
-)
+export const Route = createFileRoute(
+  '/_authenticated/gunpla-kits/kits/$kitId/',
+)({
+  component: RouteComponent,
+})
 
-const TABS = ['Overview', 'Runners', 'Subassemblies', 'Parts', 'BOM Summary']
+const TABS = ['Overview', 'Runners', 'Subassemblies', 'Parts']
 
 function RouteComponent() {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -28,8 +28,6 @@ function RouteComponent() {
         return <KitSubassembly kitId={kitId} />
       case 3:
         return <KitPart kitId={kitId} />
-      case 4:
-        return <div>BOM Summary</div>
       default:
         return <Overview kitId={kitId} />
     }
