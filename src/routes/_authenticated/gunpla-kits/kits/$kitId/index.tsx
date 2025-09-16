@@ -1,11 +1,13 @@
-import KitPart from '@/components/ui/Kits/KitPart'
-import KitSubassembly from '@/components/ui/Kits/KitSubassembly'
 import Overview from '@/components/ui/Kits/Overview'
-import Runners from '@/components/ui/Kits/Runners'
+
 import MenuTab from '@/components/ui/MenuTab'
 import PageContainer from '@/components/ui/PageContainer'
 import { createFileRoute } from '@tanstack/react-router'
-import { useMemo, useState } from 'react'
+import { lazy, useMemo, useState } from 'react'
+
+const KitPart = lazy(() => import('@/components/ui/Kits/KitPart'))
+const KitSubassembly = lazy(() => import('@/components/ui/Kits/KitSubassembly'))
+const Runners = lazy(() => import('@/components/ui/Kits/Runners'))
 
 export const Route = createFileRoute(
   '/_authenticated/gunpla-kits/kits/$kitId/',

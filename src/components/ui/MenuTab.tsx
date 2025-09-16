@@ -44,7 +44,6 @@ const MenuTab = memo(function MenuTab({
   currentIndex: number
   onChange?: (index: number) => void
 }) {
-  console.log({ tabs, currentIndex })
   return (
     <div className="border-b border-gray-200 dark:border-gray-700">
       <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
