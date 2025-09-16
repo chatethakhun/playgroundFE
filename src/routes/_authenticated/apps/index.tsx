@@ -2,7 +2,7 @@ import Button from '@/components/ui/Button'
 import PageContainer from '@/components/ui/PageContainer'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { createFileRoute } from '@tanstack/react-router'
-import { MessageCircle, Dumbbell } from 'lucide-react'
+import { Dumbbell } from 'lucide-react'
 import React, { memo, useCallback } from 'react'
 
 export const Route = createFileRoute('/_authenticated/apps/')({
