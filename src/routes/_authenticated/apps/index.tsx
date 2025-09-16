@@ -20,7 +20,7 @@ const apps = [
     name: 'Gunpla Kits',
     path: '/gunpla-kits/kits',
     icon: Dumbbell,
-    image: '/images/fitness.jpg',
+    image: '/images/gundam.jpg',
     desc: 'Gunpla Kits are a great way to stay fit and healthy. They are easy to use, and they can be used on multiple devices.',
   },
 ]
