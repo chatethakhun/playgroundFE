@@ -10,6 +10,7 @@ import { useMutation } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { useCallback } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/new')({
   component: RouteComponent,
@@ -24,6 +25,7 @@ type Data = yup.Asserts<typeof schema>
 
 function RouteComponent() {
   const { goTo } = useCustomRouter()
+  const { t } = useTranslation(['common', 'kit'])
   const method = useForm({
     defaultValues: {
       name: '',
@@ -57,7 +59,7 @@ function RouteComponent() {
           }) => (
             <TextInput
               id={name}
-              label="Gunpla Kit Name"
+              label={t('new.name')}
               name={name}
               onChange={onChange}
               value={value}
@@ -85,12 +87,13 @@ function RouteComponent() {
               }))}
               value={value}
               errorMessage={error?.message}
+              label={t('new.grade')}
             />
           )}
         />
 
         <Button isBlock onClick={method.handleSubmit(onSubmit)}>
-          Save
+          {t('save')}
         </Button>
       </FormProvider>
     </PageContainer>
