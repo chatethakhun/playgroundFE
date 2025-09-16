@@ -24,7 +24,9 @@ const RequireItem = memo(
     onChecked?: (checked: boolean) => void
   }) => {
     return (
-      <div className="flex gap-2 items-center">
+      <div
+        className={cn('flex gap-2 items-center', { 'opacity-30': req.isCut })}
+      >
         <Checkbox
           name={req.gate}
           checked={req.isCut}
@@ -97,7 +99,11 @@ const KitPartItem = memo(
     return (
       <ListItemContainer>
         <div className="flex flex-col justify-center flex-grow">
-          <div className="flex justify-between items-center ">
+          <div
+            className={cn('flex justify-between items-center ', {
+              'opacity-30': part.isCut,
+            })}
+          >
             <div className="flex gap-2 items-center">
               <Checkbox
                 name={part._id}
