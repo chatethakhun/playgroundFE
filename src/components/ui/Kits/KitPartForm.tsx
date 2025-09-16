@@ -53,7 +53,7 @@ const KitPartForm = memo(
     const queryClient = useQueryClient()
     const { data: kitSubAssembly, isLoading: isLoadingSubAssembly } = useQuery({
       queryKey: ['kit', kitId, 'subAssembly'],
-      queryFn: () => getKitSubassemblies(kitId),
+      queryFn: () => getKitSubassemblies(kitId, true),
       enabled: !!kitId,
     })
 
