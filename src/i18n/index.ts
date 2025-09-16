@@ -33,7 +33,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
+    fallbackLng: SUPPORTED[0],
     supportedLngs: SUPPORTED as unknown as string[],
     ns: ['common', 'kit', 'runner', 'subassembly', 'part'],
     defaultNS: 'common',
