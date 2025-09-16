@@ -50,6 +50,11 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
+        // ชื่อไฟล์แบบแฮช พร้อมแคชดี ๆ
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]',
+
         manualChunks: {
           react: ['react', 'react-dom'],
           tanstack: [
@@ -84,5 +89,9 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, './src'),
     },
+  },
+  optimizeDeps: {
+    // preload deps ที่ใช้ตอน dev เท่านั้น (prod จะใช้ rollup)
+    include: ['react', 'react-dom'],
   },
 })
