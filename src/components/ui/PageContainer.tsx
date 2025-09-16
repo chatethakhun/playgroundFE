@@ -1,6 +1,7 @@
 import { cn } from '@/utils/cn'
-import { memo } from 'react'
-import LanguageSwitcher from './LanguageSwitcher'
+import { lazy, memo } from 'react'
+
+const LanguageSwitcher = lazy(() => import('@/components/ui/LanguageSwitcher'))
 
 interface PageContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   noPadding?: boolean
