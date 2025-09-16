@@ -5,6 +5,7 @@ import LoadingFullPage from '../LoadingFullPage'
 import ListItemContainer from '../ListItemContainer'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import Button from '../Button'
+import { useTranslation } from 'react-i18next'
 
 const KitItem = memo(
   ({
@@ -17,15 +18,18 @@ const KitItem = memo(
     kitId: string
   }) => {
     const { goTo } = useCustomRouter()
+    const { t } = useTranslation('kit')
     return (
       <ListItemContainer>
         <div>
           <h6 className="text-primary font-bold">{kitName}</h6>
-          <span className="text-gray-500 text-sm">Sizing: {grade}</span>
+          <span className="text-gray-500 text-sm">
+            {t('list.size-kit')}: {grade}
+          </span>
         </div>
         <div className="ml-auto">
           <Button onClick={() => goTo('/gunpla-kits/kits/' + kitId)}>
-            View
+            {t('list.view-kit')}
           </Button>
         </div>
       </ListItemContainer>

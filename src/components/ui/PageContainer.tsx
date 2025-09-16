@@ -1,5 +1,6 @@
 import { cn } from '@/utils/cn'
 import { memo } from 'react'
+import LanguageSwitcher from './LanguageSwitcher'
 
 interface PageContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   noPadding?: boolean
@@ -16,7 +17,10 @@ const PageContainer = memo(({ children, noPadding }: PageContainerProps) => {
           },
         )}
       >
-        <div className="flex-1 flex flex-col gap-4">{children}</div>
+        <div className="flex-1 flex flex-col gap-4">
+          <LanguageSwitcher />
+          {children}
+        </div>
       </div>
     </>
   )

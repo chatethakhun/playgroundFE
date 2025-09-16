@@ -4,6 +4,8 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import Navbar from '@/components/ui/Navbar'
 import { AuthProvider } from '@/providers/AuthContext'
 import { NotificationProvider } from '@/providers/NotificationProvider'
+import '../i18n'
+import { LocaleProvider } from '@/providers/LocaleProvider'
 // Create a client
 const queryClient = new QueryClient()
 export const Route = createRootRoute({
@@ -11,10 +13,12 @@ export const Route = createRootRoute({
     <>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <NotificationProvider>
-            <Outlet />
-            <Navbar />
-          </NotificationProvider>
+          <LocaleProvider>
+            <NotificationProvider>
+              <Outlet />
+              <Navbar />
+            </NotificationProvider>
+          </LocaleProvider>
         </AuthProvider>
       </QueryClientProvider>
 

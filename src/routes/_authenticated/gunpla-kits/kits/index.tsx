@@ -7,6 +7,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { ToyBrick } from 'lucide-react'
 
 import GunplaSVG from '@/assets/images/gunpla.svg'
+import { useTranslation } from 'react-i18next'
 
 export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/')({
   component: RouteComponent,
@@ -14,16 +15,17 @@ export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/')({
 
 function RouteComponent() {
   const { goTo } = useCustomRouter()
+  const { t } = useTranslation('kit')
   return (
     <PageContainer>
       <div className="flex justify-between items-center">
         <div className="flex gap-2 items-center">
           <img src={GunplaSVG} alt="gunpla" className="w-8 h-8" />
-          <h1 className="text-2xl font-bold text-primary">My Gunpla Kits</h1>
+          <h1 className="text-2xl font-bold text-primary">{t('list.title')}</h1>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => goTo('/gunpla-kits/kits/colors')}>
-            <div className="flex items-center gap-2">Colors</div>
+            <div className="flex items-center gap-2">{t('list.add-color')}</div>
           </Button>
           <Button onClick={() => goTo('/gunpla-kits/kits/new')}>
             <div className="flex items-center gap-2">
