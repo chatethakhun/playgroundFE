@@ -8,6 +8,16 @@ import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          i18n: ['react-i18next', 'i18next'],
+        },
+      },
+    },
+  },
   plugins: [
     visualizer({
       open: true,
