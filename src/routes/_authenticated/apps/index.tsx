@@ -4,6 +4,7 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 import { createFileRoute } from '@tanstack/react-router'
 import { MessageCircle, Dumbbell } from 'lucide-react'
 import React, { memo, useCallback } from 'react'
+
 export const Route = createFileRoute('/_authenticated/apps/')({
   component: RouteComponent,
 })
