@@ -11,13 +11,6 @@ export const Route = createFileRoute('/_authenticated/apps/')({
 
 const apps = [
   {
-    name: 'ChatApp',
-    path: '/chatapp',
-    icon: MessageCircle,
-    image: '/images/chatapps.jpg',
-    desc: 'Chat apps are a great way to connect with your customers. They are easy to use, and they can be used on multiple devices.',
-  },
-  {
     name: 'Gunpla Kits',
     path: '/gunpla-kits/kits',
     icon: Dumbbell,
