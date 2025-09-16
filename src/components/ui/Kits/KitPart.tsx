@@ -32,6 +32,8 @@ const RequireItem = memo(
       typeof req.runner?.color !== 'string' ? req.runner?.color.name : ''
     const runnerName = req.runner?.code ?? ''
 
+    const runnerQty = typeof req.runner !== 'number' ? req.runner?.qty : 1
+
     const isCut = req.isCut
     return (
       <div className={cn('flex gap-2 items-start', { 'opacity-30': isCut })}>
@@ -56,7 +58,7 @@ const RequireItem = memo(
             <p>
               {runnerName} ({runnerColorName}) Gate:{' '}
               <span className="font-bold text-primary">{runnerName}</span> x{' '}
-              {req.qty}
+              {runnerQty}
             </p>
           </div>
           <div className="flex gap-2 items-center">
