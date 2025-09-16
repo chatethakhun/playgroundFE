@@ -50,13 +50,24 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (!id.includes('node_modules')) return
-          if (id.includes('react') || id.includes('scheduler')) return 'react'
-          if (id.includes('i18next')) return 'i18n'
-          if (id.includes('react-router')) return 'router'
-          if (id.includes('lodash')) return 'lodash'
-          if (id.includes('date-fns') || id.includes('dayjs')) return 'date'
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          tanstack: [
+            '@tanstack/react-query',
+            '@tanstack/react-router',
+            '@tanstack/react-router-devtools',
+          ],
+          i18n: [
+            'i18next',
+            'react-i18next',
+            'i18next-http-backend',
+            'i18next-browser-languagedetector',
+          ],
+          forms: ['react-hook-form', '@hookform/resolvers', 'yup'],
+          radix: ['@radix-ui/react-checkbox', '@radix-ui/react-select'],
+          ui: ['react-modal', 'react-toastify'],
+          net: ['axios', 'socket.io-client'],
+          icons: ['lucide-react', 'omoo-icons'],
         },
       },
     },
