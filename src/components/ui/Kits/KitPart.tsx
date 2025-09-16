@@ -23,39 +23,51 @@ const RequireItem = memo(
     req: KitRequirement
     onChecked?: (checked: boolean) => void
   }) => {
+    const runnerColor =
+      typeof req.runner?.color !== 'string'
+        ? (req.runner?.color.hex as string)
+        : ''
+
+    const runnerColorName =
+      typeof req.runner?.color !== 'string' ? req.runner?.color.name : ''
+    const runnerName = req.runner?.code ?? ''
+
+    const isCut = req.isCut
     return (
-      <div
-        className={cn('flex gap-2 items-center', { 'opacity-30': req.isCut })}
-      >
+      <div className={cn('flex gap-2 items-start', { 'opacity-30': isCut })}>
         <Checkbox
           name={req.gate}
-          checked={req.isCut}
+          checked={isCut}
           onCheckedChange={(e) => {
             const isChecked = Boolean(e)
             onChecked?.(isChecked)
             req.isCut = isChecked
           }}
         />
-        <div
-          style={{
-            backgroundColor:
-              (typeof req.runner?.color !== 'string'
-                ? (req.runner?.color.hex as string)
-                : '#fff') || '',
-          }}
-          className="w-4 h-4 rounded-sm border"
-        ></div>
-        <p>
-          {typeof req.runner?.color !== 'string'
-            ? (req.runner?.color.name as string)
-            : ''}
-        </p>{' '}
-        |
-        <p className="font-bold">
+
+        <div className="flex flex-col">
+          <div className="flex gap-2 items-center">
+            <div
+              style={{
+                backgroundColor: runnerColor,
+              }}
+              className="w-5 h-5  border"
+            ></div>
+            <p>
+              {runnerName} ({runnerColorName}) Gate:{' '}
+              <span className="font-bold text-primary">{runnerName}</span> x{' '}
+              {req.qty}
+            </p>
+          </div>
+          <div className="flex gap-2 items-center">
+            <p>{req.gate}</p>
+          </div>
+        </div>
+        {/*<p className="font-bold flex flex-col">
           <span className="text-xs font-light">Runner:</span>{' '}
-          {req.runner?.code ?? ''} |{' '}
-          <span className="text-xs font-light">Number: </span> {req.gate}
-        </p>
+          {req.runner?.code ?? ''} {` x ${req.runner?.qty ?? ''} `}
+          <span className="text-xs font-light">| Number: </span> {req.gate}
+        </p>*/}
       </div>
     )
   },
