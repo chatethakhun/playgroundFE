@@ -137,22 +137,24 @@ const KitPartForm = memo(
     return (
       <div className="flex flex-col gap-4">
         <FormProvider {...form}>
-          <Controller
-            control={form.control}
-            name="subassembly"
-            render={({ field, fieldState }) => (
-              <DropDown
-                options={(kitSubAssembly || []).map((kit) => ({
-                  label: kit.name,
-                  value: kit._id,
-                }))}
-                onChange={(e) => field.onChange(e.target.value)}
-                value={field.value}
-                errorMessage={fieldState.error?.message}
-                label="Kit Subassembly"
-              />
-            )}
-          />
+          {!part && (
+            <Controller
+              control={form.control}
+              name="subassembly"
+              render={({ field, fieldState }) => (
+                <DropDown
+                  options={(kitSubAssembly || []).map((kit) => ({
+                    label: kit.name,
+                    value: kit._id,
+                  }))}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  value={field.value}
+                  errorMessage={fieldState.error?.message}
+                  label="Kit Subassembly"
+                />
+              )}
+            />
+          )}
 
           <div className="flex ">
             <div className="border-b border-primary flex-grow">
