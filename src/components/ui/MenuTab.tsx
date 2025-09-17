@@ -1,5 +1,6 @@
 import { cn } from '@/utils/cn'
 import { memo } from 'react'
+import { useTranslation } from 'react-i18next'
 const TabItem = memo(
   function TabItem({
     tab,
@@ -10,6 +11,7 @@ const TabItem = memo(
     onClick?: () => void
     isActive?: boolean
   }) {
+    const { t } = useTranslation(['kit'])
     return (
       <li className="me-2 cursor-pointer" onClick={onClick}>
         <div
@@ -21,7 +23,7 @@ const TabItem = memo(
             },
           )}
         >
-          {tab}
+          {t(tab)}
         </div>
       </li>
     )

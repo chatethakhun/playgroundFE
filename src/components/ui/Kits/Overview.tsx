@@ -3,33 +3,42 @@ import { useQuery } from '@tanstack/react-query'
 import { memo } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
 import ListItemContainer from '../ListItemContainer'
+import { useTranslation } from 'react-i18next'
 
-const Overview = memo(({ kitId }: { kitId: string }) => {
-  const { data, isLoading } = useQuery({
-    queryFn: () => getKit(kitId),
-    queryKey: ['kits', kitId],
-  })
+const Overview = memo(
+  ({ kitId }: { kitId: string }) => {
+    const { data, isLoading } = useQuery({
+      queryFn: () => getKit(kitId),
+      queryKey: ['kits', kitId],
+      enabled: !!kitId,
+    })
 
-  if (isLoading) return <LoadingFullPage />
+    const { t } = useTranslation('kit')
 
-  return (
-    <div>
-      <ListItemContainer>
-        <h6 className="text-primary font-bold">Kit Name: </h6>
-        <span className="text-gray-500 text-sm font-bold">{data?.name}</span>
-      </ListItemContainer>
-      <ListItemContainer>
-        <h6 className="text-primary font-bold">Kit grade: </h6>
-        <span className="text-gray-500 text-sm font-bold">{data?.grade}</span>
-      </ListItemContainer>
-      <ListItemContainer>
-        <h6 className="text-primary font-bold">Number of runners: </h6>
-        <span className="text-gray-500 text-sm font-bold">
-          {data?.runners.length}
-        </span>
-      </ListItemContainer>
-    </div>
-  )
-})
+    if (isLoading) return <LoadingFullPage />
+
+    return (
+      <div>
+        <ListItemContainer>
+          <h6 className="text-primary font-bold">{t('overview.name')}: </h6>
+          <span className="text-gray-500 text-sm font-bold">{data?.name}</span>
+        </ListItemContainer>
+        <ListItemContainer>
+          <h6 className="text-primary font-bold">{t('overview.grade')}: </h6>
+          <span className="text-gray-500 text-sm font-bold">{data?.grade}</span>
+        </ListItemContainer>
+        <ListItemContainer>
+          <h6 className="text-primary font-bold">
+            {t('overview.no-runners')}:{' '}
+          </h6>
+          <span className="text-gray-500 text-sm font-bold">
+            {data?.runners.length}
+          </span>
+        </ListItemContainer>
+      </div>
+    )
+  },
+  (prev, next) => prev.kitId === next.kitId,
+)
 
 export default Overview

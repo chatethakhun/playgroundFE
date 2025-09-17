@@ -1,9 +1,10 @@
 import Overview from '@/components/ui/Kits/Overview'
+import LoadingFullPage from '@/components/ui/LoadingFullPage'
 
 import MenuTab from '@/components/ui/MenuTab'
 import PageContainer from '@/components/ui/PageContainer'
 import { createFileRoute } from '@tanstack/react-router'
-import { lazy, useMemo, useState } from 'react'
+import { lazy, Suspense, useMemo, useState } from 'react'
 
 const KitPart = lazy(() => import('@/components/ui/Kits/KitPart'))
 const KitSubassembly = lazy(() => import('@/components/ui/Kits/KitSubassembly'))
@@ -15,7 +16,12 @@ export const Route = createFileRoute(
   component: RouteComponent,
 })
 
-const TABS = ['Overview', 'Runners', 'Subassemblies', 'Parts']
+const TABS = [
+  'overview.title',
+  'runners.title',
+  'kit-subassembly.title',
+  'kit-part.title',
+]
 
 function RouteComponent() {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -25,11 +31,23 @@ function RouteComponent() {
       case 0:
         return <Overview kitId={kitId} />
       case 1:
-        return <Runners kitId={kitId} />
+        return (
+          <Suspense fallback={<LoadingFullPage></LoadingFullPage>}>
+            <Runners kitId={kitId} />
+          </Suspense>
+        )
       case 2:
-        return <KitSubassembly kitId={kitId} />
+        return (
+          <Suspense fallback={<LoadingFullPage></LoadingFullPage>}>
+            <KitSubassembly kitId={kitId} />
+          </Suspense>
+        )
       case 3:
-        return <KitPart kitId={kitId} />
+        return (
+          <Suspense fallback={<LoadingFullPage></LoadingFullPage>}>
+            <KitPart kitId={kitId} />
+          </Suspense>
+        )
       default:
         return <Overview kitId={kitId} />
     }
