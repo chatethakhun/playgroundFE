@@ -1,14 +1,12 @@
-import PageContainer from './PageContainer'
 import { Loader } from 'lucide-react'
+import { memo } from 'react'
 
-const LoadingFullPage = () => {
+const LoadingFullPage = memo(() => {
   return (
-    <PageContainer>
-      <div className="flex justify-center items-center-safe h-[100%] relative ">
-        <Loader className="text-primary animate-spin text-2xl" />
-      </div>
-    </PageContainer>
+    <div className="flex justify-center items-center-safe h-full relative ">
+      <Loader className="text-primary animate-spin text-2xl" />
+    </div>
   )
-}
+})
 
 export default LoadingFullPage
