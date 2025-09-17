@@ -17,10 +17,10 @@ export const Route = createFileRoute(
 })
 
 const TABS = [
-  'overview.title',
-  'runners.title',
-  'kit-subassembly.title',
-  'kit-part.title',
+  'kit:overview.title',
+  'runner:runners.title',
+  'subassembly:kit-subassembly.title',
+  'part:kit-part.title',
 ]
 
 function RouteComponent() {
