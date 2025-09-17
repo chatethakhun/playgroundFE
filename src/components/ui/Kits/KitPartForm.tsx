@@ -22,6 +22,8 @@ import { Plus, Trash } from 'lucide-react'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import TagInput from '../TagInput'
 import { sortStringArray } from '@/utils/array'
+import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 const schema = Yup.object().shape({
   subassembly: Yup.string().required('KitPart subAssemblyId is required'),
@@ -56,6 +58,8 @@ const KitPartForm = memo(
       queryFn: () => getKitSubassemblies(kitId, true),
       enabled: !!kitId,
     })
+
+    const { t } = useTranslation('common')
 
     const { data: runners, isLoading: isLoadingRunners } = useQuery({
       queryFn: () => getKitRunners(kitId),
@@ -102,6 +106,7 @@ const KitPartForm = memo(
           })),
         }),
       onSuccess: () => {
+        toast(t('save-success'), { position: 'bottom-center' })
         form.reset()
       },
     })
@@ -120,6 +125,7 @@ const KitPartForm = memo(
           part?._id!,
         ),
       onSuccess: () => {
+        toast(t('save-success'), { position: 'bottom-center' })
         queryClient.refetchQueries({
           queryKey: ['kit', kitId, 'parts'],
         })

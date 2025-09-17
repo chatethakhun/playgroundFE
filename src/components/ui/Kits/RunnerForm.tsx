@@ -13,6 +13,8 @@ import {
   updateKitRunner,
 } from '@/services/gunplaKits/kit.service'
 import useCustomRouter from '@/hooks/useCustomRouter'
+import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 const schema = yup.object({
   code: yup.string().required(),
@@ -42,12 +44,14 @@ const RunnerForm = memo(
       queryFn: () => getColors(),
     })
 
+    const { t } = useTranslation('common')
+
     const { goTo } = useCustomRouter()
 
     const { mutate: addRunner } = useMutation({
       mutationFn: (data: Data) => createKitRunner(data, kitId),
       onSuccess: (data) => {
-        console.log(data)
+        toast(t('save-success'), { position: 'bottom-center' })
         method.reset()
         queryClient.refetchQueries({
           queryKey: ['kits', data.kit._id, 'runners'],
@@ -58,11 +62,11 @@ const RunnerForm = memo(
       mutationFn: (data: Data) =>
         updateKitRunner(data, kitId, runner?._id ?? ''),
       onSuccess: (data) => {
-        console.log(data)
         method.reset()
         queryClient.refetchQueries({
           queryKey: ['kits', data.kit._id, 'runners'],
         })
+        toast(t('save-success'), { position: 'bottom-center' })
         goTo(`/gunpla-kits/kits/${data.kit._id}`)
       },
     })

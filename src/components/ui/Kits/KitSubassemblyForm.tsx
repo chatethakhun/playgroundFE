@@ -6,6 +6,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createKitSubassembly } from '@/services/gunplaKits/kit.service'
 import TextInput from '../TextInput'
 import Button from '../Button'
+import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 const schema = yup.object({
   name: yup.string().required('Kit Subassembly Name is required'),
@@ -24,6 +26,8 @@ const KitSubassemblyForm = memo(({ kitId }: { kitId: string }) => {
     },
   })
 
+  const { t } = useTranslation('common')
+
   const { mutate: addSubassembly } = useMutation({
     mutationFn: (data: Data) => createKitSubassembly(data, kitId),
     onSuccess: () => {
@@ -31,6 +35,7 @@ const KitSubassemblyForm = memo(({ kitId }: { kitId: string }) => {
       queryClient.refetchQueries({
         queryKey: ['kit', kitId, 'subassemblies'],
       })
+      toast(t('save-success'), { position: 'bottom-center' })
     },
   })
 

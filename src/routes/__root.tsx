@@ -6,6 +6,7 @@ import { AuthProvider } from '@/providers/AuthContext'
 import { NotificationProvider } from '@/providers/NotificationProvider'
 import '../i18n'
 import { LocaleProvider } from '@/providers/LocaleProvider'
+import { ToastContainer } from 'react-toastify'
 // Create a client
 const queryClient = new QueryClient()
 export const Route = createRootRoute({
@@ -17,6 +18,7 @@ export const Route = createRootRoute({
             <NotificationProvider>
               <Outlet />
               <Navbar />
+              <ToastContainer />
             </NotificationProvider>
           </LocaleProvider>
         </AuthProvider>
