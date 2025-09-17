@@ -12,7 +12,8 @@ const REMOTE_I18N_MAP: Record<string, Record<string, string>> = {
     common:
       'https://api.myjson.online/v1/records/71778107-4dd5-40ad-bad9-9c3947c68650',
     kit: 'https://api.myjson.online/v1/records/9653b4b0-d5a2-4960-8307-59f9dcc31993',
-    runner: 'https://api.myjson.online/v1/records/EN_RUNNER_ID',
+    runner:
+      'https://api.myjson.online/v1/records/9653b4b0-d5a2-4960-8307-59f9dcc31993',
     subassembly: 'https://api.myjson.online/v1/records/EN_SUB_ID',
     part: 'https://api.myjson.online/v1/records/EN_PART_ID',
   },
@@ -20,7 +21,8 @@ const REMOTE_I18N_MAP: Record<string, Record<string, string>> = {
     common:
       'https://api.myjson.online/v1/records/2b771c5a-fa6d-497c-9291-f7a576fcc7cc',
     kit: 'https://api.myjson.online/v1/records/90ef217a-e394-4220-86d1-6b6af38fddb4',
-    runner: 'https://api.myjson.online/v1/records/TH_RUNNER_ID',
+    runner:
+      'https://api.myjson.online/v1/records/326acfd7-4c5b-4107-abcc-3a179c9fce57',
     subassembly: 'https://api.myjson.online/v1/records/TH_SUB_ID',
     part: 'https://api.myjson.online/v1/records/TH_PART_ID',
   },
