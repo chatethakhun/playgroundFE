@@ -11,7 +11,7 @@ const TabItem = memo(
     onClick?: () => void
     isActive?: boolean
   }) {
-    const { t } = useTranslation(['kit'])
+    const { t } = useTranslation(['kit', 'runner'])
     return (
       <li className="me-2 cursor-pointer" onClick={onClick}>
         <div
