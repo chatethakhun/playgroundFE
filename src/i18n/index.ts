@@ -13,7 +13,7 @@ const REMOTE_I18N_MAP: Record<string, Record<string, string>> = {
       'https://api.myjson.online/v1/records/71778107-4dd5-40ad-bad9-9c3947c68650',
     kit: 'https://api.myjson.online/v1/records/9653b4b0-d5a2-4960-8307-59f9dcc31993',
     runner:
-      'https://api.myjson.online/v1/records/9653b4b0-d5a2-4960-8307-59f9dcc31993',
+      'https://api.myjson.online/v1/records/1b6077f6-9748-4c96-a7ef-a4ec850bcd2a',
     subassembly: 'https://api.myjson.online/v1/records/EN_SUB_ID',
     part: 'https://api.myjson.online/v1/records/EN_PART_ID',
   },
