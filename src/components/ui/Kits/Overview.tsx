@@ -1,6 +1,6 @@
 import { getKit } from '@/services/gunplaKits/kit.service'
 import { useQuery } from '@tanstack/react-query'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
 import ListItemContainer from '../ListItemContainer'
 import { useTranslation } from 'react-i18next'
@@ -14,6 +14,18 @@ const Overview = memo(
     })
 
     const { t } = useTranslation('kit')
+
+    const numberOfRunners = useMemo(() => {
+      if ((data?.runners ?? []).length === 0) {
+        return 0
+      }
+
+      let count = 0
+      for (const runner of data?.runners ?? []) {
+        count = count + (runner.qty ?? 0)
+      }
+      return count
+    }, [data?.runners])
 
     if (isLoading) return <LoadingFullPage />
 
@@ -32,7 +44,7 @@ const Overview = memo(
             {t('overview.no-runners')}:{' '}
           </h6>
           <span className="text-gray-500 text-sm font-bold">
-            {data?.runners.length}
+            {numberOfRunners}
           </span>
         </ListItemContainer>
       </div>
