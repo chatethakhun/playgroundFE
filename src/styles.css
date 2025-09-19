@@ -3,6 +3,16 @@
   src: url('assets/fonts/Urbanist/Urbanist-VariableFont_wght.ttf');
 }
 
+@font-face {
+  font-family: SarabunRegular;
+  src: url('assets/fonts/Sarabun/Sarabun-Regular.ttf');
+}
+
+@font-face {
+  font-family: SarabunBold;
+  src: url('assets/fonts/Sarabun/Sarabun-Bold.ttf');
+}
+
 @import 'tailwindcss';
 
 @import 'tw-animate-css';
@@ -27,6 +37,7 @@ body {
   @apply m-0 h-full overflow-hidden;
   font-family:
     Urbanist,
+    SarabunRegular,
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
