@@ -11,7 +11,7 @@ const FloatButton = memo(
     return (
       <div
         onClick={onClick}
-        className="absolute right-10 bottom-10 z-10 flex items-center gap-2 p-4  rounded-full bg-primary text-white cursor-pointer active:scale-85"
+        className="sticky ml-auto w-12 h-12 right-10 bottom-10 z-10 flex items-center gap-2 justify-center  rounded-full bg-primary text-white cursor-pointer active:scale-85"
       >
         {children}
       </div>
