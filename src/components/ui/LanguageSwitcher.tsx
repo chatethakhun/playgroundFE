@@ -7,8 +7,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useLocale } from '@/hooks/useLocale'
-
-export default function LanguageSwitcher() {
+import { memo } from 'react'
+const LanguageSwitcher = memo(function LanguageSwitcher() {
   const { locale, setLocale } = useLocale()
 
   return (
@@ -30,4 +30,6 @@ export default function LanguageSwitcher() {
       </Select>
     </div>
   )
-}
+})
+
+export default LanguageSwitcher
