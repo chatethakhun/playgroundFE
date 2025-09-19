@@ -14,6 +14,7 @@ import FloatButton from '../FloatButton'
 
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { Checkbox } from '../checkbox'
+import NoData from '../NoData'
 
 const RequireItem = memo(
   ({
@@ -194,6 +195,7 @@ const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
   if (isLoading) return <LoadingSpinner />
   return (
     <>
+      {data?.length === 0 && <NoData />}
       {data?.map((part, index) => (
         <KitPartItem key={index} part={part} />
       ))}

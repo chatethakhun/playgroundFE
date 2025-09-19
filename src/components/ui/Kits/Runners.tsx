@@ -8,6 +8,7 @@ import useModal from '@/hooks/useModal'
 import RunnerForm from './RunnerForm'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { useTranslation } from 'react-i18next'
+import NoData from '../NoData'
 
 const CustomModal = lazy(() => import('../Modal'))
 
@@ -58,6 +59,7 @@ const Runners = memo(({ kitId }: { kitId: string }) => {
   if (isLoading) return <LoadingFullPage />
   return (
     <>
+      {data?.length === 0 && <NoData />}
       {data?.map((runner) => (
         <RunnerItem key={runner._id} runner={runner} />
       ))}

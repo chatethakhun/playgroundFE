@@ -6,6 +6,7 @@ import { Plus } from 'lucide-react'
 import useModal from '@/hooks/useModal'
 import LoadingFullPage from '../LoadingFullPage'
 import KitSubassemblyForm from './KitSubassemblyForm'
+import NoData from '../NoData'
 const CustomModal = lazy(() => import('../Modal'))
 
 const KitSubassemblyItem = memo(
@@ -36,6 +37,7 @@ const KitSubassembly = memo(({ kitId }: { kitId: string }) => {
 
   return (
     <>
+      {data?.length === 0 && <NoData />}
       {data?.map((kitSubassembly) => (
         <KitSubassemblyItem
           key={kitSubassembly._id}
