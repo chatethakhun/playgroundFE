@@ -243,7 +243,9 @@ const KitPartForm = memo(
           >
             {t('part:part.form.add_part')}
           </Button>
-          <Button onClick={form.handleSubmit(onSubmit)}>Save</Button>
+          <Button onClick={form.handleSubmit(onSubmit)}>
+            {t('common:save')}
+          </Button>
         </FormProvider>
         <Button secondary onClick={() => goTo(`/gunpla-kits/kits/${kitId}`)}>
           {t('common:back')}

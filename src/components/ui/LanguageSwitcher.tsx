@@ -25,7 +25,7 @@ const LanguageSwitcher = memo(function LanguageSwitcher() {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="en">English</SelectItem>
-          <SelectItem value="th">Thai</SelectItem>
+          <SelectItem value="th">ไทย</SelectItem>
         </SelectContent>
       </Select>
     </div>

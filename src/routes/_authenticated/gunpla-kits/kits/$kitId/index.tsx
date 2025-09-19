@@ -18,9 +18,9 @@ export const Route = createFileRoute(
 
 const TABS = [
   'kit:overview.title',
-  'runner:runners.title',
-  'subassembly:kit-subassembly.title',
-  'part:kit-part.title',
+  'runner:runner.title',
+  'subassembly:subassembly.title',
+  'part:part.title',
 ]
 
 function RouteComponent() {
