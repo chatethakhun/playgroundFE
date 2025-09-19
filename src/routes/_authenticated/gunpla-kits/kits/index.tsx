@@ -6,7 +6,7 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 import { createFileRoute } from '@tanstack/react-router'
 import { ToyBrick } from 'lucide-react'
 
-import GunplaSVG from '@/assets/images/gunpla.svg'
+import GunplaSVG from '@/assets/images/gunpla.webp'
 import { useTranslation } from 'react-i18next'
 
 export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/')({

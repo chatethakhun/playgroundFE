@@ -1,25 +1,24 @@
 /// <reference types="vitest/config" />
-import { defineConfig, splitVendorChunkPlugin } from 'vite'
+import { defineConfig } from 'vite'
 import { resolve } from 'node:path'
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
-import { visualizer } from 'rollup-plugin-visualizer'
+// import { visualizer } from 'rollup-plugin-visualizer'
 import strip from '@rollup/plugin-strip'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    splitVendorChunkPlugin(),
     strip({
       include: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
       functions: ['console.log'],
     }),
-    visualizer({
-      open: true,
-      filename: 'stats.html',
-      template: 'sunburst',
-    }),
+    // visualizer({
+    //   open: true,
+    //   filename: 'stats.html',
+    //   template: 'sunburst',
+    // }),
     TanStackRouterVite({ autoCodeSplitting: true }),
     viteReact({
       babel: {
