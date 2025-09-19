@@ -10,6 +10,9 @@ import GunplaSVG from '@/assets/images/gunpla.webp'
 import { useTranslation } from 'react-i18next'
 
 export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/')({
+  head: () => ({
+    meta: [{ title: 'Kits', description: 'Kits' }],
+  }),
   component: RouteComponent,
 })
 

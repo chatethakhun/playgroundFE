@@ -1,5 +1,5 @@
-import { getKit } from '@/services/gunplaKits/kit.service'
-import { useQuery } from '@tanstack/react-query'
+import { getKitQuery } from '@/services/gunplaKits/kit.service'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { memo, useMemo } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
 import ListItemContainer from '../ListItemContainer'
@@ -7,11 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 const Overview = memo(
   ({ kitId }: { kitId: string }) => {
-    const { data, isLoading } = useQuery({
-      queryFn: () => getKit(kitId),
-      queryKey: ['kits', kitId],
-      enabled: !!kitId,
-    })
+    const { data, isLoading } = useSuspenseQuery(getKitQuery(kitId))
 
     const { t } = useTranslation('kit')
 
