@@ -18,10 +18,10 @@ import {
 
 import DropDown from '../Dropdown'
 import Button from '../Button'
-import { Plus, Trash } from 'lucide-react'
+import { Trash } from 'lucide-react'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import TagInput from '../TagInput'
-import { sortStringArray } from '@/utils/array'
+import { convertStringArrayToNumberArray, sortNumberArray } from '@/utils/array'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
@@ -33,7 +33,7 @@ const schema = Yup.object().shape({
       Yup.object().shape({
         runner: Yup.string().required('Runner is required'),
         gate: Yup.array()
-          .of(Yup.string().required('Gate is required'))
+          .of(Yup.number().required('Gate is required'))
           .min(1, 'Gate is required'),
       }),
     )
@@ -87,7 +87,10 @@ const KitPartForm = memo(
       defaultValues: {
         subassembly: part?.subassembly._id || '',
         kit: kitId,
-        requires: requies,
+        requires: requies.map((r) => ({
+          runner: r.runner,
+          gate: convertStringArrayToNumberArray(r.gate),
+        })),
       },
     })
 
@@ -102,7 +105,7 @@ const KitPartForm = memo(
           ...data,
           requires: (data.requires || []).map((req) => ({
             runner: req.runner,
-            gate: sortStringArray(req.gate || []).join(','),
+            gate: sortNumberArray(req.gate || []).join(','),
           })),
         }),
       onSuccess: () => {
@@ -118,7 +121,7 @@ const KitPartForm = memo(
             ...data,
             requires: (data.requires || []).map((req) => ({
               runner: req.runner,
-              gate: sortStringArray(req.gate || []).join(','),
+              gate: sortNumberArray(req.gate || []).join(','),
             })),
             isCut: part?.isCut || false,
           },
@@ -166,16 +169,6 @@ const KitPartForm = memo(
             <div className="border-b border-primary flex-grow">
               <h1 className="font-bold text-primary text-lg ">Kit Runners</h1>
             </div>
-            <button
-              onClick={() => {
-                append({
-                  runner: '',
-                  gate: [],
-                })
-              }}
-            >
-              <Plus className="w-5 h-5 text-primary" />
-            </button>
           </div>
           {fields.map((field, index) => (
             <div key={field.id} className="flex md:flex-row gap-4 flex-col">
@@ -197,26 +190,7 @@ const KitPartForm = memo(
                   )}
                 />
               </div>
-              {/*<div className="flex-grow">
-                <Controller
-                  key={index}
-                  name={`requires.${index}.gate`}
-                  control={form.control}
-                  render={({
-                    field: { onChange, value, name },
-                    fieldState,
-                  }) => (
-                    <TextInput
-                      name={name}
-                      id={name}
-                      onChange={(e) => onChange(e.target.value)}
-                      value={value}
-                      errorMessage={fieldState.error?.message}
-                      label="Kit Runner gate"
-                    />
-                  )}
-                />
-              </div>*/}
+
               <div className="basis-1/2">
                 <Controller
                   key={index}
@@ -227,7 +201,8 @@ const KitPartForm = memo(
                     fieldState,
                   }) => (
                     <TagInput
-                      tags={value || []}
+                      type="number"
+                      tags={(value || []).map((t) => t.toString())}
                       handleTag={(tags) => onChange(tags.map((t) => t))}
                       label="Gates"
                       id={name}
@@ -252,6 +227,17 @@ const KitPartForm = memo(
             </div>
           ))}
 
+          <Button
+            onClick={() => {
+              append({
+                runner: '',
+                gate: [],
+              })
+            }}
+            secondary
+          >
+            Add Part
+          </Button>
           <Button onClick={form.handleSubmit(onSubmit)}>Save</Button>
         </FormProvider>
         <Button secondary onClick={() => goTo(`/gunpla-kits/kits/${kitId}`)}>

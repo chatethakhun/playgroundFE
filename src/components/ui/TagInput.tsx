@@ -4,7 +4,7 @@ import { cn } from '@/utils/cn'
 
 interface ITagInput extends React.InputHTMLAttributes<HTMLInputElement> {
   tags: Array<string>
-  handleTag: (tags: Array<string>) => void
+   handleTag: (tags: Array<string>) => void
   label?: string
   errorMessage?: string
 }
@@ -29,6 +29,7 @@ const TagInput = ({
   name,
   errorMessage,
   disabled,
+  type = 'text',
 }: ITagInput) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -84,7 +85,7 @@ const TagInput = ({
             <input
               id={id}
               name={name}
-              type="text"
+              type={type}
               onKeyDown={onKeyDown}
               ref={(c) => {
                 inputRef.current = c
