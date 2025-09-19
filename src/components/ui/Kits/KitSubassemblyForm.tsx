@@ -8,10 +8,11 @@ import TextInput from '../TextInput'
 import Button from '../Button'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
+import { toSnakeCase } from '@/utils/string'
 
 const schema = yup.object({
   name: yup.string().required('Kit Subassembly Name is required'),
-  key: yup.string().required('Kit Subassembly Key is required'),
+  key: yup.string(),
 })
 
 type Data = yup.Asserts<typeof schema>
@@ -39,29 +40,17 @@ const KitSubassemblyForm = memo(({ kitId }: { kitId: string }) => {
     },
   })
 
-  const onSubmit = useCallback((data: Data) => {
-    addSubassembly(data)
-  }, [])
+  const onSubmit = useCallback(
+    (data: Data) => {
+      addSubassembly(data)
+    },
+    [addSubassembly, toSnakeCase],
+  )
+
+  console.log({ errors: form.formState.errors })
   return (
     <div className="flex flex-col gap-4">
       <FormProvider {...form}>
-        <Controller
-          control={form.control}
-          name="key"
-          render={({ field, fieldState }) => (
-            <TextInput
-              {...field}
-              name={field.name}
-              id={field.name}
-              onChange={(e) => field.onChange(e.target.value)}
-              value={field.value}
-              errorMessage={fieldState.error?.message}
-              label="Kit Subassembly Key"
-              placeholder="head, arm"
-            />
-          )}
-        />
-
         <Controller
           control={form.control}
           name="name"
@@ -79,8 +68,13 @@ const KitSubassemblyForm = memo(({ kitId }: { kitId: string }) => {
           )}
         />
 
-        <Button isBlock onClick={form.handleSubmit(onSubmit)}>
-          Save
+        <Button
+          isBlock
+          onClick={() => {
+            form.handleSubmit(onSubmit)()
+          }}
+        >
+          {t('save')}
         </Button>
       </FormProvider>
     </div>

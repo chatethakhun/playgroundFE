@@ -1,3 +1,4 @@
+import { toSnakeCase } from '@/utils/string'
 import axiosInstance from '../apiBase'
 
 export const createKit = (data: Partial<Kit>) => {
@@ -106,10 +107,10 @@ export const createKitSubassembly = async (
 ) => {
   try {
     return (
-      await axiosInstance.post<KitSubassembly>(
-        `/kits/${kitId}/subassembly`,
-        data,
-      )
+      await axiosInstance.post<KitSubassembly>(`/kits/${kitId}/subassembly`, {
+        ...data,
+        key: toSnakeCase(data.name || ''),
+      })
     ).data
   } catch (error) {
     console.error(error)
