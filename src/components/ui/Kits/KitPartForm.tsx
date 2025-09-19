@@ -169,7 +169,7 @@ const KitPartForm = memo(
           <div className="flex ">
             <div className="border-b border-primary flex-grow">
               <h1 className="font-bold text-primary text-lg ">
-                {t('part:part.form.runners_title')}
+                {t('part:part.form.runner_title')}
               </h1>
             </div>
           </div>
