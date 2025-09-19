@@ -43,35 +43,7 @@ i18n
     defaultNS: 'common',
     backend: {
       // เลือก URL จาก REMOTE_I18N_MAP
-      loadPath: (lngs: string[] | string, nss: string[] | string) => {
-        const lng = Array.isArray(lngs) ? lngs[0] : lngs
-        const ns = Array.isArray(nss) ? nss[0] : nss
-
-        if (!lng || !ns) throw new Error('Missing language')
-
-        const url = REMOTE_I18N_MAP[lng]?.[ns]
-        if (!url) throw new Error(`Missing i18n url for ${lng}/${ns}`)
-        return url
-      },
-      requestOptions: {
-        headers: {
-          'x-collection-access-token': `${MYJSON_TOKEN}`, // 🔑 ใส่ token ที่นี่
-        },
-      },
-      // myJson.online บางที response อาจห่อ { data: {...} }
-      parse: (data: string) => {
-        try {
-          const obj = JSON.parse(data)
-          // ปรับให้รองรับทั้งสองกรณี
-          if (obj && typeof obj === 'object') {
-            // กรณีตอบกลับแบบ { data: { ...translations } }
-            if ('data' in obj && typeof obj.data === 'object') return obj.data
-          }
-          return obj
-        } catch {
-          return {} // กันพัง
-        }
-      },
+      loadPath: `${import.meta.env.VITE_API_URL}/i18n/{{lng}}/{{ns}}.json`,
       // ถ้าต้องแนบ header เพิ่ม (ไม่จำเป็นส่วนใหญ่)
       // requestOptions: { mode: 'cors' }
     },
