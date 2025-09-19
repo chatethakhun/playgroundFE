@@ -17,10 +17,10 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 const schema = yup.object({
-  code: yup.string().required(),
-  color: yup.string().required(),
-  qty: yup.number().required(),
-  numberOfPieces: yup.number().required(),
+  code: yup.string().required('runner:runner.form.code_error'),
+  color: yup.string().required('runner:runner.form.color_error'),
+  qty: yup.number().required('runner:runner.form.qty_error'),
+  numberOfPieces: yup.number(),
 })
 
 type Data = yup.Asserts<typeof schema>
@@ -44,7 +44,7 @@ const RunnerForm = memo(
       queryFn: () => getColors(),
     })
 
-    const { t } = useTranslation('common')
+    const { t } = useTranslation(['common', 'runner'])
 
     const { goTo } = useCustomRouter()
 
@@ -95,16 +95,16 @@ const RunnerForm = memo(
                 id={name}
                 onChange={onChange}
                 value={value}
-                errorMessage={error?.message}
-                label="Runner Code"
-                placeholder="etc. A1, A2"
+                errorMessage={t(error?.message ?? '')}
+                label={t('runner:runner.form.code_label')}
+                placeholder={t('runner:runner.form.code_ph')}
               />
             )}
           />
           <Controller
             name="color"
             control={method.control}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropDown
                 options={(data || []).map((color) => ({
                   label: color.name,
@@ -112,7 +112,9 @@ const RunnerForm = memo(
                 }))}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                placeholder="Choose color"
+                placeholder={t('runner:runner.form.color_ph')}
+                label={t('runner:runner.form.runner_label')}
+                errorMessage={t(error?.message ?? '')}
               />
             )}
           />
@@ -129,34 +131,15 @@ const RunnerForm = memo(
                 id={name}
                 onChange={onChange}
                 value={value}
-                errorMessage={error?.message}
-                label="QTY"
-                placeholder="etc. 4"
+                errorMessage={t(error?.message ?? '')}
+                label={t('runner:runner.form.qty_label')}
+                placeholder={t('runner:runner.form.qty_ph')}
               />
             )}
           />
-          <Controller
-            control={method.control}
-            name="numberOfPieces"
-            render={({
-              field: { name, onChange, value },
-              fieldState: { error },
-            }) => (
-              <TextInput
-                type="number"
-                name={name}
-                id={name}
-                onChange={onChange}
-                value={value}
-                errorMessage={error?.message}
-                label="Number of Pieces"
-                placeholder="etc. 3"
-              />
-            )}
-          />
-          <br />
+
           <Button isBlock onClick={method.handleSubmit(onSubmit)}>
-            Submit
+            {t('common:save')}
           </Button>
         </FormProvider>
       </div>

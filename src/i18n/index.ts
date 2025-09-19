@@ -16,7 +16,7 @@ i18n
   .init({
     fallbackLng: SUPPORTED[0],
     supportedLngs: SUPPORTED as unknown as string[],
-    ns: ['common', 'kit', 'runner', 'subassembly', 'part'],
+    ns: ['common', 'kit', 'runner', 'subassembly', 'part', 'color'],
     defaultNS: 'common',
     backend: {
       // เลือก URL จาก REMOTE_I18N_MAP

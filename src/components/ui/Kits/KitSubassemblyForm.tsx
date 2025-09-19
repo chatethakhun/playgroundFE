@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { toSnakeCase } from '@/utils/string'
 
 const schema = yup.object({
-  name: yup.string().required('Kit Subassembly Name is required'),
+  name: yup.string().required('subassembly:subassembly.form.name_error'),
   key: yup.string(),
 })
 
@@ -27,7 +27,7 @@ const KitSubassemblyForm = memo(({ kitId }: { kitId: string }) => {
     },
   })
 
-  const { t } = useTranslation('common')
+  const { t } = useTranslation(['common', 'subassembly'])
 
   const { mutate: addSubassembly } = useMutation({
     mutationFn: (data: Data) => createKitSubassembly(data, kitId),
@@ -62,8 +62,8 @@ const KitSubassemblyForm = memo(({ kitId }: { kitId: string }) => {
               onChange={(e) => field.onChange(e.target.value)}
               value={field.value}
               errorMessage={fieldState.error?.message}
-              label="Kit Subassembly Name"
-              placeholder="Head"
+              label={t('subassembly:subassembly.form.name_label')}
+              placeholder={t('subassembly:subassembly.form.name_ph')}
             />
           )}
         />

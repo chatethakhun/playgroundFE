@@ -26,18 +26,18 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 const schema = Yup.object().shape({
-  subassembly: Yup.string().required('KitPart subAssemblyId is required'),
-  kit: Yup.string().required('KitPart kitId is required'),
+  subassembly: Yup.string().required('part:part.form.subassembly_error'),
+  kit: Yup.string().required('part:part.form.kit_error'),
   requires: Yup.array()
     .of(
       Yup.object().shape({
-        runner: Yup.string().required('Runner is required'),
+        runner: Yup.string().required('part:part.form.runner_error'),
         gate: Yup.array()
-          .of(Yup.number().required('Gate is required'))
-          .min(1, 'Gate is required'),
+          .of(Yup.number().required('part:part.form.gate_error'))
+          .min(1, 'part:part.form.gate_error'),
       }),
     )
-    .min(1, 'KitPart requires is required'),
+    .min(1, 'part:part.form.requires_error'),
 })
 
 type KitPartFormData = Yup.Asserts<typeof schema>
@@ -59,7 +59,7 @@ const KitPartForm = memo(
       enabled: !!kitId,
     })
 
-    const { t } = useTranslation('common')
+    const { t } = useTranslation(['common', 'part'])
 
     const { data: runners, isLoading: isLoadingRunners } = useQuery({
       queryFn: () => getKitRunners(kitId),
@@ -158,8 +158,9 @@ const KitPartForm = memo(
                   }))}
                   onChange={(e) => field.onChange(e.target.value)}
                   value={field.value}
-                  errorMessage={fieldState.error?.message}
-                  label="Kit Subassembly"
+                  errorMessage={t(fieldState.error?.message ?? '')}
+                  label={t('part:part.form.subassembly_label')}
+                  placeholder={t('part:part.form.subassembly_ph')}
                 />
               )}
             />
@@ -167,7 +168,9 @@ const KitPartForm = memo(
 
           <div className="flex ">
             <div className="border-b border-primary flex-grow">
-              <h1 className="font-bold text-primary text-lg ">Kit Runners</h1>
+              <h1 className="font-bold text-primary text-lg ">
+                {t('part:part.form.runners_title')}
+              </h1>
             </div>
           </div>
           {fields.map((field, index) => (
@@ -184,8 +187,9 @@ const KitPartForm = memo(
                       }))}
                       onChange={(e) => onChange(e.target.value)}
                       value={value}
-                      errorMessage={fieldState.error?.message}
-                      label="Kit Runner"
+                      errorMessage={t(fieldState.error?.message ?? '')}
+                      label={t('part:part.form.runner_label')}
+                      placeholder={t('part:part.form.runner_ph')}
                     />
                   )}
                 />
@@ -204,10 +208,11 @@ const KitPartForm = memo(
                       type="number"
                       tags={(value || []).map((t) => t.toString())}
                       handleTag={(tags) => onChange(tags.map((t) => t))}
-                      label="Gates"
+                      label={t('part:part.form.gate_label')}
                       id={name}
                       name={name}
-                      errorMessage={fieldState.error?.message}
+                      errorMessage={t(fieldState.error?.message ?? '')}
+                      placeholder={t('part:part.form.gate_ph')}
                     />
                   )}
                 />
@@ -236,12 +241,12 @@ const KitPartForm = memo(
             }}
             secondary
           >
-            Add Part
+            {t('part:part.form.add_part')}
           </Button>
           <Button onClick={form.handleSubmit(onSubmit)}>Save</Button>
         </FormProvider>
         <Button secondary onClick={() => goTo(`/gunpla-kits/kits/${kitId}`)}>
-          Back
+          {t('common:back')}
         </Button>
       </div>
     )

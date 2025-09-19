@@ -1,6 +1,7 @@
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { cn } from '@/utils/cn'
 import { lazy, memo, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const LanguageSwitcher = lazy(() => import('@/components/ui/LanguageSwitcher'))
 
@@ -10,7 +11,7 @@ interface PageContainerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 const PageContainer = memo(({ children, noPadding }: PageContainerProps) => {
   const { currentPathName, goTo } = useCustomRouter()
-
+  const { t } = useTranslation('common')
   const isIncludeKitsPath = currentPathName.includes('kits')
 
   const shouldShowHome = isIncludeKitsPath
@@ -39,7 +40,7 @@ const PageContainer = memo(({ children, noPadding }: PageContainerProps) => {
                   onClickToHome()
                 }}
               >
-                <h1 className="font-extrabold text-3xl">HOME</h1>
+                <h1 className="font-extrabold text-3xl">{t('common:home')}</h1>
               </div>
             )}
             <LanguageSwitcher />

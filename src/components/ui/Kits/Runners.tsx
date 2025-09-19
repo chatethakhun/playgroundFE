@@ -7,12 +7,14 @@ import FloatButton from '../FloatButton'
 import useModal from '@/hooks/useModal'
 import RunnerForm from './RunnerForm'
 import useCustomRouter from '@/hooks/useCustomRouter'
+import { useTranslation } from 'react-i18next'
 
 const CustomModal = lazy(() => import('../Modal'))
 
 const RunnerItem = memo(
   ({ runner }: { runner: Runner }) => {
     const { goTo } = useCustomRouter()
+    const { t } = useTranslation('runner')
     const backgroundColor =
       typeof runner.color === 'string' ? '#ffffff' : runner.color.hex
     return (
@@ -25,7 +27,8 @@ const RunnerItem = memo(
         ></span>
         {runner.code}
         <span className="text-gray-500 text-sm">
-          QTY: <span className="font-bold text-primary">{runner.qty}</span>
+          {t('runner:runner.qty')}:{' '}
+          <span className="font-bold text-primary">{runner.qty}</span>
         </span>
 
         <div>
