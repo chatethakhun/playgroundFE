@@ -21,6 +21,7 @@
 /* Add color theme to this */
 @theme {
   --font-urbanist: 'Urbanist', san-serif;
+  --font-sarabun: 'SarabunRegular', sans-serif;
   --color-dark: #1e232c;
   --color-border: #e8ecf4;
   --color-dark-gray-: #6a707c;
@@ -178,4 +179,21 @@ code {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.Toastify__toast {
+  font-family:
+    Urbanist,
+    SarabunRegular,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
 }
