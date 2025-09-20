@@ -20,19 +20,21 @@ const RunnerItem = memo(
       typeof runner.color === 'string' ? '#ffffff' : runner.color.hex
     return (
       <div className="flex gap-2 items-center">
-        <span
-          className="text-gray-500 text-sm w-4 h-4 border rounded-sm"
-          style={{
-            backgroundColor,
-          }}
-        ></span>
-        {runner.code}
+        <div className="flex  items-center  gap-2 basis-[10%]">
+          <span
+            className="text-gray-500 text-sm w-4 h-4 border rounded-sm"
+            style={{
+              backgroundColor,
+            }}
+          ></span>
+          {runner.code}
+        </div>
         <span className="text-gray-500 text-sm">
           {t('runner:runner.qty')}:{' '}
           <span className="font-bold text-primary">{runner.qty}</span>
         </span>
 
-        <div>
+        <div className="ml-auto">
           <PencilIcon
             className="w-6 h-6 cursor-pointer text-primary"
             onClick={() => {
