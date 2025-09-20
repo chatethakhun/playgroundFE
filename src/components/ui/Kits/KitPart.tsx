@@ -133,7 +133,7 @@ const KitPartItem = memo(
                   part.isCut = isChecked
                 }}
               />
-              <h4 className="text-primary font-bold text-2xl">
+              <h4 className="text-primary font-bold text-md">
                 {part.subassembly.name}
               </h4>
             </div>
