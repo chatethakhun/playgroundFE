@@ -25,6 +25,10 @@ import { convertStringArrayToNumberArray, sortNumberArray } from '@/utils/array'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
+const sortedRequires = (
+  requires: { runner: string; gate?: number[] | undefined }[],
+) => requires.sort((a, b) => a.runner.localeCompare(b.runner))
+
 const schema = Yup.object().shape({
   subassembly: Yup.string().required('part:part.form.subassembly_error'),
   kit: Yup.string().required('part:part.form.kit_error'),
@@ -103,7 +107,7 @@ const KitPartForm = memo(
       mutationFn: (data: KitPartFormData) =>
         createKitPart({
           ...data,
-          requires: (data.requires || []).map((req) => ({
+          requires: sortedRequires(data.requires || []).map((req) => ({
             runner: req.runner,
             gate: sortNumberArray(req.gate || []).join(','),
           })),
@@ -119,7 +123,7 @@ const KitPartForm = memo(
         updateKitPart(
           {
             ...data,
-            requires: (data.requires || []).map((req) => ({
+            requires: sortedRequires(data.requires || []).map((req) => ({
               runner: req.runner,
               gate: sortNumberArray(req.gate || []).join(','),
             })),

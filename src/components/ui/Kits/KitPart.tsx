@@ -4,7 +4,7 @@ import {
   updateKitPart,
 } from '@/services/gunplaKits/kit.service'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import ListItemContainer from '../ListItemContainer'
 import useCollapse from '@/hooks/useCollapse'
 import { ChevronDown, ChevronUp, Plus, Pen } from 'lucide-react'
@@ -112,11 +112,6 @@ const KitPartItem = memo(
       }) => updateCutInRequires(part._id, requireIndex, isCut),
     })
 
-    const sortedRequires = useMemo(() => {
-      return part.requires.sort((a, b) =>
-        a.runner.code.localeCompare(b.runner.code),
-      )
-    }, [part.requires])
     return (
       <ListItemContainer>
         <div className="flex flex-col justify-center flex-grow">
@@ -146,7 +141,7 @@ const KitPartItem = memo(
                   goTo(`/gunpla-kits/kits/${part.kit}/part/${part._id}`)
                 }
               >
-                <Pen className="w-5 h-5 text-gray-500" />
+                <Pen className="w-5 h-5 text-blue-500" />
               </button>
               {isCollapsed && part.requires.length > 0 && (
                 <button
@@ -171,7 +166,7 @@ const KitPartItem = memo(
               hidden: !isCollapsed && part.requires.length > 0,
             })}
           >
-            {sortedRequires.map((req, index) => {
+            {part.requires.map((req, index) => {
               return (
                 <RequireItem
                   key={index}
