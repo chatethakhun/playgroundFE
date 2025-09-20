@@ -20,7 +20,7 @@ const RunnerItem = memo(
       typeof runner.color === 'string' ? '#ffffff' : runner.color.hex
     return (
       <div className="flex gap-2 items-center">
-        <div className="flex  items-center  gap-2 basis-[10%]">
+        <div className="flex  items-center  gap-2 basis-[20%] md:basis-[10%]">
           <span
             className="text-gray-500 text-sm w-4 h-4 border rounded-sm"
             style={{
