@@ -37,7 +37,31 @@ const RequireItem = memo(
 
     const isCut = req.isCut
     return (
-      <div className={cn('flex gap-2 items-start', { 'opacity-30': isCut })}>
+      <div
+        className={cn(
+          'flex gap-2 items-center border-b-gray-500 border-b p-2 w-full',
+          {
+            'opacity-30': isCut,
+          },
+        )}
+      >
+        <div className="flex flex-col w-full">
+          <div className="flex gap-2 items-center border-b border-gray-200 py-2">
+            <div
+              style={{
+                backgroundColor: runnerColor,
+              }}
+              className="w-2 h-8 rounded-sm border border-gray-100"
+            ></div>
+            <p>
+              <span className="font-bold text-primary">{runnerName}</span> x{' '}
+              {runnerQty}
+            </p>
+          </div>
+          <div className="flex gap-2 items-center">
+            <p>{req.gate}</p>
+          </div>
+        </div>
         <Checkbox
           name={req.gate}
           checked={isCut}
@@ -47,25 +71,6 @@ const RequireItem = memo(
             req.isCut = isChecked
           }}
         />
-
-        <div className="flex flex-col">
-          <div className="flex gap-2 items-center">
-            <div
-              style={{
-                backgroundColor: runnerColor,
-              }}
-              className="w-5 h-5  border"
-            ></div>
-            <p>
-              {runnerName} ({runnerColorName}) Gate:{' '}
-              <span className="font-bold text-primary">{runnerName}</span> x{' '}
-              {runnerQty}
-            </p>
-          </div>
-          <div className="flex gap-2 items-center">
-            <p>{req.gate}</p>
-          </div>
-        </div>
         {/*<p className="font-bold flex flex-col">
           <span className="text-xs font-light">Runner:</span>{' '}
           {req.runner?.code ?? ''} {` x ${req.runner?.qty ?? ''} `}
@@ -141,7 +146,7 @@ const KitPartItem = memo(
                   goTo(`/gunpla-kits/kits/${part.kit}/part/${part._id}`)
                 }
               >
-                <Pen className="w-5 h-5 text-blue-500" />
+                <Pen className="w-3 h-3 text-gray-500" />
               </button>
               {isCollapsed && part.requires.length > 0 && (
                 <button

@@ -109,7 +109,7 @@ const KitPartForm = memo(
           ...data,
           requires: sortedRequires(data.requires || []).map((req) => ({
             runner: req.runner,
-            gate: sortNumberArray(req.gate || []).join(','),
+            gate: sortNumberArray(req.gate || []).join(', '),
           })),
         }),
       onSuccess: () => {
@@ -125,7 +125,7 @@ const KitPartForm = memo(
             ...data,
             requires: sortedRequires(data.requires || []).map((req) => ({
               runner: req.runner,
-              gate: sortNumberArray(req.gate || []).join(','),
+              gate: sortNumberArray(req.gate || []).join(', '),
             })),
             isCut: part?.isCut || false,
           },
@@ -251,7 +251,10 @@ const KitPartForm = memo(
             {t('common:save')}
           </Button>
         </FormProvider>
-        <Button secondary onClick={() => goTo(`/gunpla-kits/kits/${kitId}`)}>
+        <Button
+          secondary
+          onClick={() => goTo(`/gunpla-kits/kits/${kitId}?tab=part`)}
+        >
           {t('common:back')}
         </Button>
       </div>
