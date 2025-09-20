@@ -13,11 +13,8 @@ const KitSubassemblyItem = memo(
   ({ kitSubassembly }: { kitSubassembly: KitSubassembly }) => {
     return (
       <div className="flex flex-col gap-2">
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-col">
           <div className="text-sm font-medium">{kitSubassembly.name}</div>
-          <div className="text-sm font-medium text-gray-400">
-            ({kitSubassembly.key})
-          </div>
         </div>
       </div>
     )

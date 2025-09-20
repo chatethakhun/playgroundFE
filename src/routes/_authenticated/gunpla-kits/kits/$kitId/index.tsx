@@ -6,7 +6,7 @@ import PageContainer from '@/components/ui/PageContainer'
 import { getKit } from '@/services/gunplaKits/kit.service'
 import { queryClient } from '@/utils/queryClient'
 import { createFileRoute } from '@tanstack/react-router'
-import { lazy, Suspense, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 
 const KitPart = lazy(() => import('@/components/ui/Kits/KitPart'))
 const KitSubassembly = lazy(() => import('@/components/ui/Kits/KitSubassembly'))
@@ -45,6 +45,7 @@ const TABS = [
 function RouteComponent() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const { kitId } = Route.useParams()
+  const search: { tab?: string } = Route.useSearch()
 
   const renderTab = useMemo(() => {
     switch (currentIndex) {
@@ -72,6 +73,16 @@ function RouteComponent() {
         return <Overview kitId={kitId} />
     }
   }, [currentIndex, kitId])
+
+  useEffect(() => {
+    if (search.tab) {
+      const index = TABS.findIndex((tab) => tab.includes(search.tab ?? ''))
+
+      if (index !== -1) {
+        setCurrentIndex(index)
+      }
+    }
+  }, [search.tab])
   return (
     <PageContainer>
       <MenuTab
