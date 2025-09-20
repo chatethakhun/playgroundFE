@@ -29,8 +29,6 @@ const RequireItem = memo(
         ? (req.runner?.color.hex as string)
         : ''
 
-    const runnerColorName =
-      typeof req.runner?.color !== 'string' ? req.runner?.color.name : ''
     const runnerName = req.runner?.code ?? ''
 
     const runnerQty = typeof req.runner !== 'number' ? req.runner?.qty : 1
