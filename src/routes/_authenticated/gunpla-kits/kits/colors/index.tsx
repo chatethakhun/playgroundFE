@@ -4,6 +4,7 @@ import ListColors from '@/components/ui/Kits/ListColor'
 
 import PageContainer from '@/components/ui/PageContainer'
 import useModal from '@/hooks/useModal'
+import { getColorsQuery } from '@/services/gunplaKits/color.service'
 import { createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { lazy } from 'react'
@@ -13,6 +14,10 @@ const CustomModal = lazy(() => import('@/components/ui/Modal'))
 export const Route = createFileRoute(
   '/_authenticated/gunpla-kits/kits/colors/',
 )({
+  loader: async () => {
+    const colors = getColorsQuery()
+    return colors
+  },
   component: RouteComponent,
 })
 

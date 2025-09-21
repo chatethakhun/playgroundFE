@@ -18,6 +18,11 @@ export const getColors = async () => {
   }
 }
 
+export const getColorsQuery = () => ({
+  queryKey: ['colors'],
+  queryFn: () => getColors(),
+})
+
 export const getColor = async (id: string) => {
   try {
     return (await axiosInstance.get<Color>(`/colors/${id}`)).data

@@ -1,5 +1,5 @@
-import { getColors } from '@/services/gunplaKits/color.service'
-import { useQuery } from '@tanstack/react-query'
+import { getColors, getColorsQuery } from '@/services/gunplaKits/color.service'
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { memo } from 'react'
 import ListItemContainer from '../ListItemContainer'
 
@@ -20,10 +20,7 @@ const ColorItem = memo(
   (prev, next) => prev.color._id === next.color._id,
 )
 const ListColors = memo(() => {
-  const { data } = useQuery({
-    queryKey: ['colors'],
-    queryFn: () => getColors(),
-  })
+  const { data } = useSuspenseQuery(getColorsQuery())
   return (
     <>
       {data?.map((color) => (
