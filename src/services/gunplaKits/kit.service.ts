@@ -19,6 +19,11 @@ export const getKits = async () => {
   }
 }
 
+export const getKitsQuery = () => ({
+  queryKey: ['kit'],
+  queryFn: () => getKits(),
+})
+
 export const getKit = async (id: string) => {
   try {
     return (await axiosInstance.get<Kit>(`/kits/${id}`)).data

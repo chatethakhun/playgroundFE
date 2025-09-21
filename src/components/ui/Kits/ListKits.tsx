@@ -1,5 +1,5 @@
-import { getKits } from '@/services/gunplaKits/kit.service'
-import { useQuery } from '@tanstack/react-query'
+import { getKitsQuery } from '@/services/gunplaKits/kit.service'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { memo } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
 import ListItemContainer from '../ListItemContainer'
@@ -39,12 +39,10 @@ const KitItem = memo(
 )
 
 const ListKits = memo(() => {
-  const { data, isLoading } = useQuery({
-    queryKey: ['kits'],
-    queryFn: () => getKits(),
-  })
+  const { data, isLoading } = useSuspenseQuery(getKitsQuery())
 
   if (isLoading) return <LoadingFullPage />
+
   return (
     <div className="flex flex-col gap-4 divide-gray-500">
       {data?.map((kit) => (

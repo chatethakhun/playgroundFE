@@ -8,8 +8,14 @@ import { ToyBrick } from 'lucide-react'
 
 import GunplaSVG from '@/assets/images/gunpla.webp'
 import { useTranslation } from 'react-i18next'
+import { queryClient } from '@/utils/queryClient'
+import { getKitsQuery } from '@/services/gunplaKits/kit.service'
 
 export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/')({
+  loader: async () => {
+    const kits = await queryClient.ensureQueryData(getKitsQuery())
+    return kits
+  },
   head: () => ({
     meta: [{ title: 'Kits', description: 'Kits' }],
   }),
