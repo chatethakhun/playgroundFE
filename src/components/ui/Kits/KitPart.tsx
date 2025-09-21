@@ -16,6 +16,7 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 import { Checkbox } from '../checkbox'
 import NoData from '../NoData'
 import RunnerColor from './RunnderColor'
+import { Switch } from '../switch'
 
 const RequireItem = memo(
   ({
@@ -114,13 +115,9 @@ const KitPartItem = memo(
     return (
       <ListItemContainer>
         <div className="flex flex-col justify-center flex-grow">
-          <div
-            className={cn('flex justify-between items-center ', {
-              'opacity-30': part.isCut,
-            })}
-          >
+          <div className={cn('flex justify-between items-center ', {})}>
             <div className="flex gap-2 items-center">
-              <Checkbox
+              <Switch
                 name={part._id}
                 checked={part.isCut}
                 onCheckedChange={(e) => {
@@ -129,7 +126,12 @@ const KitPartItem = memo(
                   part.isCut = isChecked
                 }}
               />
-              <h4 className="text-primary font-bold text-md">
+
+              <h4
+                className={cn('text-primary font-bold text-md ', {
+                  'line-through': part.isCut,
+                })}
+              >
                 {part.subassembly.name}
               </h4>
             </div>
