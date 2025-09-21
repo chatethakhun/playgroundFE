@@ -1,5 +1,5 @@
-import { getColors, getColorsQuery } from '@/services/gunplaKits/color.service'
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
+import { getColorsQuery } from '@/services/gunplaKits/color.service'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { memo } from 'react'
 import ListItemContainer from '../ListItemContainer'
 
