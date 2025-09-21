@@ -41,6 +41,8 @@ const KitSubassembly = memo(({ kitId }: { kitId: string }) => {
           kitSubassembly={kitSubassembly}
         />
       ))}
+      <br />
+      <br />
       <CustomModal modalIsOpen={isOpen} onClose={closeModal}>
         <KitSubassemblyForm kitId={kitId} />
       </CustomModal>

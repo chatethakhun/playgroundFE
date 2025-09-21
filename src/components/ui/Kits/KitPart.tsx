@@ -201,7 +201,8 @@ const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
       {data?.map((part, index) => (
         <KitPartItem key={index} part={part} />
       ))}
-
+      <br />
+      <br />
       <FloatButton onClick={() => goTo(`/gunpla-kits/kits/${kitId}/part/new`)}>
         <Plus className="w-5 h-5" />
       </FloatButton>

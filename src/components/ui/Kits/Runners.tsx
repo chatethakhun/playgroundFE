@@ -60,6 +60,8 @@ const Runners = memo(({ kitId }: { kitId: string }) => {
       {data?.map((runner) => (
         <RunnerItem key={runner._id} runner={runner} />
       ))}
+      <br />
+      <br />
       <CustomModal modalIsOpen={isOpen} onClose={closeModal}>
         <RunnerForm kitId={kitId} />
       </CustomModal>
