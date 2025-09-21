@@ -9,6 +9,7 @@ import RunnerForm from './RunnerForm'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { useTranslation } from 'react-i18next'
 import NoData from '../NoData'
+import RunnerColor from './RunnderColor'
 
 const CustomModal = lazy(() => import('../Modal'))
 
@@ -21,12 +22,7 @@ const RunnerItem = memo(
     return (
       <div className="flex gap-2 items-center border-b-gray-500 border-b p-2">
         <div className="flex  items-center  gap-2 basis-[20%] md:basis-[10%]">
-          <span
-            className="text-gray-500 text-sm w-4 h-4 border rounded-sm"
-            style={{
-              backgroundColor,
-            }}
-          ></span>
+          <RunnerColor color={backgroundColor} />
           {runner.code}
         </div>
         <span className="text-gray-500 text-sm">
@@ -36,9 +32,8 @@ const RunnerItem = memo(
 
         <div className="ml-auto">
           <PencilIcon
-            className="w-6 h-6 cursor-pointer text-primary"
+            className="w-3 h-3 cursor-pointer text-primary"
             onClick={() => {
-              console.log('edit')
               goTo(`/gunpla-kits/kits/${runner.kit}/runners/${runner._id}`)
             }}
           />

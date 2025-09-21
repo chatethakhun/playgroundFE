@@ -15,6 +15,7 @@ import FloatButton from '../FloatButton'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { Checkbox } from '../checkbox'
 import NoData from '../NoData'
+import RunnerColor from './RunnderColor'
 
 const RequireItem = memo(
   ({
@@ -45,12 +46,7 @@ const RequireItem = memo(
       >
         <div className="flex flex-col w-full">
           <div className="flex gap-2 items-center border-b border-gray-200 py-2">
-            <div
-              style={{
-                backgroundColor: runnerColor,
-              }}
-              className="w-2 h-8 rounded-sm border border-gray-100"
-            ></div>
+            <RunnerColor color={runnerColor} />
             <p>
               <span className="font-bold text-primary">{runnerName}</span> x{' '}
               {runnerQty}
