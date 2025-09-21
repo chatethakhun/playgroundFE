@@ -6,7 +6,7 @@ import TextInput from '../TextInput'
 import Button from '../Button'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createColor } from '@/services/gunplaKits/color.service'
-
+import { Sketch } from '@uiw/react-color'
 const schema = yup.object({
   name: yup.string().required(),
   hex: yup.string().required().min(6).max(7),
@@ -57,15 +57,19 @@ const ColorForm = memo(({ onClose }: { onClose?: () => void }) => {
           control={form.control}
           name="hex"
           render={({ field }) => (
-            <TextInput
-              {...field}
-              id={field.name}
-              type="color"
-              label="Color Hex"
-              onChange={(e) => {
-                field.onChange(e.target.value)
-              }}
+            <Sketch
+              color={field.value}
+              onChange={(color) => field.onChange(color.hex)}
             />
+            // <TextInput
+            //  x` {...field}
+            //   id={field.name}
+            //   type="color"
+            //   label="Color Hex"
+            //   onChange={(e) => {
+            //     field.onChange(e.target.value)
+            //   }}
+            // />
           )}
         />
 
