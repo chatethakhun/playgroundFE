@@ -15,6 +15,7 @@ const Avatar = ({ src, alt, size = 64 }: AvatarProps) => {
         src={src || AvatarPlaceholder}
         alt={alt}
         className="absolute top-0 left-0 w-full h-full object-cover rounded-full"
+        loading="lazy"
       />
     </div>
   )

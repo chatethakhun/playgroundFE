@@ -29,7 +29,12 @@ function RouteComponent() {
     <PageContainer>
       <div className="flex justify-between items-center">
         <div className="flex gap-2 items-center">
-          <img src={GunplaSVG} alt="gunpla" className="w-8 h-8" />
+          <img
+            src={GunplaSVG}
+            alt="gunpla"
+            className="w-8 h-8"
+            loading="lazy"
+          />
           <h1 className="text-2xl font-bold text-primary">{t('list.title')}</h1>
         </div>
         <div className="flex gap-2">

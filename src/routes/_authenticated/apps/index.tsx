@@ -40,6 +40,7 @@ const AppCard = memo(
       <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 mx-auto">
         {imageSrc && (
           <img
+            loading="lazy"
             className="rounded-t-lg h-[20%] object-cover w-full object-top"
             src={imageSrc}
             alt={name}
