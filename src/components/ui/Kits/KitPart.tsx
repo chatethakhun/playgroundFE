@@ -135,13 +135,13 @@ const KitPartItem = memo(
                 }}
               />
 
-              <h4
-                className={cn('text-primary font-bold text-md ', {
-                  'line-through': part.isCut,
+              <p
+                className={cn('text-primary font text-md line-clamp-1', {
+                  'line-through text-gray-300': part.isCut,
                 })}
               >
                 {part.subassembly.name}
-              </h4>
+              </p>
             </div>
             <div className="flex gap-2">
               <button
