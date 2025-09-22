@@ -2,16 +2,15 @@ import { getColorsQuery } from '@/services/gunplaKits/color.service'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { memo } from 'react'
 import ListItemContainer from '../ListItemContainer'
+import MultipleColorBox from './MultipleColorBox'
 
 const ColorItem = memo(
   ({ color }: { color: Color }) => {
     return (
       <ListItemContainer>
         <div className="flex gap-2 items-center">
-          <span
-            className="text-gray-500 text-sm w-4 h-4 border rounded-sm"
-            style={{ backgroundColor: color.hex }}
-          ></span>
+          {!color.multiple && <ColorItem color={color} />}
+          {color.multiple && <MultipleColorBox size={12} />}
           {color.name}
         </div>
       </ListItemContainer>

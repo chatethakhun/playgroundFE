@@ -7,9 +7,12 @@ import Button from '../Button'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createColor } from '@/services/gunplaKits/color.service'
 import { Sketch } from '@uiw/react-color'
+
+import SwitchInput from '../SwitchInput'
 const schema = yup.object({
   name: yup.string().required(),
   hex: yup.string().required().min(6).max(7),
+  multiple: yup.boolean().required(),
 })
 
 type Data = yup.Asserts<typeof schema>
@@ -21,8 +24,11 @@ const ColorForm = memo(({ onClose }: { onClose?: () => void }) => {
     defaultValues: {
       name: '',
       hex: '#ffffff',
+      multiple: false,
     },
   })
+
+  const isMultiple = form.watch('multiple')
 
   const { mutate: addColor } = useMutation({
     mutationFn: (data: Data) => createColor(data),
@@ -55,23 +61,36 @@ const ColorForm = memo(({ onClose }: { onClose?: () => void }) => {
         />
         <Controller
           control={form.control}
-          name="hex"
+          name="multiple"
           render={({ field }) => (
-            <Sketch
-              color={field.value}
-              onChange={(color) => field.onChange(color.hex)}
+            <SwitchInput
+              checked={field.value}
+              onCheckedChange={field.onChange}
+              label="Multiple colors"
             />
-            // <TextInput
-            //  x` {...field}
-            //   id={field.name}
-            //   type="color"
-            //   label="Color Hex"
-            //   onChange={(e) => {
-            //     field.onChange(e.target.value)
-            //   }}
-            // />
           )}
         />
+        {!isMultiple && (
+          <Controller
+            control={form.control}
+            name="hex"
+            render={({ field }) => (
+              <Sketch
+                color={field.value}
+                onChange={(color) => field.onChange(color.hex)}
+              />
+              // <TextInput
+              //  x` {...field}
+              //   id={field.name}
+              //   type="color"
+              //   label="Color Hex"
+              //   onChange={(e) => {
+              //     field.onChange(e.target.value)
+              //   }}
+              // />
+            )}
+          />
+        )}
 
         <Button onClick={form.handleSubmit(onSubmit)}>Save</Button>
       </FormProvider>
