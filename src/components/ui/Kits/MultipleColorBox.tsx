@@ -1,21 +1,11 @@
 import { memo } from 'react'
 
-const MultipleColorBox = memo(({ size }: { size: number }) => {
-  const widthEachColor = size / 3
+const MultipleColorBox = memo(() => {
   return (
-    <div
-      style={{ width: size, height: size }}
-      className="rounded-full relative flex"
-    >
-      <div className="h-full  bg-red-500" style={{ width: widthEachColor }} />
-      <div
-        className="  h-full  bg-blue-500"
-        style={{ width: widthEachColor }}
-      />
-      <div
-        className="  h-full  bg-green-500"
-        style={{ width: widthEachColor }}
-      />
+    <div className="w-2 h-8 rounded-sm border border-gray-100">
+      <div className="w-full h-1/3 rounded-t-sm  bg-red-500" />
+      <div className="  w-full h-1/3   bg-blue-500" />
+      <div className=" w-full  h-1/3 rounded-b-   bg-green-500" />
     </div>
   )
 })

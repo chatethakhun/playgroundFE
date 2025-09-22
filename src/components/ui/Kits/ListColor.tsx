@@ -3,14 +3,15 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { memo } from 'react'
 import ListItemContainer from '../ListItemContainer'
 import MultipleColorBox from './MultipleColorBox'
+import RunnerColor from './RunnderColor'
 
-const ColorItem = memo(
+const Color = memo(
   ({ color }: { color: Color }) => {
     return (
       <ListItemContainer>
         <div className="flex gap-2 items-center">
-          {!color.multiple && <ColorItem color={color} />}
-          {color.multiple && <MultipleColorBox size={12} />}
+          {!color.multiple && <RunnerColor color={color.hex} />}
+          {color.multiple && <MultipleColorBox />}
           {color.name}
         </div>
       </ListItemContainer>
@@ -21,11 +22,11 @@ const ColorItem = memo(
 const ListColors = memo(() => {
   const { data } = useSuspenseQuery(getColorsQuery())
   return (
-    <>
+    <div>
       {data?.map((color) => (
-        <ColorItem key={color._id} color={color} />
+        <Color key={color._id} color={color} />
       ))}
-    </>
+    </div>
   )
 })
 
