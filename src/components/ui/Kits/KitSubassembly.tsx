@@ -14,7 +14,9 @@ const KitSubassemblyItem = memo(
     return (
       <div className="flex flex-col gap-2 border-b border-gray-200 p-2">
         <div className="flex gap-2 flex-col">
-          <div className="text-sm font-medium">{kitSubassembly.name}</div>
+          <p className="text-sm font-medium line-clamp-1">
+            {kitSubassembly.name}
+          </p>
         </div>
       </div>
     )
