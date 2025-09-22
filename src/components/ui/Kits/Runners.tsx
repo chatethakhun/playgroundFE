@@ -10,6 +10,7 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 import { useTranslation } from 'react-i18next'
 import NoData from '../NoData'
 import RunnerColor from './RunnderColor'
+import MultipleColorBox from './MultipleColorBox'
 
 const CustomModal = lazy(() => import('../Modal'))
 
@@ -19,10 +20,13 @@ const RunnerItem = memo(
     const { t } = useTranslation('runner')
     const backgroundColor =
       typeof runner.color === 'string' ? '#ffffff' : runner.color.hex
+    const isMultipleRunerColor =
+      typeof runner.color === 'object' && runner.color.multiple
     return (
       <div className="flex gap-2 items-center border-b-gray-500 border-b p-2">
         <div className="flex  items-center  gap-2 basis-[20%] md:basis-[10%]">
-          <RunnerColor color={backgroundColor} />
+          {!isMultipleRunerColor && <RunnerColor color={backgroundColor} />}
+          {isMultipleRunerColor && <MultipleColorBox />}
           {runner.code}
         </div>
         <span className="text-gray-500 text-sm">

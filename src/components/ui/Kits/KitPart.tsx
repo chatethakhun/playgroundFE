@@ -17,6 +17,7 @@ import { Checkbox } from '../checkbox'
 import NoData from '../NoData'
 import RunnerColor from './RunnderColor'
 import { Switch } from '../switch'
+import MultipleColorBox from './MultipleColorBox'
 
 const RequireItem = memo(
   ({
@@ -35,6 +36,9 @@ const RequireItem = memo(
 
     const runnerQty = typeof req.runner !== 'number' ? req.runner?.qty : 1
 
+    const isMultipleRunnerColors =
+      typeof req.runner?.color !== 'string' ? req.runner.color?.multiple : false
+
     const isCut = req.isCut
     return (
       <div
@@ -47,7 +51,11 @@ const RequireItem = memo(
       >
         <div className="flex flex-col w-full">
           <div className="flex gap-2 items-center border-b border-gray-200 py-2">
-            <RunnerColor color={runnerColor} />
+            {isMultipleRunnerColors ? (
+              <MultipleColorBox />
+            ) : (
+              <RunnerColor color={runnerColor} />
+            )}
             <p>
               <span className="font-bold text-primary">{runnerName}</span> x{' '}
               {runnerQty}
