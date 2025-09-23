@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next'
 const GateBox = memo(({ gate }: { gate: string }) => {
   const arrayGate = gate.split(',').map((g) => Number(g.trim()))
   return (
-    <div className="flex gap-2 items-center mt-2">
+    <div className="flex gap-2 items-center mt-2 flex-wrap">
       {arrayGate.map((g) => (
         <div
           key={g}
