@@ -9,6 +9,7 @@ import { createColor } from '@/services/gunplaKits/color.service'
 import { Sketch } from '@uiw/react-color'
 
 import SwitchInput from '../SwitchInput'
+import { useTranslation } from 'react-i18next'
 const schema = yup.object({
   name: yup.string().required(),
   hex: yup.string().required().min(6).max(7),
@@ -19,6 +20,7 @@ type Data = yup.Asserts<typeof schema>
 
 const ColorForm = memo(({ onClose }: { onClose?: () => void }) => {
   const queryClient = useQueryClient()
+  const { t } = useTranslation(['common', 'color'])
   const form = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -54,7 +56,7 @@ const ColorForm = memo(({ onClose }: { onClose?: () => void }) => {
             <TextInput
               {...field}
               id={field.name}
-              label="Color name"
+              label={t('color:color.form.name_label')}
               errorMessage={fieldState.error?.message}
             />
           )}
@@ -92,7 +94,9 @@ const ColorForm = memo(({ onClose }: { onClose?: () => void }) => {
           />
         )}
 
-        <Button onClick={form.handleSubmit(onSubmit)}>Save</Button>
+        <Button onClick={form.handleSubmit(onSubmit)}>
+          {t('common:save')}
+        </Button>
       </FormProvider>
     </div>
   )
