@@ -20,6 +20,22 @@ import { Switch } from '../switch'
 import MultipleColorBox from './MultipleColorBox'
 import { useTranslation } from 'react-i18next'
 
+const GateBox = memo(({ gate }: { gate: string }) => {
+  const arrayGate = gate.split(',').map((g) => Number(g.trim()))
+  return (
+    <div className="flex gap-2 items-center mt-2">
+      {arrayGate.map((g) => (
+        <div
+          key={g}
+          className="box w-6 h-6 border border-gray-500 rounded-sm shadow-md"
+        >
+          <p className=" text-center font-bold">{g}</p>
+        </div>
+      ))}
+    </div>
+  )
+})
+
 const RequireItem = memo(
   ({
     req,
@@ -47,6 +63,7 @@ const RequireItem = memo(
         : false
 
     const isCut = req.isCut
+
     return (
       <div
         className={cn(
@@ -74,7 +91,8 @@ const RequireItem = memo(
             </p>
           </div>
           <div className="flex gap-2 items-center">
-            <p>{req.gate}</p>
+            <GateBox gate={req.gate} />
+            {/*<p>{req.gate}</p>*/}
           </div>
         </div>
         <Checkbox
