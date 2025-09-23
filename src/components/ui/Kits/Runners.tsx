@@ -32,7 +32,7 @@ const RunnerItem = memo(
           {isMultipleRunerColor && <MultipleColorBox />}
           {runner.code}
           {isClearColor ? (
-            <span className="text-gray-500">
+            <span className="text-gray-500 text-sm">
               ( {t('color:color.clear-color')} )
             </span>
           ) : (
