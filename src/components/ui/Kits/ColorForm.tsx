@@ -68,7 +68,7 @@ const ColorForm = memo(({ onClose }: { onClose?: () => void }) => {
             <SwitchInput
               checked={field.value}
               onCheckedChange={field.onChange}
-              label="Multiple colors"
+              label={t('color:color.form.multiple_label')}
             />
           )}
         />
