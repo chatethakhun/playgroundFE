@@ -1,8 +1,24 @@
+import { toSnakeCase } from '@/utils/string'
 import axiosInstance from '../apiBase'
+
+const generateColorCode = (name: string) => {
+  const newName = `${name}_clear`
+  const code = toSnakeCase(newName)
+  return code.length > 0 ? code : undefined
+}
+
+export const createColorCode = (name?: string) => {
+  if (!name) return undefined
+  const code = generateColorCode(name)
+  return code
+}
 
 export const createColor = (data: Partial<Color>) => {
   try {
-    return axiosInstance.post<Color>('/colors', data)
+    return axiosInstance.post<Color>('/colors', {
+      ...data,
+      code: createColorCode(data.name),
+    })
   } catch (error) {
     console.error(error)
     throw error
@@ -39,10 +55,10 @@ export const getColorQuery = (id: string) => ({
 
 export const updateColor = async (id: string, data: Partial<Color>) => {
   try {
-    const { data: newData } = await axiosInstance.put<Color>(
-      `/colors/${id}`,
-      data,
-    )
+    const { data: newData } = await axiosInstance.put<Color>(`/colors/${id}`, {
+      ...data,
+      code: createColorCode(data.name),
+    })
 
     return newData
   } catch (error) {

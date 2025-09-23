@@ -4,4 +4,5 @@ interface Color {
   hex: string
   multiple: boolean
   clearColor: boolean
+  code?: string
 }
