@@ -233,7 +233,8 @@ const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
   })
 
   const { goTo } = useCustomRouter()
-  if (isLoading) return <LoadingSpinner />
+  if (isLoading) return null
+
   return (
     <>
       {data?.length === 0 && <NoData />}
