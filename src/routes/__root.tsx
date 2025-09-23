@@ -17,10 +17,11 @@ function GlobalError({ error }: { error: unknown }) {
 
   const isDev = import.meta.env.DEV
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
-      <h1 className="text-4xl font-bold text-red-600 mb-4">
+    <div className="flex min-h-dvh flex-col items-center justify-center bg-gray-50 text-center">
+      <h1 className="text-4xl font-bold text-red-600 mb-4 text-center">
         500 - {t('500-title')}
       </h1>
+
       <p className="text-gray-700">{t('500-message')}</p>
       {isDev && (
         <pre className="mt-4 p-2 bg-gray-200 rounded text-sm text-gray-800">
@@ -35,7 +36,7 @@ function NotFound() {
   const { t } = useTranslation('common')
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
-      <h1 className="text-4xl font-bold text-red-600 mb-4">
+      <h1 className="text-4xl font-bold text-red-600 mb-4 text-center">
         404 - {t('404-title')}
       </h1>
       <p className="text-gray-700">{t('404-message')}</p>
