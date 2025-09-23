@@ -9,7 +9,7 @@ import ListItemContainer from '../ListItemContainer'
 import useCollapse from '@/hooks/useCollapse'
 import { ChevronDown, ChevronUp, Plus, Pen } from 'lucide-react'
 import { cn } from '@/utils/cn'
-import LoadingSpinner from '../LoadingSpinner'
+
 import FloatButton from '../FloatButton'
 
 import useCustomRouter from '@/hooks/useCustomRouter'
