@@ -26,7 +26,9 @@ const RunnerItem = memo(
       typeof runner.color === 'object' && (runner.color?.multiple || false)
 
     const isClearColor =
-      typeof runner.color === 'string' ? false : runner.color.clearColor
+      typeof runner.color === 'string'
+        ? false
+        : runner.color?.clearColor || false
     return (
       <div className="flex gap-2 items-center border-b-gray-500 border-b p-2">
         <div className="flex  items-center  gap-2 basis-[30%] md:basis-[10%]">
