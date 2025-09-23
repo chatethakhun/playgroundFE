@@ -32,9 +32,29 @@ export const getColor = async (id: string) => {
   }
 }
 
+export const getColorQuery = (id: string) => ({
+  queryKey: ['colors', id],
+  queryFn: () => getColor(id),
+})
+
 export const updateColor = async (id: string, data: Partial<Color>) => {
   try {
-    return (await axiosInstance.put<Color>(`/colors/${id}`, data)).data
+    const { data: newData } = await axiosInstance.put<Color>(
+      `/colors/${id}`,
+      data,
+    )
+
+    return newData
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}
+
+export const deleteColor = async (id: string) => {
+  try {
+    await axiosInstance.delete<Color>(`/colors/${id}`)
+    return id
   } catch (error) {
     console.error(error)
     throw error

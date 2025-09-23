@@ -20,6 +20,7 @@ import { Route as AuthenticatedGunplaKitsKitsNewRouteImport } from './routes/_au
 import { Route as AuthenticatedGunplaKitsKitsColorsIndexRouteImport } from './routes/_authenticated/gunpla-kits/kits/colors/index'
 import { Route as AuthenticatedGunplaKitsKitsKitIdIndexRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/index'
 import { Route as AuthenticatedGunplaKitsKitsColorsNewRouteImport } from './routes/_authenticated/gunpla-kits/kits/colors/new'
+import { Route as AuthenticatedGunplaKitsKitsColorsColorIdRouteImport } from './routes/_authenticated/gunpla-kits/kits/colors/$colorId'
 import { Route as AuthenticatedGunplaKitsKitsKitIdRunnersRunnerRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/runners/$runner'
 import { Route as AuthenticatedGunplaKitsKitsKitIdPartNewRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/part/new'
 import { Route as AuthenticatedGunplaKitsKitsKitIdPartPartIdRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/part/$partId'
@@ -82,6 +83,12 @@ const AuthenticatedGunplaKitsKitsColorsNewRoute =
     path: '/gunpla-kits/kits/colors/new',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedGunplaKitsKitsColorsColorIdRoute =
+  AuthenticatedGunplaKitsKitsColorsColorIdRouteImport.update({
+    id: '/gunpla-kits/kits/colors/$colorId',
+    path: '/gunpla-kits/kits/colors/$colorId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedGunplaKitsKitsKitIdRunnersRunnerRoute =
   AuthenticatedGunplaKitsKitsKitIdRunnersRunnerRouteImport.update({
     id: '/gunpla-kits/kits/$kitId/runners/$runner',
@@ -108,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof PublicSignupIndexRoute
   '/gunpla-kits/kits/new': typeof AuthenticatedGunplaKitsKitsNewRoute
   '/gunpla-kits/kits': typeof AuthenticatedGunplaKitsKitsIndexRoute
+  '/gunpla-kits/kits/colors/$colorId': typeof AuthenticatedGunplaKitsKitsColorsColorIdRoute
   '/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
   '/gunpla-kits/kits/$kitId': typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   '/gunpla-kits/kits/colors': typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
@@ -122,6 +130,7 @@ export interface FileRoutesByTo {
   '/signup': typeof PublicSignupIndexRoute
   '/gunpla-kits/kits/new': typeof AuthenticatedGunplaKitsKitsNewRoute
   '/gunpla-kits/kits': typeof AuthenticatedGunplaKitsKitsIndexRoute
+  '/gunpla-kits/kits/colors/$colorId': typeof AuthenticatedGunplaKitsKitsColorsColorIdRoute
   '/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
   '/gunpla-kits/kits/$kitId': typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   '/gunpla-kits/kits/colors': typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
@@ -139,6 +148,7 @@ export interface FileRoutesById {
   '/_public/signup/': typeof PublicSignupIndexRoute
   '/_authenticated/gunpla-kits/kits/new': typeof AuthenticatedGunplaKitsKitsNewRoute
   '/_authenticated/gunpla-kits/kits/': typeof AuthenticatedGunplaKitsKitsIndexRoute
+  '/_authenticated/gunpla-kits/kits/colors/$colorId': typeof AuthenticatedGunplaKitsKitsColorsColorIdRoute
   '/_authenticated/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
   '/_authenticated/gunpla-kits/kits/$kitId/': typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   '/_authenticated/gunpla-kits/kits/colors/': typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/gunpla-kits/kits/new'
     | '/gunpla-kits/kits'
+    | '/gunpla-kits/kits/colors/$colorId'
     | '/gunpla-kits/kits/colors/new'
     | '/gunpla-kits/kits/$kitId'
     | '/gunpla-kits/kits/colors'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/gunpla-kits/kits/new'
     | '/gunpla-kits/kits'
+    | '/gunpla-kits/kits/colors/$colorId'
     | '/gunpla-kits/kits/colors/new'
     | '/gunpla-kits/kits/$kitId'
     | '/gunpla-kits/kits/colors'
@@ -185,6 +197,7 @@ export interface FileRouteTypes {
     | '/_public/signup/'
     | '/_authenticated/gunpla-kits/kits/new'
     | '/_authenticated/gunpla-kits/kits/'
+    | '/_authenticated/gunpla-kits/kits/colors/$colorId'
     | '/_authenticated/gunpla-kits/kits/colors/new'
     | '/_authenticated/gunpla-kits/kits/$kitId/'
     | '/_authenticated/gunpla-kits/kits/colors/'
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGunplaKitsKitsColorsNewRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/gunpla-kits/kits/colors/$colorId': {
+      id: '/_authenticated/gunpla-kits/kits/colors/$colorId'
+      path: '/gunpla-kits/kits/colors/$colorId'
+      fullPath: '/gunpla-kits/kits/colors/$colorId'
+      preLoaderRoute: typeof AuthenticatedGunplaKitsKitsColorsColorIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/gunpla-kits/kits/$kitId/runners/$runner': {
       id: '/_authenticated/gunpla-kits/kits/$kitId/runners/$runner'
       path: '/gunpla-kits/kits/$kitId/runners/$runner'
@@ -306,6 +326,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
   AuthenticatedGunplaKitsKitsNewRoute: typeof AuthenticatedGunplaKitsKitsNewRoute
   AuthenticatedGunplaKitsKitsIndexRoute: typeof AuthenticatedGunplaKitsKitsIndexRoute
+  AuthenticatedGunplaKitsKitsColorsColorIdRoute: typeof AuthenticatedGunplaKitsKitsColorsColorIdRoute
   AuthenticatedGunplaKitsKitsColorsNewRoute: typeof AuthenticatedGunplaKitsKitsColorsNewRoute
   AuthenticatedGunplaKitsKitsKitIdIndexRoute: typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   AuthenticatedGunplaKitsKitsColorsIndexRoute: typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
@@ -318,6 +339,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAppsIndexRoute: AuthenticatedAppsIndexRoute,
   AuthenticatedGunplaKitsKitsNewRoute: AuthenticatedGunplaKitsKitsNewRoute,
   AuthenticatedGunplaKitsKitsIndexRoute: AuthenticatedGunplaKitsKitsIndexRoute,
+  AuthenticatedGunplaKitsKitsColorsColorIdRoute:
+    AuthenticatedGunplaKitsKitsColorsColorIdRoute,
   AuthenticatedGunplaKitsKitsColorsNewRoute:
     AuthenticatedGunplaKitsKitsColorsNewRoute,
   AuthenticatedGunplaKitsKitsKitIdIndexRoute:

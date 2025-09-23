@@ -3,4 +3,5 @@ interface Color {
   name: string
   hex: string
   multiple: boolean
+  clearColor: boolean
 }
