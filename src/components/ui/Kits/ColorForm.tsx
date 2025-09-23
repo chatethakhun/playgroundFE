@@ -11,6 +11,7 @@ import { Sketch } from '@uiw/react-color'
 import SwitchInput from '../SwitchInput'
 import { useTranslation } from 'react-i18next'
 import useCustomRouter from '@/hooks/useCustomRouter'
+import { toast } from 'react-toastify'
 const schema = yup.object({
   name: yup.string().required(),
   hex: yup.string().required().min(6).max(7),
@@ -39,11 +40,15 @@ const ColorForm = memo(
 
     const { mutate: addColor } = useMutation({
       mutationFn: (data: Data) => createColor(data),
-      onSuccess: () => {
-        queryClient.refetchQueries({
-          queryKey: ['colors'],
+      onSuccess: (newData) => {
+        queryClient.setQueryData<Array<Color>>(['colors'], (oldData) => {
+          return [...(oldData ?? []), newData]
         })
+
         onClose && onClose()
+      },
+      onError: () => {
+        toast.error(t('color:color.form.error'))
       },
     })
 
@@ -61,6 +66,9 @@ const ColorForm = memo(
         queryClient.setQueryData<Color>(['colors', newData?._id], newData)
 
         goTo(`/gunpla-kits/kits/colors`)
+      },
+      onError: () => {
+        toast.error(t('color:color.form.error'))
       },
     })
 

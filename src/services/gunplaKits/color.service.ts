@@ -13,12 +13,14 @@ export const createColorCode = (name?: string) => {
   return code
 }
 
-export const createColor = (data: Partial<Color>) => {
+export const createColor = async (data: Partial<Color>) => {
   try {
-    return axiosInstance.post<Color>('/colors', {
-      ...data,
-      code: createColorCode(data.name),
-    })
+    return (
+      await axiosInstance.post<Color>('/colors', {
+        ...data,
+        code: createColorCode(data.name),
+      })
+    ).data
   } catch (error) {
     console.error(error)
     throw error
