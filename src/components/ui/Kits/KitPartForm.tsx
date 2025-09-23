@@ -26,7 +26,7 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 
 const sortedRequires = (
-  requires: { runner: string; gate?: number[] | undefined }[],
+  requires: { runner: string; gate?: number[] | undefined; isCut?: boolean }[],
 ) => requires.sort((a, b) => a.runner.localeCompare(b.runner))
 
 const schema = Yup.object().shape({
@@ -108,8 +108,10 @@ const KitPartForm = memo(
         createKitPart({
           ...data,
           requires: sortedRequires(data.requires || []).map((req) => ({
+            ...req,
             runner: req.runner,
             gate: sortNumberArray(req.gate || []).join(', '),
+            isCut: false,
           })),
         }),
       onSuccess: () => {
@@ -123,9 +125,11 @@ const KitPartForm = memo(
         updateKitPart(
           {
             ...data,
-            requires: sortedRequires(data.requires || []).map((req) => ({
+            requires: sortedRequires(data.requires || []).map((req, index) => ({
+              ...req,
               runner: req.runner,
               gate: sortNumberArray(req.gate || []).join(', '),
+              isCut: part?.requires[index]?.isCut || false,
             })),
             isCut: part?.isCut || false,
           },

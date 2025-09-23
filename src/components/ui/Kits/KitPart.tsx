@@ -131,6 +131,7 @@ const KitPartItem = memo(
               return {
                 ...req,
                 runner: req.runner._id,
+                isCut: req.isCut,
               }
             }),
             isCut,
