@@ -18,6 +18,7 @@ import NoData from '../NoData'
 import RunnerColor from './RunnderColor'
 import { Switch } from '../switch'
 import MultipleColorBox from './MultipleColorBox'
+import { useTranslation } from 'react-i18next'
 
 const RequireItem = memo(
   ({
@@ -27,6 +28,7 @@ const RequireItem = memo(
     req: KitRequirement
     onChecked?: (checked: boolean) => void
   }) => {
+    const { t } = useTranslation('color')
     const runnerColor =
       typeof req.runner?.color !== 'string'
         ? (req.runner?.color.hex as string)
@@ -38,6 +40,11 @@ const RequireItem = memo(
 
     const isMultipleRunnerColors =
       typeof req.runner?.color !== 'string' ? req.runner.color?.multiple : false
+
+    const runnerIsClearColor =
+      typeof req.runner?.color !== 'string'
+        ? req.runner.color?.clearColor
+        : false
 
     const isCut = req.isCut
     return (
@@ -57,8 +64,13 @@ const RequireItem = memo(
               <RunnerColor color={runnerColor} />
             )}
             <p>
-              <span className="font-bold text-primary">{runnerName}</span> x{' '}
-              {runnerQty}
+              <span className="font-bold text-primary">{runnerName}</span>{' '}
+              {runnerIsClearColor && (
+                <span className="text-sm text-gray-400">
+                  ({t('color.clear-color')})
+                </span>
+              )}{' '}
+              x {runnerQty}
             </p>
           </div>
           <div className="flex gap-2 items-center">
