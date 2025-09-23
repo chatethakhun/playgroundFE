@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 function GlobalError({ error }: { error: unknown }) {
   const { t } = useTranslation('common')
 
-  const isDev = false
+  const isDev = true
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center bg-gray-50 text-center">
       <h1 className="text-4xl font-bold text-red-600 mb-4 text-center">
