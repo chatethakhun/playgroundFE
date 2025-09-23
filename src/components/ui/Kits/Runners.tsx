@@ -19,7 +19,9 @@ const RunnerItem = memo(
     const { goTo } = useCustomRouter()
     const { t } = useTranslation(['runner', 'color'])
     const backgroundColor =
-      typeof runner.color === 'string' ? '#ffffff' : runner.color.hex
+      typeof runner.color === 'string'
+        ? '#ffffff'
+        : runner.color?.hex || '#ffffff'
     const isMultipleRunerColor =
       typeof runner.color === 'object' && runner.color.multiple
 
