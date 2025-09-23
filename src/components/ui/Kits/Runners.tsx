@@ -23,7 +23,7 @@ const RunnerItem = memo(
         ? '#ffffff'
         : runner.color?.hex || '#ffffff'
     const isMultipleRunerColor =
-      typeof runner.color === 'object' && runner.color.multiple
+      typeof runner.color === 'object' && (runner.color?.multiple || false)
 
     const isClearColor =
       typeof runner.color === 'string' ? false : runner.color.clearColor
