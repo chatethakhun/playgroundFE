@@ -32,7 +32,7 @@ const RunnerForm = memo(
       defaultValues: {
         code: runner?.code ?? '',
         color:
-          typeof runner?.color !== 'string' ? (runner?.color._id ?? '') : '',
+          typeof runner?.color !== 'string' ? (runner?.color?._id ?? '') : '',
         qty: runner?.qty ?? 1,
         numberOfPieces: 1,
       },
