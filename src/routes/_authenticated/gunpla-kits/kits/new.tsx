@@ -59,7 +59,8 @@ function RouteComponent() {
           }) => (
             <TextInput
               id={name}
-              label={t('new.name')}
+              label={t('kit:new.name')}
+              placeholder={t('kit:new.name_ph')}
               name={name}
               onChange={onChange}
               value={value}
@@ -87,7 +88,7 @@ function RouteComponent() {
               }))}
               value={value}
               errorMessage={error?.message}
-              label={t('new.grade')}
+              label={t('kit:new.grade')}
             />
           )}
         />
