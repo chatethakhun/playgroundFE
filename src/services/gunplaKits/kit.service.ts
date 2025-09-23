@@ -1,9 +1,9 @@
 import { toSnakeCase } from '@/utils/string'
 import axiosInstance from '../apiBase'
 
-export const createKit = (data: Partial<Kit>) => {
+export const createKit = async (data: Partial<Kit>) => {
   try {
-    return axiosInstance.post<Kit>('/kits', data)
+    return (await axiosInstance.post<Kit>('/kits', data)).data
   } catch (error) {
     console.error(error)
     throw error

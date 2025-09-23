@@ -6,7 +6,7 @@ import { GUNPLA_GRADE } from '@/constant/gunplaKits'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { createKit } from '@/services/gunplaKits/kit.service'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { useCallback } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
@@ -26,6 +26,7 @@ type Data = yup.Asserts<typeof schema>
 function RouteComponent() {
   const { goTo } = useCustomRouter()
   const { t } = useTranslation(['common', 'kit'])
+  const queryClient = useQueryClient()
   const method = useForm({
     defaultValues: {
       name: '',
@@ -36,7 +37,11 @@ function RouteComponent() {
 
   const { mutate: addKit } = useMutation({
     mutationFn: (data: Data) => createKit(data),
-    onSuccess: () => {
+    onSuccess: (newKit) => {
+      queryClient.setQueryData<Kit[]>(['kits'], (oldKits) => {
+        if (!oldKits) return [newKit]
+        return [...oldKits, newKit]
+      })
       goTo('/gunpla-kits/kits')
     },
   })
