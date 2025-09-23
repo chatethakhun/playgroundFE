@@ -20,7 +20,7 @@ export const getKits = async () => {
 }
 
 export const getKitsQuery = () => ({
-  queryKey: ['kit'],
+  queryKey: ['kits'],
   queryFn: () => getKits(),
 })
 
@@ -34,7 +34,7 @@ export const getKit = async (id: string) => {
 }
 
 export const getKitQuery = (kitId: string) => ({
-  queryKey: ['kit', kitId],
+  queryKey: ['kits', kitId],
   queryFn: () => getKit(kitId),
 })
 
