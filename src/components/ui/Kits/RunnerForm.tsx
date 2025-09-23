@@ -107,7 +107,7 @@ const RunnerForm = memo(
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropDown
                 options={(data || []).map((color) => ({
-                  label: color.name,
+                  label: `${color.name}${color.clearColor ? ` (${t('color:color.clear-color')})` : ''}`,
                   value: color._id,
                 }))}
                 value={value}

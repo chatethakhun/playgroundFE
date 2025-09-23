@@ -19,12 +19,14 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 const Color = memo(
   ({ color, onRemove }: { color: Color; onRemove: () => void }) => {
     const { goTo } = useCustomRouter()
+    const { t } = useTranslation('color')
     return (
       <ListItemContainer>
         <div className="flex gap-2 items-center">
           {!color.multiple && <RunnerColor color={color.hex} />}
           {color.multiple && <MultipleColorBox />}
-          {color.name}
+          {color.name}{' '}
+          {color.clearColor ? `(${t('color:color.clear-color')})` : ''}
         </div>
         <div className="flex ml-auto gap-2">
           <Pencil
