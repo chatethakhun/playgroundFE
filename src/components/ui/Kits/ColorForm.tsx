@@ -14,6 +14,7 @@ const schema = yup.object({
   name: yup.string().required(),
   hex: yup.string().required().min(6).max(7),
   multiple: yup.boolean().required(),
+  clearColor: yup.boolean().required(),
 })
 
 type Data = yup.Asserts<typeof schema>
@@ -27,6 +28,7 @@ const ColorForm = memo(({ onClose }: { onClose?: () => void }) => {
       name: '',
       hex: '#ffffff',
       multiple: false,
+      clearColor: false,
     },
   })
 
@@ -93,6 +95,18 @@ const ColorForm = memo(({ onClose }: { onClose?: () => void }) => {
             )}
           />
         )}
+
+        <Controller
+          control={form.control}
+          name="clearColor"
+          render={({ field }) => (
+            <SwitchInput
+              checked={field.value}
+              onCheckedChange={field.onChange}
+              label={t('color:color.form.clear_color_label')}
+            />
+          )}
+        />
 
         <Button onClick={form.handleSubmit(onSubmit)}>
           {t('common:save')}
