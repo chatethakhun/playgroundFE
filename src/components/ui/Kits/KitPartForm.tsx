@@ -190,7 +190,7 @@ const KitPartForm = memo(
                   render={({ field: { onChange, value }, fieldState }) => (
                     <DropDown
                       options={(runners || []).map((runner) => ({
-                        label: runner.code,
+                        label: `${runner.code} ${runner.isCut ? '(Cut)' : ''}`,
                         value: runner._id,
                       }))}
                       onChange={(e) => onChange(e.target.value)}
