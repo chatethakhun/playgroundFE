@@ -2,7 +2,7 @@ import Box from '@/components/ui/dashbaord/Box'
 import DashboardContainer from '@/components/ui/dashbaord/DashboardContainer'
 import DetailItem from '@/components/ui/dashbaord/DetailItem'
 import ChangePasswordForm from '@/components/ui/dashbaord/user/ChangePasswordForm'
-import { getUserQuery } from '@/services/users/users.service'
+import { getUserQuery, getUsersQuery } from '@/services/users/users.service'
 import { queryClient } from '@/utils/queryClient'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
@@ -18,8 +18,14 @@ export const Route = createFileRoute('/_admin/dashboard/users/$userId')({
 
 function RouteComponent() {
   const { userId } = Route.useParams()
-  const { data: user } = useSuspenseQuery(getUserQuery(userId))
+  const { data: users } = useSuspenseQuery(getUsersQuery())
+  const { data: user } = useSuspenseQuery({
+    ...getUserQuery(userId),
+    initialData: users?.find((user) => user._id === userId),
+  })
+
   const { t } = useTranslation('dashboard')
+
   return (
     <DashboardContainer>
       <Box>
