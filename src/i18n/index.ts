@@ -28,7 +28,7 @@ i18n
     defaultNS: 'common',
     backend: {
       // เลือก URL จาก REMOTE_I18N_MAP
-      loadPath: `${URL}/i18n/{{lng}}/{{ns}}.json`,
+      loadPath: `${URL}/i18n/{{lng}}/{{ns}}.json?cache=${Date.now()}`,
       // ถ้าต้องแนบ header เพิ่ม (ไม่จำเป็นส่วนใหญ่)
       // requestOptions: { mode: 'cors' }
     },

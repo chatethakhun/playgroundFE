@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils'
 import { memo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const roleToLocale = (role: string) => {
   switch (role) {
@@ -16,16 +17,17 @@ const roleToLocale = (role: string) => {
 
 const UserRole = memo(
   ({ role }: { role: string }) => {
+    const { t } = useTranslation('dashboard')
     return (
       <div className="flex items-center gap-2">
         <div
-          className={cn('rounded-full px-2', {
+          className={cn('rounded-full px-2 py-1', {
             'bg-blue-300': role === 'admin',
             'bg-green-200': role === 'user',
             'bg-red-500': role === 'guest',
           })}
         >
-          <span className="text-gray-700">{roleToLocale(role)}</span>
+          <span className="text-gray-700">{t(roleToLocale(role))}</span>
         </div>
       </div>
     )
