@@ -3,4 +3,5 @@ interface Kit {
   name: string
   grade: string
   runners: Array<Runner>
+  isFinished: boolean
 }

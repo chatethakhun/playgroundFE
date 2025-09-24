@@ -10,10 +10,28 @@ import GunplaSVG from '@/assets/images/gunpla.webp'
 import { useTranslation } from 'react-i18next'
 import { queryClient } from '@/utils/queryClient'
 import { getKitsQuery } from '@/services/gunplaKits/kit.service'
+import MenuTab from '@/components/ui/MenuTab'
 
+type KitSearch = {
+  isFinished: boolean
+}
 export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/')({
-  loader: async () => {
-    const kits = await queryClient.ensureQueryData(getKitsQuery())
+  validateSearch: (args: KitSearch) => {
+    if (
+      !!args.isFinished &&
+      args.isFinished !== true &&
+      args.isFinished !== false
+    ) {
+      throw new Error('Invalid isFinished search parameter')
+    }
+
+    return args
+  },
+  loaderDeps: ({ search: { isFinished } }: { search: KitSearch }) => ({
+    isFinished,
+  }),
+  loader: async ({ deps: { isFinished } }) => {
+    const kits = await queryClient.ensureQueryData(getKitsQuery(isFinished))
     return kits
   },
   head: () => ({
@@ -24,6 +42,7 @@ export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/')({
 
 function RouteComponent() {
   const { goTo } = useCustomRouter()
+  const { isFinished } = Route.useSearch()
   const { t } = useTranslation('kit')
   return (
     <PageContainer>
@@ -49,7 +68,14 @@ function RouteComponent() {
         </div>
       </div>
 
-      <ListKits />
+      <MenuTab
+        tabs={[t('kit.tab-1'), t('kit.tab-2')]}
+        onChange={(index) =>
+          goTo(`/gunpla-kits/kits${index === 0 ? '' : '?isFinished=true'}`)
+        }
+        currentIndex={!!isFinished ? 1 : 0}
+      />
+      <ListKits isFinished={!!isFinished} />
     </PageContainer>
   )
 }

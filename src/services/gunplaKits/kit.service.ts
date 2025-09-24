@@ -10,18 +10,20 @@ export const createKit = async (data: Partial<Kit>) => {
   }
 }
 
-export const getKits = async () => {
+export const getKits = async ({ isFinished = false }) => {
   try {
-    return (await axiosInstance.get<Array<Kit>>('/kits')).data
+    const url = isFinished ? '/kits?isFinished=true' : '/kits'
+    console.log(url)
+    return (await axiosInstance.get<Array<Kit>>(url)).data
   } catch (error) {
     console.error(error)
     throw error
   }
 }
 
-export const getKitsQuery = () => ({
-  queryKey: ['kits'],
-  queryFn: () => getKits(),
+export const getKitsQuery = (isFinished = false) => ({
+  queryKey: ['kits', isFinished],
+  queryFn: () => getKits({ isFinished }),
 })
 
 export const getKit = async (id: string) => {
@@ -41,6 +43,17 @@ export const getKitQuery = (kitId: string) => ({
 export const getKitRunners = async (id: string) => {
   try {
     return (await axiosInstance.get<Array<Runner>>(`/kits/${id}/runner`)).data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}
+
+export const updateIsFinished = async (id: string, isFinished: boolean) => {
+  try {
+    return (
+      await axiosInstance.put<Kit>(`/kits/${id}/is-finished`, { isFinished })
+    ).data
   } catch (error) {
     console.error(error)
     throw error

@@ -38,7 +38,7 @@ function RouteComponent() {
   const { mutate: addKit } = useMutation({
     mutationFn: (data: Data) => createKit(data),
     onSuccess: (newKit) => {
-      queryClient.setQueryData<Kit[]>(['kits'], (oldKits) => {
+      queryClient.setQueryData<Kit[]>(['kits', false], (oldKits) => {
         if (!oldKits) return [newKit]
         return [...oldKits, newKit]
       })
