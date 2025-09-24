@@ -14,7 +14,9 @@ import DashboardContainer from '@/components/ui/dashbaord/DashboardContainer'
 import { useTranslation } from 'react-i18next'
 import Avatar from '@/components/ui/Avatar'
 import UserRole from '@/components/ui/dashbaord/UserRole'
-export const Route = createFileRoute('/_admin/dashboard/users')({
+import { Eye } from 'lucide-react'
+import useCustomRouter from '@/hooks/useCustomRouter'
+export const Route = createFileRoute('/_admin/dashboard/users/')({
   component: RouteComponent,
   loader: async () => {
     const users = await queryClient.ensureQueryData(getUsersQuery())
@@ -25,7 +27,7 @@ export const Route = createFileRoute('/_admin/dashboard/users')({
 function RouteComponent() {
   const { t } = useTranslation('dashboard')
   const { data } = useSuspenseQuery(getUsersQuery())
-
+  const { goTo } = useCustomRouter()
   return (
     <DashboardContainer>
       <Table>
@@ -38,6 +40,7 @@ function RouteComponent() {
             <TableHead>{t('dashboard.users.table.email')}</TableHead>
             <TableHead>{t('dashboard.users.table.fullName')}</TableHead>
             <TableHead>{t('dashboard.users.table.role')}</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -51,6 +54,14 @@ function RouteComponent() {
               <TableCell>{user.fullName}</TableCell>
               <TableCell>
                 <UserRole role={user.role} />
+              </TableCell>
+              <TableCell>
+                <Eye
+                  className="w-4 h-4"
+                  onClick={() => {
+                    goTo('/dashboard/users/' + user._id)
+                  }}
+                />
               </TableCell>
             </TableRow>
           ))}

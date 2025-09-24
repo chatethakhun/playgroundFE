@@ -13,13 +13,14 @@ import { Route as PublicRouteImport } from './routes/_public'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
+import { Route as AdminDashboardRouteRouteImport } from './routes/_admin/dashboard/route'
 import { Route as PublicSignupIndexRouteImport } from './routes/_public/signup/index'
 import { Route as PublicLoginIndexRouteImport } from './routes/_public/login/index'
 import { Route as AuthenticatedAppsIndexRouteImport } from './routes/_authenticated/apps/index'
-import { Route as AdminDashboardUsersRouteImport } from './routes/_admin/dashboard.users'
 import { Route as AuthenticatedGunplaKitsKitsIndexRouteImport } from './routes/_authenticated/gunpla-kits/kits/index'
+import { Route as AdminDashboardUsersIndexRouteImport } from './routes/_admin/dashboard/users/index'
 import { Route as AuthenticatedGunplaKitsKitsNewRouteImport } from './routes/_authenticated/gunpla-kits/kits/new'
+import { Route as AdminDashboardUsersUserIdRouteImport } from './routes/_admin/dashboard/users/$userId'
 import { Route as AuthenticatedGunplaKitsKitsColorsIndexRouteImport } from './routes/_authenticated/gunpla-kits/kits/colors/index'
 import { Route as AuthenticatedGunplaKitsKitsKitIdIndexRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/index'
 import { Route as AuthenticatedGunplaKitsKitsColorsNewRouteImport } from './routes/_authenticated/gunpla-kits/kits/colors/new'
@@ -45,7 +46,7 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminDashboardRoute = AdminDashboardRouteImport.update({
+const AdminDashboardRouteRoute = AdminDashboardRouteRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
@@ -65,22 +66,29 @@ const AuthenticatedAppsIndexRoute = AuthenticatedAppsIndexRouteImport.update({
   path: '/apps/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AdminDashboardUsersRoute = AdminDashboardUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
-  getParentRoute: () => AdminDashboardRoute,
-} as any)
 const AuthenticatedGunplaKitsKitsIndexRoute =
   AuthenticatedGunplaKitsKitsIndexRouteImport.update({
     id: '/gunpla-kits/kits/',
     path: '/gunpla-kits/kits/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AdminDashboardUsersIndexRoute =
+  AdminDashboardUsersIndexRouteImport.update({
+    id: '/users/',
+    path: '/users/',
+    getParentRoute: () => AdminDashboardRouteRoute,
+  } as any)
 const AuthenticatedGunplaKitsKitsNewRoute =
   AuthenticatedGunplaKitsKitsNewRouteImport.update({
     id: '/gunpla-kits/kits/new',
     path: '/gunpla-kits/kits/new',
     getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AdminDashboardUsersUserIdRoute =
+  AdminDashboardUsersUserIdRouteImport.update({
+    id: '/users/$userId',
+    path: '/users/$userId',
+    getParentRoute: () => AdminDashboardRouteRoute,
   } as any)
 const AuthenticatedGunplaKitsKitsColorsIndexRoute =
   AuthenticatedGunplaKitsKitsColorsIndexRouteImport.update({
@@ -127,12 +135,13 @@ const AuthenticatedGunplaKitsKitsKitIdPartPartIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard': typeof AdminDashboardRouteWithChildren
-  '/dashboard/users': typeof AdminDashboardUsersRoute
+  '/dashboard': typeof AdminDashboardRouteRouteWithChildren
   '/apps': typeof AuthenticatedAppsIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
+  '/dashboard/users/$userId': typeof AdminDashboardUsersUserIdRoute
   '/gunpla-kits/kits/new': typeof AuthenticatedGunplaKitsKitsNewRoute
+  '/dashboard/users': typeof AdminDashboardUsersIndexRoute
   '/gunpla-kits/kits': typeof AuthenticatedGunplaKitsKitsIndexRoute
   '/gunpla-kits/kits/colors/$colorId': typeof AuthenticatedGunplaKitsKitsColorsColorIdRoute
   '/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
@@ -144,12 +153,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof AdminDashboardRouteWithChildren
-  '/dashboard/users': typeof AdminDashboardUsersRoute
+  '/dashboard': typeof AdminDashboardRouteRouteWithChildren
   '/apps': typeof AuthenticatedAppsIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
+  '/dashboard/users/$userId': typeof AdminDashboardUsersUserIdRoute
   '/gunpla-kits/kits/new': typeof AuthenticatedGunplaKitsKitsNewRoute
+  '/dashboard/users': typeof AdminDashboardUsersIndexRoute
   '/gunpla-kits/kits': typeof AuthenticatedGunplaKitsKitsIndexRoute
   '/gunpla-kits/kits/colors/$colorId': typeof AuthenticatedGunplaKitsKitsColorsColorIdRoute
   '/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
@@ -165,12 +175,13 @@ export interface FileRoutesById {
   '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
-  '/_admin/dashboard': typeof AdminDashboardRouteWithChildren
-  '/_admin/dashboard/users': typeof AdminDashboardUsersRoute
+  '/_admin/dashboard': typeof AdminDashboardRouteRouteWithChildren
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexRoute
   '/_public/login/': typeof PublicLoginIndexRoute
   '/_public/signup/': typeof PublicSignupIndexRoute
+  '/_admin/dashboard/users/$userId': typeof AdminDashboardUsersUserIdRoute
   '/_authenticated/gunpla-kits/kits/new': typeof AuthenticatedGunplaKitsKitsNewRoute
+  '/_admin/dashboard/users/': typeof AdminDashboardUsersIndexRoute
   '/_authenticated/gunpla-kits/kits/': typeof AuthenticatedGunplaKitsKitsIndexRoute
   '/_authenticated/gunpla-kits/kits/colors/$colorId': typeof AuthenticatedGunplaKitsKitsColorsColorIdRoute
   '/_authenticated/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
@@ -185,11 +196,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
-    | '/dashboard/users'
     | '/apps'
     | '/login'
     | '/signup'
+    | '/dashboard/users/$userId'
     | '/gunpla-kits/kits/new'
+    | '/dashboard/users'
     | '/gunpla-kits/kits'
     | '/gunpla-kits/kits/colors/$colorId'
     | '/gunpla-kits/kits/colors/new'
@@ -202,11 +214,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/dashboard'
-    | '/dashboard/users'
     | '/apps'
     | '/login'
     | '/signup'
+    | '/dashboard/users/$userId'
     | '/gunpla-kits/kits/new'
+    | '/dashboard/users'
     | '/gunpla-kits/kits'
     | '/gunpla-kits/kits/colors/$colorId'
     | '/gunpla-kits/kits/colors/new'
@@ -222,11 +235,12 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/_public'
     | '/_admin/dashboard'
-    | '/_admin/dashboard/users'
     | '/_authenticated/apps/'
     | '/_public/login/'
     | '/_public/signup/'
+    | '/_admin/dashboard/users/$userId'
     | '/_authenticated/gunpla-kits/kits/new'
+    | '/_admin/dashboard/users/'
     | '/_authenticated/gunpla-kits/kits/'
     | '/_authenticated/gunpla-kits/kits/colors/$colorId'
     | '/_authenticated/gunpla-kits/kits/colors/new'
@@ -278,7 +292,7 @@ declare module '@tanstack/react-router' {
       id: '/_admin/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof AdminDashboardRouteImport
+      preLoaderRoute: typeof AdminDashboardRouteRouteImport
       parentRoute: typeof AdminRoute
     }
     '/_public/signup/': {
@@ -302,13 +316,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_admin/dashboard/users': {
-      id: '/_admin/dashboard/users'
-      path: '/users'
-      fullPath: '/dashboard/users'
-      preLoaderRoute: typeof AdminDashboardUsersRouteImport
-      parentRoute: typeof AdminDashboardRoute
-    }
     '/_authenticated/gunpla-kits/kits/': {
       id: '/_authenticated/gunpla-kits/kits/'
       path: '/gunpla-kits/kits'
@@ -316,12 +323,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGunplaKitsKitsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_admin/dashboard/users/': {
+      id: '/_admin/dashboard/users/'
+      path: '/users'
+      fullPath: '/dashboard/users'
+      preLoaderRoute: typeof AdminDashboardUsersIndexRouteImport
+      parentRoute: typeof AdminDashboardRouteRoute
+    }
     '/_authenticated/gunpla-kits/kits/new': {
       id: '/_authenticated/gunpla-kits/kits/new'
       path: '/gunpla-kits/kits/new'
       fullPath: '/gunpla-kits/kits/new'
       preLoaderRoute: typeof AuthenticatedGunplaKitsKitsNewRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/_admin/dashboard/users/$userId': {
+      id: '/_admin/dashboard/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/dashboard/users/$userId'
+      preLoaderRoute: typeof AdminDashboardUsersUserIdRouteImport
+      parentRoute: typeof AdminDashboardRouteRoute
     }
     '/_authenticated/gunpla-kits/kits/colors/': {
       id: '/_authenticated/gunpla-kits/kits/colors/'
@@ -375,24 +396,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AdminDashboardRouteChildren {
-  AdminDashboardUsersRoute: typeof AdminDashboardUsersRoute
+interface AdminDashboardRouteRouteChildren {
+  AdminDashboardUsersUserIdRoute: typeof AdminDashboardUsersUserIdRoute
+  AdminDashboardUsersIndexRoute: typeof AdminDashboardUsersIndexRoute
 }
 
-const AdminDashboardRouteChildren: AdminDashboardRouteChildren = {
-  AdminDashboardUsersRoute: AdminDashboardUsersRoute,
+const AdminDashboardRouteRouteChildren: AdminDashboardRouteRouteChildren = {
+  AdminDashboardUsersUserIdRoute: AdminDashboardUsersUserIdRoute,
+  AdminDashboardUsersIndexRoute: AdminDashboardUsersIndexRoute,
 }
 
-const AdminDashboardRouteWithChildren = AdminDashboardRoute._addFileChildren(
-  AdminDashboardRouteChildren,
-)
+const AdminDashboardRouteRouteWithChildren =
+  AdminDashboardRouteRoute._addFileChildren(AdminDashboardRouteRouteChildren)
 
 interface AdminRouteChildren {
-  AdminDashboardRoute: typeof AdminDashboardRouteWithChildren
+  AdminDashboardRouteRoute: typeof AdminDashboardRouteRouteWithChildren
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminDashboardRoute: AdminDashboardRouteWithChildren,
+  AdminDashboardRouteRoute: AdminDashboardRouteRouteWithChildren,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
