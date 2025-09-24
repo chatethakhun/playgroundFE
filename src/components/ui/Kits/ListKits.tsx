@@ -15,6 +15,7 @@ import Button from '../Button'
 import { useTranslation } from 'react-i18next'
 import { Check, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import NoData from '../NoData'
 
 const KitItem = memo(
   ({
@@ -101,6 +102,7 @@ const ListKits = memo(({ isFinished }: { isFinished: boolean }) => {
 
   return (
     <div className="flex flex-col gap-4 divide-gray-500">
+      {data.length === 0 && <NoData />}
       {data?.map((kit) => (
         <KitItem
           key={kit._id}
