@@ -4,6 +4,7 @@ import { lazy, memo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LogOut } from 'lucide-react'
 import useAuth from '@/hooks/useAuth'
+import isAuthenticate from '@/utils/isAuthenticate'
 const LanguageSwitcher = lazy(() => import('@/components/ui/LanguageSwitcher'))
 
 interface PageContainerProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -46,9 +47,11 @@ const PageContainer = memo(({ children, noPadding }: PageContainerProps) => {
                 <h1 className="font-extrabold text-3xl">{t('common:home')}</h1>
               </div>
             )}
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-4 items-center ml-auto">
               <LanguageSwitcher />
-              <LogOut className="cursor-pointer" onClick={() => logout()} />
+              {isAuthenticate() && (
+                <LogOut className="cursor-pointer" onClick={() => logout()} />
+              )}
             </div>
           </div>
           {children}
