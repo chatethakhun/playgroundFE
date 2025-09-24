@@ -11,10 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 import { Route as PublicSignupIndexRouteImport } from './routes/_public/signup/index'
 import { Route as PublicLoginIndexRouteImport } from './routes/_public/login/index'
 import { Route as AuthenticatedAppsIndexRouteImport } from './routes/_authenticated/apps/index'
+import { Route as AdminDashboardUsersRouteImport } from './routes/_admin/dashboard.users'
 import { Route as AuthenticatedGunplaKitsKitsIndexRouteImport } from './routes/_authenticated/gunpla-kits/kits/index'
 import { Route as AuthenticatedGunplaKitsKitsNewRouteImport } from './routes/_authenticated/gunpla-kits/kits/new'
 import { Route as AuthenticatedGunplaKitsKitsColorsIndexRouteImport } from './routes/_authenticated/gunpla-kits/kits/colors/index'
@@ -33,10 +36,19 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/_admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminRoute,
 } as any)
 const PublicSignupIndexRoute = PublicSignupIndexRouteImport.update({
   id: '/signup/',
@@ -52,6 +64,11 @@ const AuthenticatedAppsIndexRoute = AuthenticatedAppsIndexRouteImport.update({
   id: '/apps/',
   path: '/apps/',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AdminDashboardUsersRoute = AdminDashboardUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminDashboardRoute,
 } as any)
 const AuthenticatedGunplaKitsKitsIndexRoute =
   AuthenticatedGunplaKitsKitsIndexRouteImport.update({
@@ -110,6 +127,8 @@ const AuthenticatedGunplaKitsKitsKitIdPartPartIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof AdminDashboardRouteWithChildren
+  '/dashboard/users': typeof AdminDashboardUsersRoute
   '/apps': typeof AuthenticatedAppsIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
@@ -125,6 +144,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof AdminDashboardRouteWithChildren
+  '/dashboard/users': typeof AdminDashboardUsersRoute
   '/apps': typeof AuthenticatedAppsIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
@@ -141,8 +162,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_admin': typeof AdminRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/_admin/dashboard': typeof AdminDashboardRouteWithChildren
+  '/_admin/dashboard/users': typeof AdminDashboardUsersRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexRoute
   '/_public/login/': typeof PublicLoginIndexRoute
   '/_public/signup/': typeof PublicSignupIndexRoute
@@ -160,6 +184,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dashboard'
+    | '/dashboard/users'
     | '/apps'
     | '/login'
     | '/signup'
@@ -175,6 +201,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dashboard'
+    | '/dashboard/users'
     | '/apps'
     | '/login'
     | '/signup'
@@ -190,8 +218,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_admin'
     | '/_authenticated'
     | '/_public'
+    | '/_admin/dashboard'
+    | '/_admin/dashboard/users'
     | '/_authenticated/apps/'
     | '/_public/login/'
     | '/_public/signup/'
@@ -208,6 +239,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
 }
@@ -228,12 +260,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_admin/dashboard': {
+      id: '/_admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_public/signup/': {
       id: '/_public/signup/'
@@ -255,6 +301,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/apps'
       preLoaderRoute: typeof AuthenticatedAppsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/_admin/dashboard/users': {
+      id: '/_admin/dashboard/users'
+      path: '/users'
+      fullPath: '/dashboard/users'
+      preLoaderRoute: typeof AdminDashboardUsersRouteImport
+      parentRoute: typeof AdminDashboardRoute
     }
     '/_authenticated/gunpla-kits/kits/': {
       id: '/_authenticated/gunpla-kits/kits/'
@@ -322,6 +375,28 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminDashboardRouteChildren {
+  AdminDashboardUsersRoute: typeof AdminDashboardUsersRoute
+}
+
+const AdminDashboardRouteChildren: AdminDashboardRouteChildren = {
+  AdminDashboardUsersRoute: AdminDashboardUsersRoute,
+}
+
+const AdminDashboardRouteWithChildren = AdminDashboardRoute._addFileChildren(
+  AdminDashboardRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminDashboardRoute: typeof AdminDashboardRouteWithChildren
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminDashboardRoute: AdminDashboardRouteWithChildren,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface AuthenticatedRouteChildren {
   AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
   AuthenticatedGunplaKitsKitsNewRoute: typeof AuthenticatedGunplaKitsKitsNewRoute
@@ -374,6 +449,7 @@ const PublicRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
 }

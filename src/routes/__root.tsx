@@ -34,11 +34,17 @@ export const Route = createRootRoute({
       <TanStackRouterDevtools />
     </>
   ),
-  errorComponent: (error) => (
-    <Suspense fallback={<LoadingFullPage />}>
-      <GlobalError error={error} />
-    </Suspense>
-  ),
+  errorComponent: (error) => {
+    const isDev = import.meta.env.DEV
+    if (isDev) {
+      return <div>{JSON.stringify(error)}</div>
+    }
+    return (
+      <Suspense fallback={<LoadingFullPage />}>
+        <GlobalError error={error} />
+      </Suspense>
+    )
+  },
   notFoundComponent: () => (
     <Suspense fallback={<LoadingFullPage />}>
       <NotFoundError />

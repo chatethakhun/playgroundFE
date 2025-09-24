@@ -1,21 +1,16 @@
-import axios from 'axios'
+import axiosInstance from '../apiBase'
 
 export const getUsers = async () => {
   try {
-    const response = await axios.get<{
-      users: Array<User>
-      unseenMessages:
-        | Record<string, { lastMessage: Message; unreadMessages: number }>
-        | undefined
-    }>(`${import.meta.env.VITE_API_URL}/api/users`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `${localStorage.getItem('token')}`,
-      },
-    })
-
-    return response.data
+    return (await axiosInstance.get<Array<User>>('/users')).data
   } catch (error) {
     console.error(error)
+  }
+}
+
+export const getUsersQuery = () => {
+  return {
+    queryKey: ['users'],
+    queryFn: getUsers,
   }
 }

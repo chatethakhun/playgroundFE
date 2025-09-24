@@ -73,6 +73,10 @@ export default defineConfig({
             '@radix-ui/react-checkbox',
             '@radix-ui/react-select',
             '@radix-ui/react-switch',
+            '@radix-ui/react-tooltip',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-separator',
+            '@radix-ui/react-dialog',
           ],
           ui: [
             'react-modal',

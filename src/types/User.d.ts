@@ -6,4 +6,5 @@ interface User {
   bio: string
   createdAt: string
   updatedAt: string
+  role: 'user' | 'admin'
 }
