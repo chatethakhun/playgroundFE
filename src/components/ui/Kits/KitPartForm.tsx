@@ -192,6 +192,7 @@ const KitPartForm = memo(
                       options={(runners || []).map((runner) => ({
                         label: `${runner.code} ${runner.isCut ? '(Cut)' : ''}`,
                         value: runner._id,
+                        disabled: runner.isCut,
                       }))}
                       onChange={(e) => onChange(e.target.value)}
                       value={value}

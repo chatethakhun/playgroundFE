@@ -4,6 +4,7 @@ import { memo } from 'react'
 type Option = {
   label: string
   value: string
+  disabled?: boolean
 }
 
 interface IDropDown extends React.InputHTMLAttributes<HTMLSelectElement> {
@@ -32,7 +33,11 @@ const DropDown = memo((props: IDropDown) => {
       >
         <option selected>{props.placeholder ?? 'Choose an option'}</option>
         {(props.options || []).map((option) => (
-          <option key={option.value} value={option.value}>
+          <option
+            key={option.value}
+            value={option.value}
+            disabled={option.disabled}
+          >
             {option.label}
           </option>
         ))}
