@@ -68,7 +68,7 @@ const KitPartForm = memo(
     const { data: runners, isLoading: isLoadingRunners } = useQuery({
       queryFn: () => getKitRunners(kitId),
       enabled: !!kitId,
-      queryKey: ['kit', kitId, 'runners'],
+      queryKey: ['kits', kitId, 'runners'],
     })
 
     const requies = useMemo(() => {
