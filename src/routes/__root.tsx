@@ -3,7 +3,7 @@ import { Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import Navbar from '@/components/ui/Navbar'
 import { AuthProvider } from '@/providers/AuthContext'
-import { NotificationProvider } from '@/providers/NotificationProvider'
+
 import '../i18n'
 import { LocaleProvider } from '@/providers/LocaleProvider'
 import { ToastContainer } from 'react-toastify'
@@ -50,12 +50,10 @@ export const Route = createRootRoute({
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <LocaleProvider>
-            <NotificationProvider>
-              <HeadContent />
-              <Outlet />
-              <Navbar />
-              <ToastContainer />
-            </NotificationProvider>
+            <HeadContent />
+            <Outlet />
+            <Navbar />
+            <ToastContainer />
           </LocaleProvider>
         </AuthProvider>
       </QueryClientProvider>
