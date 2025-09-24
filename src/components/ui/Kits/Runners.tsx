@@ -1,7 +1,10 @@
 import { lazy, memo } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
-import { getKitRunners } from '@/services/gunplaKits/kit.service'
-import { useQuery } from '@tanstack/react-query'
+import {
+  getKitRunners,
+  updateKitRunner,
+} from '@/services/gunplaKits/kit.service'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Plus, PencilIcon } from 'lucide-react'
 import FloatButton from '../FloatButton'
 import useModal from '@/hooks/useModal'
@@ -11,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import NoData from '../NoData'
 import RunnerColor from './RunnderColor'
 import MultipleColorBox from './MultipleColorBox'
+import { Check, X } from 'lucide-react'
 
 const CustomModal = lazy(() => import('../Modal'))
 
@@ -18,6 +22,7 @@ const RunnerItem = memo(
   ({ runner }: { runner: Runner }) => {
     const { goTo } = useCustomRouter()
     const { t } = useTranslation(['runner', 'color'])
+    const queryClient = useQueryClient()
     const backgroundColor =
       typeof runner.color === 'string'
         ? '#ffffff'
@@ -29,6 +34,27 @@ const RunnerItem = memo(
       typeof runner.color === 'string'
         ? false
         : runner.color?.clearColor || false
+
+    const runnerIsCut = runner.isCut || false
+
+    const kitId = typeof runner.kit === 'string' ? runner.kit : ''
+
+    const { mutate: toggleRunner } = useMutation({
+      mutationFn: () =>
+        updateKitRunner({ ...runner, isCut: !runnerIsCut }, kitId, runner._id),
+      onSuccess: (newData) => {
+        queryClient.setQueryData<Array<Runner>>(
+          ['kits', kitId, 'runners'],
+          (oldData) => {
+            if (!oldData) return oldData
+
+            return oldData.map((r: Runner) =>
+              r._id === newData._id ? { ...runner, isCut: !runnerIsCut } : r,
+            )
+          },
+        )
+      },
+    })
     return (
       <div className="flex gap-2 items-center border-b-gray-500 border-b p-2">
         <div className="flex  items-center  gap-2 basis-[30%] md:basis-[10%]">
@@ -48,7 +74,18 @@ const RunnerItem = memo(
           <span className="font-bold text-primary">{runner.qty}</span>
         </span>
 
-        <div className="ml-auto">
+        <div className="ml-auto flex gap-4">
+          {runnerIsCut ? (
+            <X
+              className="w-4 h-4 cursor-pointer  text-red-400"
+              onClick={() => toggleRunner()}
+            />
+          ) : (
+            <Check
+              className="w-4 h-4 cursor-pointer text-green-400"
+              onClick={() => toggleRunner()}
+            />
+          )}
           <PencilIcon
             className="w-3 h-3 cursor-pointer text-primary"
             onClick={() => {
@@ -59,7 +96,9 @@ const RunnerItem = memo(
       </div>
     )
   },
-  (prev, next) => prev.runner._id === next.runner._id,
+  (prev, next) =>
+    prev.runner._id === next.runner._id &&
+    prev.runner.isCut === next.runner.isCut,
 )
 
 const Runners = memo(({ kitId }: { kitId: string }) => {

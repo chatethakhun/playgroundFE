@@ -10,4 +10,5 @@ interface Runner {
   code: string
   qty: number
   pieces: Array<Piece>
+  isCut: boolean
 }
