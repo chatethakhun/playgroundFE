@@ -69,7 +69,7 @@ function RouteComponent() {
       </div>
 
       <MenuTab
-        tabs={[t('kit.tab-1'), t('kit.tab-2')]}
+        tabs={[t('kit:tab-1'), t('kit:tab-2')]}
         onChange={(index) =>
           goTo(`/gunpla-kits/kits${index === 0 ? '' : '?isFinished=true'}`)
         }
