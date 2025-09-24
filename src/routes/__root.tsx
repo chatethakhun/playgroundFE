@@ -10,39 +10,12 @@ import { ToastContainer } from 'react-toastify'
 import { queryClient } from '@/utils/queryClient'
 // Create a client
 import { HeadContent } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
 
-function GlobalError({ error }: { error: unknown }) {
-  const { t } = useTranslation('common')
+import { lazy, Suspense } from 'react'
+import LoadingFullPage from '@/components/ui/LoadingFullPage'
 
-  const isDev = true
-  return (
-    <div className="flex min-h-dvh flex-col items-center justify-center bg-gray-50 text-center">
-      <h1 className="text-4xl font-bold text-red-600 mb-4 text-center">
-        500 - {t('500-title')}
-      </h1>
-
-      <p className="text-gray-700">{t('500-message')}</p>
-      {isDev && (
-        <pre className="mt-4 p-2 bg-gray-200 rounded text-sm text-gray-800">
-          {String(error)}
-        </pre>
-      )}
-    </div>
-  )
-}
-
-function NotFound() {
-  const { t } = useTranslation('common')
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50">
-      <h1 className="text-4xl font-bold text-red-600 mb-4 text-center">
-        404 - {t('404-title')}
-      </h1>
-      <p className="text-gray-700">{t('404-message')}</p>
-    </div>
-  )
-}
+const GlobalError = lazy(() => import('@/components/ui/GlobalError'))
+const NotFoundError = lazy(() => import('@/components/ui/NotFoundError'))
 
 export const Route = createRootRoute({
   component: () => (
@@ -61,6 +34,14 @@ export const Route = createRootRoute({
       <TanStackRouterDevtools />
     </>
   ),
-  errorComponent: GlobalError,
-  notFoundComponent: NotFound,
+  errorComponent: (error) => (
+    <Suspense fallback={<LoadingFullPage />}>
+      <GlobalError error={error} />
+    </Suspense>
+  ),
+  notFoundComponent: () => (
+    <Suspense fallback={<LoadingFullPage />}>
+      <NotFoundError />
+    </Suspense>
+  ),
 })
