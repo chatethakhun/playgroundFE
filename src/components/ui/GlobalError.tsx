@@ -15,7 +15,7 @@ const GlobalError = memo(
         <p className="text-gray-700">{t('500-message')}</p>
         {isDev && (
           <pre className="mt-4 p-2 bg-gray-200 rounded text-sm text-gray-800">
-            {String(error)}
+            {JSON.stringify(error)}
           </pre>
         )}
       </div>
