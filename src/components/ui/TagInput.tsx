@@ -4,7 +4,7 @@ import { cn } from '@/utils/cn'
 
 interface ITagInput extends React.InputHTMLAttributes<HTMLInputElement> {
   tags: Array<string>
-   handleTag: (tags: Array<string>) => void
+  handleTag: (tags: Array<string>) => void
   label?: string
   errorMessage?: string
 }
@@ -90,6 +90,7 @@ const TagInput = ({
               ref={(c) => {
                 inputRef.current = c
               }}
+              autoComplete="off"
               placeholder={placeholder || 'Add a tag'}
               className=" focus:outline-none"
             />

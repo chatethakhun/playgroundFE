@@ -15,6 +15,7 @@ import { Trash, Pencil } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { confirm } from '../ComfirmDialog'
 import useCustomRouter from '@/hooks/useCustomRouter'
+import NoData from '../NoData'
 
 const Color = memo(
   ({ color, onRemove }: { color: Color; onRemove: () => void }) => {
@@ -65,6 +66,7 @@ const ListColors = memo(() => {
   }, [])
   return (
     <div>
+      {data.length === 0 && <NoData />}
       {data?.map((color) => (
         <Color
           key={color._id}

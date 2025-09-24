@@ -26,6 +26,7 @@ const TextInput = ({
         placeholder={placeholder}
         onChange={onChange}
         value={value}
+        autoComplete="off"
         disabled={disabled}
         className={cn(
           'rounded-md border-border border-1 bg-white py-2 px-4 text-dark rounde-lg focus:outline-dark-gray',
