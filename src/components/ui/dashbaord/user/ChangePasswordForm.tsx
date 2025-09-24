@@ -51,14 +51,14 @@ const ChangePasswordForm = ({ userId }: { userId: string }) => {
             errorMessage={t(error?.message ?? '')}
             onChange={onChange}
             value={value}
-            label={t('dashboard.form.change_password_label')}
-            placeholder={t('dashboard.form.change_password_placeholder')}
+            label={t('dashboard.user.form.change_password_label')}
+            placeholder={t('dashboard.user.form.change_password_placeholder')}
           />
         )}
       />
 
       <Button onClick={form.handleSubmit(onSubmit)}>
-        {t('dashboard.form.change_password_button')}
+        {t('dashboard.user.form.change_password_button')}
       </Button>
     </FormProvider>
   )
