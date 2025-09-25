@@ -1,5 +1,5 @@
 const sortStringArray = (arr: string[]) => {
-  console.log({ arr })
+
   return arr.sort((a, b) => {
     if (a < b) {
       return -1

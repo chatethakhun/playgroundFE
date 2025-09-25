@@ -57,7 +57,6 @@ const ColorForm = memo(
       onSuccess: (newData) => {
         // refetch query data in cached queryClient
         queryClient.setQueryData<Array<Color>>(['colors'], (oldData) => {
-          console.log({ newData })
           return (oldData ?? []).map((c) =>
             c._id === newData?._id ? newData : c,
           )

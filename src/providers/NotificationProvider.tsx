@@ -64,9 +64,8 @@ const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!socket) return
 
-    console.log('socket', socket)
+
     socket.on('newNotification', (notification: AppNotification) => {
-      console.log('notification', notification)
       handleNewNotification(notification)
     })
   }, [socket])

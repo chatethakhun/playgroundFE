@@ -55,7 +55,7 @@ const ListSession = memo(function ListSession() {
         tabs={TABS}
         currentIndex={isCompleted ? 1 : 0}
         onChange={(index: number) => {
-          console.log({ index })
+
           setIsCompleted(index === 1)
         }}
       />
