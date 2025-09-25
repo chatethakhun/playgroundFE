@@ -1,10 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import loginBg from '../assets/images/loginBG.png'
 import Button from '@/components/ui/Button'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { useTranslation } from 'react-i18next'
+import isAuthenticate from '@/utils/isAuthenticate'
 
 export const Route = createFileRoute('/')({
+  beforeLoad: async () => {
+    if (isAuthenticate()) {
+      throw redirect({
+        to: '/apps',
+      })
+      // Perform any necessary async operations before loading the route
+    }
+  },
   component: RouteComponent,
 })
 
