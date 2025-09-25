@@ -21,13 +21,13 @@ const UserRole = memo(
     return (
       <div className="flex items-center gap-2">
         <div
-          className={cn('rounded-full px-2 py-1', {
+          className={cn('rounded-full px-4 py-1 leading-1', {
             'bg-blue-300': role === 'admin',
             'bg-green-200': role === 'user',
             'bg-red-500': role === 'guest',
           })}
         >
-          <span className="text-gray-700">{t(roleToLocale(role))}</span>
+          <span className="text-gray-700 text-xs">{t(roleToLocale(role))}</span>
         </div>
       </div>
     )

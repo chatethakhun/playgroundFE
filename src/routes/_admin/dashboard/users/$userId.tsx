@@ -2,6 +2,7 @@ import Box from '@/components/ui/dashbaord/Box'
 import DashboardContainer from '@/components/ui/dashbaord/DashboardContainer'
 import DetailItem from '@/components/ui/dashbaord/DetailItem'
 import ChangePasswordForm from '@/components/ui/dashbaord/user/ChangePasswordForm'
+import UserRole from '@/components/ui/dashbaord/UserRole'
 import { getUserQuery, getUsersQuery } from '@/services/users/users.service'
 import { queryClient } from '@/utils/queryClient'
 import { useSuspenseQuery } from '@tanstack/react-query'
@@ -37,6 +38,10 @@ function RouteComponent() {
         <DetailItem
           label={t('dashboard.users.table.email')}
           value={user?.email || ''}
+        />
+        <DetailItem
+          label={t('dashboard.users.table.role')}
+          renderValue={<UserRole role={user?.role ?? ''} />}
         />
       </Box>
 

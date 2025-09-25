@@ -24,7 +24,6 @@ const DashboardSidebar = memo(() => {
   const { t } = useTranslation('dashboard')
   const {  currentPathName } = useCustomRouter()
 
-  console.log({ currentPathName })
   return (
     <Sidebar>
       <SidebarContent>

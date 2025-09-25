@@ -57,7 +57,7 @@ function RouteComponent() {
               </TableCell>
               <TableCell>
                 <Eye
-                  className="w-4 h-4"
+                  className="w-4 h-4 cursor-pointer"
                   onClick={() => {
                     goTo('/dashboard/users/' + user._id)
                   }}
