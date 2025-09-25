@@ -10,7 +10,7 @@ import { changePassword } from '@/services/users/users.service'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { toast } from 'react-toastify'
 const schema = yup.object({
-  password: yup.string().required('dashboard.form.password_required'),
+  password: yup.string().required('dashboard.user.form.password_required'),
 })
 
 type FormData = yup.InferType<typeof schema>
