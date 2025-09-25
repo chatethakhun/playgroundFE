@@ -17,14 +17,6 @@ const GlobalError = lazy(() => import('@/components/ui/GlobalError'))
 const NotFoundError = lazy(() => import('@/components/ui/NotFoundError'))
 
 export const Route = createRootRoute({
-  beforeLoad: async () => {
-    await Promise.all([import('@/i18n')])
-    // if (isAuthenticate()) {
-    //   throw redirect({
-    //     to: '/apps',
-    //   })
-    // }
-  },
   component: () => (
     <>
       <QueryClientProvider client={queryClient}>
