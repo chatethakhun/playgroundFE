@@ -17,7 +17,10 @@ import { ChevronLeft as IoIosArrowBack } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 const loginSchema = yup.object({
-  email: yup.string().required('form.email_require').email('form.email_invalid'),
+  email: yup
+    .string()
+    .required('form.email_require')
+    .email('form.email_invalid'),
   password: yup
     .string()
     .required('form.password_require')
@@ -68,9 +71,7 @@ function RouteComponent() {
         <IoIosArrowBack className="text-2xl" />
       </IconButton>
 
-      <h1 className="text-3xl font-bold">
-        {t('title')}
-      </h1>
+      <h1 className="text-3xl font-bold">{t('title')}</h1>
 
       <FormProvider {...method}>
         <Controller
@@ -81,7 +82,7 @@ function RouteComponent() {
               id="email"
               type="email"
               placeholder={t('form.email_ph')}
-              errorMessage={error?.message || ''}
+              errorMessage={t(error?.message || '')}
               onChange={(evt) => onChange(evt.currentTarget.value)}
               value={value}
             />
@@ -95,7 +96,7 @@ function RouteComponent() {
               id="password"
               placeholder={t('form.password_ph')}
               type="password"
-              errorMessage={error?.message || ''}
+              errorMessage={t(error?.message || '')}
               onChange={(evt) => onChange(evt.currentTarget.value)}
               value={value}
             />
@@ -103,7 +104,7 @@ function RouteComponent() {
         />
 
         <Button onClick={handleSubmit(onSumbit)} disabled={mutation.isPending}>
-          {mutation.isPending ? t('form.loading'): t('form.submit')}
+          {mutation.isPending ? t('form.loading') : t('form.submit')}
         </Button>
       </FormProvider>
 

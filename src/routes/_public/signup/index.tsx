@@ -15,7 +15,10 @@ import { signup } from '@/services/auth/auth.service'
 import { ChevronLeft as IoIosArrowBack } from 'lucide-react'
 const signupSchema = yup.object({
   fullName: yup.string().required('form.name_require'),
-  email: yup.string().required('form.email_require').email('form.email_invalid'),
+  email: yup
+    .string()
+    .required('form.email_require')
+    .email('form.email_invalid'),
   password: yup
     .string()
     .required('form.password_require')
@@ -34,7 +37,7 @@ export const Route = createFileRoute('/_public/signup/')({
 
 function RouteComponent() {
   const { goTo } = useCustomRouter()
-  const { t } = useTranslation()
+  const { t } = useTranslation('register')
   const signUpMutation = useMutation({
     mutationFn: signup,
     onSuccess: () => {
@@ -68,13 +71,16 @@ function RouteComponent() {
         <IoIosArrowBack className="text-2xl" />
       </IconButton>
 
-      <h1 className="text-3xl font-bold">Hello! Register to get started</h1>
+      <h1 className="text-3xl font-bold">{t('title')}</h1>
 
       <FormProvider {...method}>
         <Controller
           control={control}
           name="fullName"
-          render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+          render={({
+            field: { onChange, value, name },
+            fieldState: { error },
+          }) => (
             <TextInput
               id={name}
               name={name}
@@ -89,7 +95,10 @@ function RouteComponent() {
         <Controller
           control={control}
           name="email"
-          render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+          render={({
+            field: { onChange, value, name },
+            fieldState: { error },
+          }) => (
             <TextInput
               id={name}
               type={name}
@@ -103,7 +112,10 @@ function RouteComponent() {
         <Controller
           control={control}
           name="password"
-          render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+          render={({
+            field: { onChange, value, name },
+            fieldState: { error },
+          }) => (
             <TextInput
               id={name}
               placeholder={t('form.password_ph')}

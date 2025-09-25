@@ -4,6 +4,7 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 import { createFileRoute } from '@tanstack/react-router'
 import { Dumbbell } from 'lucide-react'
 import React, { memo, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export const Route = createFileRoute('/_authenticated/apps/')({
   component: RouteComponent,
@@ -11,11 +12,11 @@ export const Route = createFileRoute('/_authenticated/apps/')({
 
 const apps = [
   {
-    name: 'Gunpla Kits',
+    name: 'gunpla.title',
     path: '/gunpla-kits/kits',
     icon: Dumbbell,
     image: '/images/gundam.jpg',
-    desc: 'Gunpla Kits are a great way to stay fit and healthy. They are easy to use, and they can be used on multiple devices.',
+    desc: 'gunpla.description',
   },
 ]
 
@@ -33,6 +34,7 @@ const AppCard = memo(
     desc?: string
   }) => {
     const { goTo } = useCustomRouter()
+    const { t } = useTranslation('apps')
     const onClick = useCallback(() => {
       goTo(pathName)
     }, [pathName])
@@ -49,17 +51,17 @@ const AppCard = memo(
         <div className="p-5">
           <a href="#">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {name}
+              {t(name)}
             </h5>
           </a>
           {desc && (
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              {desc}
+              {t(desc)}
             </p>
           )}
           <Button secondary onClick={onClick}>
             <div className="flex items-center">
-              Go to app
+              {t('go_to_apps')}
               <svg
                 className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
                 aria-hidden="true"
