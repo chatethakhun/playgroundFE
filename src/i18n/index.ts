@@ -24,6 +24,8 @@ i18n
       'part',
       'color',
       'dashboard',
+      'login',
+      'register',
     ],
     defaultNS: 'common',
     backend: {

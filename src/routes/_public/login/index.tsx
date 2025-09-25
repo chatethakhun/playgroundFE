@@ -17,11 +17,11 @@ import { ChevronLeft as IoIosArrowBack } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 const loginSchema = yup.object({
-  email: yup.string().required('Email is required').email('Invalid email'),
+  email: yup.string().required('form.email_require').email('form.email_invalid'),
   password: yup
     .string()
-    .required('Password is required')
-    .min(6, 'Minimun 6 characters'),
+    .required('form.password_require')
+    .min(6, 'form.password_min'),
 })
 
 type FormValues = yup.InferType<typeof loginSchema>

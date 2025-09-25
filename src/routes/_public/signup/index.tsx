@@ -5,7 +5,7 @@ import { useCallback } from 'react'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
-
+import { useTranslation } from 'react-i18next'
 import IconButton from '@/components/ui/IconButton'
 import PageContainer from '@/components/ui/PageContainer'
 import useCustomRouter from '@/hooks/useCustomRouter'
@@ -14,16 +14,16 @@ import Button from '@/components/ui/Button'
 import { signup } from '@/services/auth/auth.service'
 import { ChevronLeft as IoIosArrowBack } from 'lucide-react'
 const signupSchema = yup.object({
-  fullName: yup.string().required('Full name is required'),
-  email: yup.string().required('Email is required').email('Invalid email'),
+  fullName: yup.string().required('form.name_require'),
+  email: yup.string().required('form.email_require').email('form.email_invalid'),
   password: yup
     .string()
-    .required('Password is required')
-    .min(6, 'Minimun 6 characters'),
+    .required('form.password_require')
+    .min(6, 'form.password_min'),
   confirmPassword: yup
     .string()
-    .required('Confirm password is required')
-    .oneOf([yup.ref('password')], 'Passwords must match'),
+    .required('form.c_password_require')
+    .oneOf([yup.ref('password')], 'form.c_password_match'),
 })
 
 type FormValues = yup.InferType<typeof signupSchema>
@@ -34,6 +34,7 @@ export const Route = createFileRoute('/_public/signup/')({
 
 function RouteComponent() {
   const { goTo } = useCustomRouter()
+  const { t } = useTranslation()
   const signUpMutation = useMutation({
     mutationFn: signup,
     onSuccess: () => {
@@ -73,12 +74,13 @@ function RouteComponent() {
         <Controller
           control={control}
           name="fullName"
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
+          render={({ field: { onChange, value, name }, fieldState: { error } }) => (
             <TextInput
-              id="fullName"
+              id={name}
+              name={name}
               type="text"
-              placeholder="Full Name"
-              errorMessage={error?.message || ''}
+              placeholder={t('form.name_ph')}
+              errorMessage={t(error?.message || '')}
               onChange={(evt) => onChange(evt.currentTarget.value)}
               value={value}
             />
@@ -87,12 +89,12 @@ function RouteComponent() {
         <Controller
           control={control}
           name="email"
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
+          render={({ field: { onChange, value, name }, fieldState: { error } }) => (
             <TextInput
-              id="email"
-              type="email"
-              placeholder="Email"
-              errorMessage={error?.message || ''}
+              id={name}
+              type={name}
+              placeholder={t('form.email_ph')}
+              errorMessage={t(error?.message || '')}
               onChange={(evt) => onChange(evt.currentTarget.value)}
               value={value}
             />
@@ -101,12 +103,12 @@ function RouteComponent() {
         <Controller
           control={control}
           name="password"
-          render={({ field: { onChange, value }, fieldState: { error } }) => (
+          render={({ field: { onChange, value, name }, fieldState: { error } }) => (
             <TextInput
-              id="password"
-              placeholder="password"
+              id={name}
+              placeholder={t('form.password_ph')}
               type="password"
-              errorMessage={error?.message || ''}
+              errorMessage={t(error?.message || '')}
               onChange={(evt) => onChange(evt.currentTarget.value)}
               value={value}
             />
@@ -118,9 +120,9 @@ function RouteComponent() {
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <TextInput
               id="confirmPassword"
-              placeholder="confirm password"
+              placeholder={t('form.c_password_ph')}
               type="password"
-              errorMessage={error?.message || ''}
+              errorMessage={t(error?.message || '')}
               onChange={(evt) => onChange(evt.currentTarget.value)}
               value={value}
             />
@@ -131,17 +133,17 @@ function RouteComponent() {
           onClick={handleSubmit(onSubmit)}
           disabled={signUpMutation.isPending}
         >
-          {signUpMutation.isPending ? 'Signing up...' : 'Sign up'}
+          {signUpMutation.isPending ? t('form.saving') : t('form.save')}
         </Button>
       </FormProvider>
 
       <div className="flex justify-center items-center mt-auto gap-2">
-        <p>Already have an account?</p>
+        <p>{t('form.already_acc')}</p>
         <p
           className="text-primary cursor-pointer"
           onClick={() => goTo('/login')}
         >
-          Log in Now
+          {t('form.to_login')}
         </p>
       </div>
     </PageContainer>
