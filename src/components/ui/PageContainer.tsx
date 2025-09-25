@@ -2,7 +2,7 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 import { cn } from '@/utils/cn'
 import { lazy, memo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { LogOut } from 'lucide-react'
+import { LogOut, LayoutDashboard } from 'lucide-react'
 import useAuth from '@/hooks/useAuth'
 import isAuthenticate from '@/utils/isAuthenticate'
 const LanguageSwitcher = lazy(() => import('@/components/ui/LanguageSwitcher'))
@@ -15,7 +15,7 @@ const PageContainer = memo(({ children, noPadding }: PageContainerProps) => {
   const { currentPathName, goTo } = useCustomRouter()
   const { t } = useTranslation('common')
   const isIncludeKitsPath = currentPathName.includes('kits')
-
+  const {  authUser} = useAuth()
   const shouldShowHome = isIncludeKitsPath
 
   const { logout } = useAuth()
@@ -49,6 +49,7 @@ const PageContainer = memo(({ children, noPadding }: PageContainerProps) => {
             )}
             <div className="flex gap-4 items-center ml-auto">
               <LanguageSwitcher />
+              {authUser?.role === "admin" && <LayoutDashboard  className="cursor-pointer" onClick={() => goTo('/dashboard/users')}/>}
               {isAuthenticate() && (
                 <LogOut className="cursor-pointer" onClick={() => logout()} />
               )}

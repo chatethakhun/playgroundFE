@@ -9,20 +9,26 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { User } from 'lucide-react'
+import { User, SkipBack } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import LanguageSwitcher from '../LanguageSwitcher'
 import useCustomRouter from '@/hooks/useCustomRouter'
+
 const items = [
   {
     title: 'dashboard.users.title',
     url: '/dashboard/users',
     icon: User,
   },
+  {
+    title: 'common:back',
+    url: '/apps',
+    icon: SkipBack
+  }
 ]
 const DashboardSidebar = memo(() => {
   const { t } = useTranslation('dashboard')
-  const {  currentPathName } = useCustomRouter()
+  const {  currentPathName , goTo} = useCustomRouter()
 
   return (
     <Sidebar>
@@ -34,7 +40,7 @@ const DashboardSidebar = memo(() => {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={currentPathName.includes(item.url)}>
-                    <a href={item.url}>
+                    <a onClick={() => goTo(item.url)}>
                       <item.icon />
                       <span>{t(item.title)}</span>
                     </a>
@@ -45,7 +51,7 @@ const DashboardSidebar = memo(() => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <div className="p-1">
+      <div className="p-2">
         <LanguageSwitcher />
       </div>
     </Sidebar>
