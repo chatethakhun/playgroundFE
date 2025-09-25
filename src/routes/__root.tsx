@@ -4,7 +4,6 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import Navbar from '@/components/ui/Navbar'
 import { AuthProvider } from '@/providers/AuthContext'
 
-import '../i18n'
 import { LocaleProvider } from '@/providers/LocaleProvider'
 import { ToastContainer } from 'react-toastify'
 import { queryClient } from '@/utils/queryClient'
@@ -18,6 +17,14 @@ const GlobalError = lazy(() => import('@/components/ui/GlobalError'))
 const NotFoundError = lazy(() => import('@/components/ui/NotFoundError'))
 
 export const Route = createRootRoute({
+  beforeLoad: async () => {
+    await Promise.all([import('@/i18n')])
+    // if (isAuthenticate()) {
+    //   throw redirect({
+    //     to: '/apps',
+    //   })
+    // }
+  },
   component: () => (
     <>
       <QueryClientProvider client={queryClient}>
