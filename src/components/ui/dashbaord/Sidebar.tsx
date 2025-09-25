@@ -12,6 +12,7 @@ import {
 import { User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import LanguageSwitcher from '../LanguageSwitcher'
+import useCustomRouter from '@/hooks/useCustomRouter'
 const items = [
   {
     title: 'dashboard.users.title',
@@ -21,6 +22,9 @@ const items = [
 ]
 const DashboardSidebar = memo(() => {
   const { t } = useTranslation('dashboard')
+  const {  currentPathName } = useCustomRouter()
+
+  console.log({ currentPathName })
   return (
     <Sidebar>
       <SidebarContent>
@@ -30,7 +34,7 @@ const DashboardSidebar = memo(() => {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild isActive={currentPathName.includes(item.url)}>
                     <a href={item.url}>
                       <item.icon />
                       <span>{t(item.title)}</span>
