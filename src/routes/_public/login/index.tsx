@@ -14,6 +14,7 @@ import Button from '@/components/ui/Button'
 import { login } from '@/services/auth/auth.service'
 import useAuth from '@/hooks/useAuth'
 import { ChevronLeft as IoIosArrowBack } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const loginSchema = yup.object({
   email: yup.string().required('Email is required').email('Invalid email'),
@@ -32,6 +33,8 @@ export const Route = createFileRoute('/_public/login/')({
 function RouteComponent() {
   const { goTo } = useCustomRouter()
   const { login: loginUser } = useAuth()
+  const { t } = useTranslation('login')
+
   // Access the client
   const mutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
@@ -66,7 +69,7 @@ function RouteComponent() {
       </IconButton>
 
       <h1 className="text-3xl font-bold">
-        Welcome back! Glad to see you, Again!
+        {t('title')}
       </h1>
 
       <FormProvider {...method}>
@@ -77,7 +80,7 @@ function RouteComponent() {
             <TextInput
               id="email"
               type="email"
-              placeholder="Email"
+              placeholder={t('form.email_ph')}
               errorMessage={error?.message || ''}
               onChange={(evt) => onChange(evt.currentTarget.value)}
               value={value}
@@ -90,7 +93,7 @@ function RouteComponent() {
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <TextInput
               id="password"
-              placeholder="password"
+              placeholder={t('form.password_ph')}
               type="password"
               errorMessage={error?.message || ''}
               onChange={(evt) => onChange(evt.currentTarget.value)}
@@ -100,17 +103,17 @@ function RouteComponent() {
         />
 
         <Button onClick={handleSubmit(onSumbit)} disabled={mutation.isPending}>
-          {mutation.isPending ? 'Loading...' : 'Login'}
+          {mutation.isPending ? t('form.loading'): t('form.submit')}
         </Button>
       </FormProvider>
 
       <div className="flex justify-center items-center mt-auto gap-2">
-        <p>Don’t have an account?</p>
+        <p>{t('dont_have_acc')}</p>
         <p
           className="text-primary cursor-pointer"
           onClick={() => goTo('/signup')}
         >
-          Sign up
+          {t('sign_up')}
         </p>
       </div>
     </PageContainer>
