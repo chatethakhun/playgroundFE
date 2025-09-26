@@ -62,6 +62,9 @@ const RequireItem = memo(
         ? req.runner.color?.clearColor
         : false
 
+    const colorName =
+      typeof req.runner?.color !== 'string' ? req.runner.color?.name : ''
+
     const isCut = req.isCut
 
     return (
@@ -80,6 +83,7 @@ const RequireItem = memo(
             ) : (
               <RunnerColor color={runnerColor} />
             )}
+            <p>{colorName}</p>
             <p>
               <span className="font-bold text-primary">{runnerName}</span>{' '}
               {runnerIsClearColor && (
@@ -142,13 +146,8 @@ const KitPartItem = memo(
 
     const { mutate: cutRequire } = useMutation({
       onSuccess: () => {},
-      mutationFn: ({
-        isCut,
-        requireIndex,
-      }: {
-        isCut: boolean
-        requireIndex: number
-      }) => updateCutInRequires(part._id, requireIndex, isCut),
+      mutationFn: ({ isCut, runnerId }: { isCut: boolean; runnerId: string }) =>
+        updateCutInRequires(part._id, runnerId, isCut),
     })
 
     return (
@@ -212,7 +211,7 @@ const KitPartItem = memo(
                   key={index}
                   req={req}
                   onChecked={(isChecked) =>
-                    cutRequire({ isCut: isChecked, requireIndex: index })
+                    cutRequire({ isCut: isChecked, runnerId: req.runner._id })
                   }
                 />
               )
