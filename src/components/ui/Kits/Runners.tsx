@@ -1,4 +1,4 @@
-import { lazy, memo } from 'react'
+import { lazy, memo, useMemo } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
 import {
   getKitRunners,
@@ -101,6 +101,18 @@ const RunnerItem = memo(
     prev.runner.isCut === next.runner.isCut,
 )
 
+const sortByRunnerCode = (a: Runner, b: Runner) => {
+  if (a.code < b.code) return -1
+  if (a.code > b.code) return 1
+  return 0
+}
+
+const sortedByIsCutAndRunnerCode = (a: Runner, b: Runner) => {
+  if (a.isCut < b.isCut) return -1
+  if (a.isCut > b.isCut) return 1
+  return sortByRunnerCode(a, b)
+}
+
 const Runners = memo(({ kitId }: { kitId: string }) => {
   const { data, isLoading } = useQuery({
     queryFn: () => getKitRunners(kitId),
@@ -110,11 +122,16 @@ const Runners = memo(({ kitId }: { kitId: string }) => {
 
   const { isOpen, openModal, closeModal } = useModal()
 
+  const sortedData = useMemo(
+    () => data?.sort(sortedByIsCutAndRunnerCode),
+    [data],
+  )
+
   if (isLoading) return <LoadingFullPage />
   return (
     <>
-      {data?.length === 0 && <NoData />}
-      {data?.map((runner) => (
+      {sortedData?.length === 0 && <NoData />}
+      {sortedData?.map((runner) => (
         <RunnerItem key={runner._id} runner={runner} />
       ))}
       <br />
