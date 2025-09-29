@@ -14,6 +14,7 @@ import {
   FormProvider,
   useFieldArray,
   useForm,
+  useWatch,
 } from 'react-hook-form'
 
 import DropDown from '../Dropdown'
@@ -150,118 +151,164 @@ const KitPartForm = memo(
       [part],
     )
 
+    const partRequires = useWatch({
+      control: form.control,
+      name: 'requires',
+    })
+
+    const kitOptions = useMemo(() => {
+      if (!kitSubAssembly) return []
+      return kitSubAssembly.map((kit) => ({
+        label: kit.name,
+        value: kit._id,
+      }))
+    }, [kitSubAssembly])
+
+    const runnersOptions = useMemo(() => {
+      if (!runners) return []
+      return runners.map((runner) => ({
+        label: `${runner.code} ${runner.isCut ? '(Cut)' : ''}`,
+        value: runner._id,
+        disabled: runner.isCut,
+      }))
+    }, [runners])
+
     if (isLoadingSubAssembly || isLoadingRunners) return <LoadingSpinner />
     return (
-      <div className="flex flex-col gap-4">
-        <FormProvider {...form}>
-          {!part && (
-            <Controller
-              control={form.control}
-              name="subassembly"
-              render={({ field, fieldState }) => (
-                <DropDown
-                  options={(kitSubAssembly || []).map((kit) => ({
-                    label: kit.name,
-                    value: kit._id,
-                  }))}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  value={field.value}
-                  errorMessage={t(fieldState.error?.message ?? '')}
-                  label={t('part:part.form.subassembly_label')}
-                  placeholder={t('part:part.form.subassembly_ph')}
-                />
-              )}
-            />
-          )}
+      <div className="flex gap-2">
+        <div className="flex flex-col gap-4 basis-[75%]">
+          <FormProvider {...form}>
+            {!part && (
+              <Controller
+                control={form.control}
+                name="subassembly"
+                render={({ field, fieldState }) => (
+                  <DropDown
+                    options={kitOptions}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    value={field.value}
+                    errorMessage={t(fieldState.error?.message ?? '')}
+                    label={t('part:part.form.subassembly_label')}
+                    placeholder={t('part:part.form.subassembly_ph')}
+                  />
+                )}
+              />
+            )}
 
-          <div className="flex ">
-            <div className="border-b border-primary flex-grow">
-              <h1 className="font-bold text-primary text-lg ">
-                {t('part:part.form.runner_title')}
-              </h1>
+            <div className="flex ">
+              <div className="border-b border-primary flex-grow">
+                <h1 className="font-bold text-primary text-lg ">
+                  {t('part:part.form.runner_title')}
+                </h1>
+              </div>
             </div>
-          </div>
-          {fields.map((field, index) => (
-            <div key={field.id} className="flex md:flex-row gap-4 flex-col">
-              <div className="flex-grow ">
-                <Controller
-                  name={`requires.${index}.runner`}
-                  control={form.control}
-                  render={({ field: { onChange, value }, fieldState }) => (
-                    <DropDown
-                      options={(runners || []).map((runner) => ({
-                        label: `${runner.code} ${runner.isCut ? '(Cut)' : ''}`,
-                        value: runner._id,
-                        disabled: runner.isCut,
-                      }))}
-                      onChange={(e) => onChange(e.target.value)}
-                      value={value}
-                      errorMessage={t(fieldState.error?.message ?? '')}
-                      label={t('part:part.form.runner_label')}
-                      placeholder={t('part:part.form.runner_ph')}
-                    />
-                  )}
-                />
-              </div>
-
-              <div className="basis-1/2">
-                <Controller
-                  key={index}
-                  name={`requires.${index}.gate`}
-                  control={form.control}
-                  render={({
-                    field: { onChange, value, name },
-                    fieldState,
-                  }) => (
-                    <TagInput
-                      type="number"
-                      tags={(value || []).map((t) => t.toString())}
-                      handleTag={(tags) => onChange(tags.map((t) => t))}
-                      label={t('part:part.form.gate_label')}
-                      id={name}
-                      name={name}
-                      errorMessage={t(fieldState.error?.message ?? '')}
-                      placeholder={t('part:part.form.gate_ph')}
-                    />
-                  )}
-                />
-              </div>
-              {fields.length > 1 && (
-                <div className="flex items-end">
-                  <button
-                    className="btn btn-xs btn-error"
-                    onClick={() => {
-                      remove(index)
-                    }}
-                  >
-                    <Trash className="w-4 h-4 text-red-500" />
-                  </button>
+            {(partRequires ?? []).map((field, index) => (
+              <div
+                key={field.runner}
+                id={field.runner}
+                className="flex md:flex-row gap-4 flex-col"
+              >
+                <div className="flex-grow ">
+                  <Controller
+                    name={`requires.${index}.runner`}
+                    control={form.control}
+                    render={({ field: { onChange, value }, fieldState }) => (
+                      <DropDown
+                        options={runnersOptions}
+                        onChange={(e) => onChange(e.target.value)}
+                        value={value}
+                        errorMessage={t(fieldState.error?.message ?? '')}
+                        label={t('part:part.form.runner_label')}
+                        placeholder={t('part:part.form.runner_ph')}
+                      />
+                    )}
+                  />
                 </div>
-              )}
-            </div>
-          ))}
 
+                <div className="basis-1/2">
+                  <Controller
+                    key={index}
+                    name={`requires.${index}.gate`}
+                    control={form.control}
+                    render={({
+                      field: { onChange, value, name },
+                      fieldState,
+                    }) => (
+                      <TagInput
+                        type="number"
+                        tags={(value || []).map((t) => t.toString())}
+                        handleTag={(tags) => onChange(tags.map((t) => t))}
+                        label={t('part:part.form.gate_label')}
+                        id={name}
+                        name={name}
+                        errorMessage={t(fieldState.error?.message ?? '')}
+                        placeholder={t('part:part.form.gate_ph')}
+                      />
+                    )}
+                  />
+                </div>
+                {fields.length > 1 && (
+                  <div className="flex items-end">
+                    <button
+                      className="btn btn-xs btn-error"
+                      onClick={() => {
+                        remove(index)
+                      }}
+                    >
+                      <Trash className="w-4 h-4 text-red-500" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            <Button
+              onClick={() => {
+                append({
+                  runner: '',
+                  gate: [],
+                })
+              }}
+              secondary
+            >
+              {t('part:part.form.add_part')}
+            </Button>
+            <Button onClick={form.handleSubmit(onSubmit)}>
+              {t('common:save')}
+            </Button>
+          </FormProvider>
           <Button
-            onClick={() => {
-              append({
-                runner: '',
-                gate: [],
-              })
-            }}
             secondary
+            onClick={() => goTo(`/gunpla-kits/kits/${kitId}?tab=part`)}
           >
-            {t('part:part.form.add_part')}
+            {t('common:back')}
           </Button>
-          <Button onClick={form.handleSubmit(onSubmit)}>
-            {t('common:save')}
-          </Button>
-        </FormProvider>
-        <Button
-          secondary
-          onClick={() => goTo(`/gunpla-kits/kits/${kitId}?tab=part`)}
-        >
-          {t('common:back')}
-        </Button>
+        </div>
+
+        <div className="basis-[80px] flex flex-col gap-2 fixed right-4 bg-white">
+          {(partRequires ?? []).map((runner) => {
+            return (
+              <div
+                key={runner.runner}
+                className="flex flex-col gap-2 p-2 border border-primary text-center rounded-md cursor-pointer"
+                onClick={() => {
+                  // add #runner_id to url
+                  const targetElement = document.getElementById(runner.runner)
+
+                  if (targetElement) {
+                    targetElement.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    })
+                  }
+                }}
+              >
+                {runnersOptions.find((kit) => kit.value === runner.runner)
+                  ?.label ?? ''}
+              </div>
+            )
+          })}
+        </div>
       </div>
     )
   },
