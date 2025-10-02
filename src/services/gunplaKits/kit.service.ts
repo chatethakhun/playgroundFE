@@ -198,13 +198,13 @@ export const updateKitPart = async (
 
 export const updateCutInRequires = async (
   partId: string,
-  requiredIndex: number,
+  runnerId: string,
   isCut = false,
 ) => {
   try {
     return (
       await axiosInstance.put<KitPart>(
-        `/parts/${partId}/require/${requiredIndex}/cut`,
+        `/parts/${partId}/require/${runnerId}/cut`,
         { isCut },
       )
     ).data
