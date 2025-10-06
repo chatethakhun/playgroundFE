@@ -289,7 +289,7 @@ const KitPartForm = memo(
             return (
               <div
                 key={idx}
-                className="flex flex-col gap-2 p-2 border border-primary text-center rounded-md cursor-pointer"
+                className="flex flex-col gap-2 px-1 py-1 border border-primary text-center rounded-xs cursor-pointer  text-xs "
                 onClick={() => {
                   // add #runner_id to url
                   const targetElement = document.getElementById(String(idx))
