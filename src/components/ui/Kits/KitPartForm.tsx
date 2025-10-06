@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useCallback, useMemo, useRef } from 'react'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
@@ -14,7 +14,6 @@ import {
   FormProvider,
   useFieldArray,
   useForm,
-  useWatch,
 } from 'react-hook-form'
 
 import DropDown from '../Dropdown'
@@ -63,6 +62,8 @@ const KitPartForm = memo(
       queryFn: () => getKitSubassemblies(kitId, true),
       enabled: !!kitId,
     })
+
+    const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
     const { t } = useTranslation(['common', 'part'])
 
@@ -151,11 +152,6 @@ const KitPartForm = memo(
       [part],
     )
 
-    const partRequires = useWatch({
-      control: form.control,
-      name: 'requires',
-    })
-
     const kitOptions = useMemo(() => {
       if (!kitSubAssembly) return []
       return kitSubAssembly.map((kit) => ({
@@ -202,10 +198,13 @@ const KitPartForm = memo(
                 </h1>
               </div>
             </div>
-            {(partRequires ?? []).map((field, index) => (
+            {(fields ?? []).map((field, index) => (
               <div
                 key={field.runner}
-                id={field.runner}
+                id={String(index)}
+                ref={(el) => {
+                  sectionRefs.current[String(index)] = el
+                }}
                 className="flex md:flex-row gap-4 flex-col"
               >
                 <div className="flex-grow ">
@@ -286,25 +285,30 @@ const KitPartForm = memo(
         </div>
 
         <div className="basis-[80px] flex flex-col gap-2 fixed right-4 bg-white">
-          {(partRequires ?? []).map((runner) => {
+          {(fields ?? []).map((runner, idx) => {
             return (
               <div
-                key={runner.runner}
+                key={idx}
                 className="flex flex-col gap-2 p-2 border border-primary text-center rounded-md cursor-pointer"
                 onClick={() => {
                   // add #runner_id to url
-                  const targetElement = document.getElementById(runner.runner)
+                  const targetElement = document.getElementById(String(idx))
 
                   if (targetElement) {
-                    targetElement.scrollIntoView({
+                    sectionRefs.current[idx]?.scrollIntoView({
                       behavior: 'smooth',
-                      block: 'start',
+                      block: 'center',
                     })
+
+                    // targetElement.scrollIntoView({
+                    //   behavior: 'smooth',
+                    //   block: 'center',
+                    // })
                   }
                 }}
               >
                 {runnersOptions.find((kit) => kit.value === runner.runner)
-                  ?.label ?? ''}
+                  ?.label ?? `#${idx + 1}`}
               </div>
             )
           })}
