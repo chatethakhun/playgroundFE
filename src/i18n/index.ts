@@ -6,7 +6,7 @@ import HttpBackend from 'i18next-http-backend'
 
 // ใส่ URL จริงของคุณจาก myJson.online ทีละ namespace
 // (แต่ละ record จะมีลิงก์เป็นของมันเอง; ใส่ให้ครบ ns ที่ใช้)
-const URL = import.meta.env.VITE_API_URL
+const URL = 'https://my-rust-playground-api.onrender.com'
 const SUPPORTED = ['en', 'th'] as const
 
 i18n
@@ -30,7 +30,7 @@ i18n
     defaultNS: 'common',
     backend: {
       // เลือก URL จาก REMOTE_I18N_MAP
-      loadPath: `${URL}/i18n/{{lng}}/{{ns}}.json?cache=${Date.now()}`,
+      loadPath: `${URL}/i18n/{{lng}}/{{ns}}`,
       // ถ้าต้องแนบ header เพิ่ม (ไม่จำเป็นส่วนใหญ่)
       // requestOptions: { mode: 'cors' }
     },
