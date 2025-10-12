@@ -140,10 +140,28 @@ export const createKitSubassembly = async (
   }
 }
 
+const sortKitPartsByIsCut = (kitpart: KitPart[]) => {
+  // เรียงลำดับให้ false (ไม่ได้ถูกตัด) มาก่อน true (ถูกตัดแล้ว)
+  return kitpart.sort((a, b) => {
+    if (a.isCut === b.isCut) {
+      return 0 // ลำดับเท่ากัน
+    }
+    // ถ้า a.isCut เป็น false (0) และ b.isCut เป็น true (1)
+    // เราต้องการให้ a มาก่อน b, จึง return -1
+    return a.isCut ? 1 : -1
+  })
+}
+
 export const getKitParts = async (kitId: string) => {
   try {
-    return (await axiosInstance.get<Array<KitPart>>(`/kits/${kitId}/parts`))
-      .data
+    const { data } = await axiosInstance.get<Array<KitPart>>(
+      `/kits/${kitId}/parts`,
+    )
+    if (data && data.length > 0) {
+      return sortKitPartsByIsCut(data)
+    } else {
+      return []
+    }
   } catch (error) {
     console.error(error)
     throw error
