@@ -200,7 +200,7 @@ const KitPartForm = memo(
             </div>
             {(fields ?? []).map((field, index) => (
               <div
-                key={field.runner}
+                key={field.id}
                 id={String(index)}
                 ref={(el) => {
                   sectionRefs.current[String(index)] = el
