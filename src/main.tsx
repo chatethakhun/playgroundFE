@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import Modal from 'react-modal'
@@ -7,6 +7,9 @@ import { routeTree } from './routeTree.gen'
 
 import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
+import { I18nextProvider } from 'react-i18next'
+import i18n from '@/i18n'
+import LoadingFullPage from './components/ui/LoadingFullPage.tsx'
 
 // Create a new router instance
 const router = createRouter({
@@ -40,7 +43,11 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <I18nextProvider i18n={i18n}>
+        <Suspense fallback={<LoadingFullPage />}>
+          <RouterProvider router={router} />
+        </Suspense>
+      </I18nextProvider>
     </StrictMode>,
   )
 }

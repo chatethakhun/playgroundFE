@@ -13,7 +13,6 @@ export const createKit = async (data: Partial<Kit>) => {
 export const getKits = async ({ isFinished = false }) => {
   try {
     const url = isFinished ? '/kits?isFinished=true' : '/kits'
-    console.log(url)
     return (await axiosInstance.get<Array<Kit>>(url)).data
   } catch (error) {
     console.error(error)
