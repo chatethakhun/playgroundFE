@@ -21,3 +21,7 @@ interface CreateColorPayload {
   is_multiple: boolean
   is_clear: boolean
 }
+
+interface ColorsResponse {
+  data: Array<Color>
+}

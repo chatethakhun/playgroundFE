@@ -5,7 +5,7 @@ import { Controller, FormProvider, useForm } from 'react-hook-form'
 import TextInput from '../TextInput'
 import Button from '../Button'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createColor, updateColor } from '@/services/gunplaKits/color.service'
+import { updateColor } from '@/services/gunplaKits/color.service'
 import { Sketch } from '@uiw/react-color'
 
 import SwitchInput from '../SwitchInput'
@@ -48,7 +48,8 @@ const ColorForm = memo(
           is_clear: data.clearColor,
         }),
       onSuccess: (newData) => {
-        queryClient.setQueryData<Array<Color>>(['colors'], (oldData) => {
+        if (!newData) return
+        queryClient.setQueryData<Array<ColorV2>>(['colors'], (oldData) => {
           return [...(oldData ?? []), newData]
         })
 
