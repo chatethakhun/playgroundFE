@@ -1,7 +1,4 @@
-import {
-  deleteColor,
-  getColorsQuery,
-} from '@/services/gunplaKits/color.service'
+import { deleteColor } from '@/services/gunplaKits/color.service'
 import {
   useMutation,
   useQueryClient,
@@ -16,33 +13,35 @@ import { useTranslation } from 'react-i18next'
 import { confirm } from '../ComfirmDialog'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import NoData from '../NoData'
+import { getAllColorQuery } from '@/services/v2/color.service'
+import LoadingFullPage from '../LoadingFullPage'
 
 const Color = memo(
-  ({ color, onRemove }: { color: Color; onRemove: () => void }) => {
+  ({ color, onRemove }: { color: ColorV2; onRemove: () => void }) => {
     const { goTo } = useCustomRouter()
     const { t } = useTranslation('color')
     return (
       <ListItemContainer>
         <div className="flex gap-2 items-center">
-          {!color.multiple && <RunnerColor color={color.hex} />}
-          {color.multiple && <MultipleColorBox />}
+          {!color.is_multiple && <RunnerColor color={color.hex} />}
+          {color.is_multiple && <MultipleColorBox />}
           {color.name}{' '}
-          {color.clearColor ? `(${t('color:color.clear-color')})` : ''}
+          {color.is_clear ? `(${t('color:color.clear-color')})` : ''}
         </div>
         <div className="flex ml-auto gap-2">
           <Pencil
             className="text-gray-400 ml-auto"
-            onClick={() => goTo(`/gunpla-kits/kits/colors/${color._id}`)}
+            onClick={() => goTo(`/gunpla-kits/kits/colors/${color.id}`)}
           />
           <Trash className="text-red-400 ml-auto" onClick={onRemove} />
         </div>
       </ListItemContainer>
     )
   },
-  (prev, next) => prev.color._id === next.color._id,
+  (prev, next) => prev.color.id === next.color.id,
 )
 const ListColors = memo(() => {
-  const { data } = useSuspenseQuery(getColorsQuery())
+  const { data, isLoading } = useSuspenseQuery(getAllColorQuery())
   const { t } = useTranslation('common')
 
   const queryClient = useQueryClient()
@@ -64,14 +63,16 @@ const ListColors = memo(() => {
 
     removeColor(id)
   }, [])
+
+  if (isLoading) return <LoadingFullPage />
   return (
     <div>
-      {data.length === 0 && <NoData />}
+      {(data ?? []).length === 0 && <NoData />}
       {data?.map((color) => (
         <Color
-          key={color._id}
+          key={color.id}
           color={color}
-          onRemove={() => onRemoveColor(color._id)}
+          onRemove={() => onRemoveColor(color.id)}
         />
       ))}
     </div>
