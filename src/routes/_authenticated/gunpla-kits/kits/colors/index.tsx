@@ -5,7 +5,7 @@ import ListColors from '@/components/ui/Kits/ListColor'
 import PageContainer from '@/components/ui/PageContainer'
 import useModal from '@/hooks/useModal'
 
-import { getAllColorQuery } from '@/services/v2/color.service'
+import colorService from '@/services/v2/color.service'
 import { queryClient } from '@/utils/queryClient'
 import { createFileRoute } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
@@ -17,7 +17,7 @@ export const Route = createFileRoute(
   '/_authenticated/gunpla-kits/kits/colors/',
 )({
   loader: async () => {
-    const colors = queryClient.ensureQueryData(getAllColorQuery())
+    const colors = queryClient.ensureQueryData(colorService.getAllColorQuery())
     return colors
   },
   component: RouteComponent,

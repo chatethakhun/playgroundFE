@@ -6,6 +6,7 @@ const getAllColors = async () => {
     return response.data
   } catch (error) {
     console.log(error)
+    return []
   }
 }
 
@@ -14,4 +15,17 @@ const getAllColorQuery = () => ({
   queryFn: getAllColors,
 })
 
-export { getAllColors, getAllColorQuery }
+const createColor = async (data: CreateColorPayload) => {
+  try {
+    const response = await axiosInstanceV2.post('/colors', {
+      ...data,
+      code: data.hex,
+    })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export default { getAllColors, getAllColorQuery, createColor }

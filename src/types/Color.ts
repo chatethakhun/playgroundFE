@@ -14,3 +14,10 @@ interface ColorV2 {
   is_multiple: boolean
   is_clear: boolean
 }
+
+interface CreateColorPayload {
+  name: string
+  hex: string
+  is_multiple: boolean
+  is_clear: boolean
+}

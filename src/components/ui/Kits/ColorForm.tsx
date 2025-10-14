@@ -12,6 +12,7 @@ import SwitchInput from '../SwitchInput'
 import { useTranslation } from 'react-i18next'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { toast } from 'react-toastify'
+import colorService from '@/services/v2/color.service'
 const schema = yup.object({
   name: yup.string().required(),
   hex: yup.string().required().min(6).max(7),
@@ -39,7 +40,13 @@ const ColorForm = memo(
     const isMultiple = form.watch('multiple')
 
     const { mutate: addColor } = useMutation({
-      mutationFn: (data: Data) => createColor(data),
+      mutationFn: (data: Data) =>
+        colorService.createColor({
+          name: data.name,
+          hex: data.hex,
+          is_multiple: data.multiple,
+          is_clear: data.clearColor,
+        }),
       onSuccess: (newData) => {
         queryClient.setQueryData<Array<Color>>(['colors'], (oldData) => {
           return [...(oldData ?? []), newData]

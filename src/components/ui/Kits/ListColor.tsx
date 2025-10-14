@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { confirm } from '../ComfirmDialog'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import NoData from '../NoData'
-import { getAllColorQuery } from '@/services/v2/color.service'
+import colorSevice from '@/services/v2/color.service'
 import LoadingFullPage from '../LoadingFullPage'
 
 const Color = memo(
@@ -41,7 +41,7 @@ const Color = memo(
   (prev, next) => prev.color.id === next.color.id,
 )
 const ListColors = memo(() => {
-  const { data, isLoading } = useSuspenseQuery(getAllColorQuery())
+  const { data, isLoading } = useSuspenseQuery(colorSevice.getAllColorQuery())
   const { t } = useTranslation('common')
 
   const queryClient = useQueryClient()
