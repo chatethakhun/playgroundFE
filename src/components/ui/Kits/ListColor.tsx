@@ -1,4 +1,3 @@
-import { deleteColor } from '@/services/gunplaKits/color.service'
 import {
   useMutation,
   useQueryClient,
@@ -47,10 +46,11 @@ const ListColors = memo(() => {
   const queryClient = useQueryClient()
 
   const { mutate: removeColor } = useMutation({
-    mutationFn: (id: string) => deleteColor(id),
-    onSuccess: (id: string) => {
-      queryClient.setQueryData<Array<Color>>(['colors'], (oldData) => {
-        return oldData?.filter((c) => c._id !== id)
+    mutationFn: (id: string) => colorSevice.deleteColor(id),
+    onSuccess: (id: string | null) => {
+      if (!id) return
+      queryClient.setQueryData<Array<ColorV2>>(['colors'], (oldData) => {
+        return oldData?.filter((c) => c.id !== id)
       })
     },
   })

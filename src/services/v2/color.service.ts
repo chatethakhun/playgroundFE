@@ -28,4 +28,14 @@ const createColor = async (data: CreateColorPayload) => {
   return null
 }
 
-export default { getAllColors, getAllColorQuery, createColor }
+const deleteColor = async (id: string) => {
+  const response = await axiosInstanceV2.delete(`/colors/${id}`)
+
+  if (response.status === 204) {
+    return id
+  }
+
+  return null
+}
+
+export default { getAllColors, getAllColorQuery, createColor, deleteColor }
