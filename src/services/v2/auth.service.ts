@@ -15,4 +15,19 @@ const login = async (data: LoginPayload) => {
   }
 }
 
-export default { login }
+const register = async (data: RegisterPayload) => {
+  try {
+    const response = await axiosInstanceV2.post<RegisterResponse>(
+      '/auth/register',
+      data,
+    )
+
+    localStorage.setItem('v2Token', response.data.token)
+
+    return response.data.token
+  } catch {
+    throw new Error('การสมัครสมาชิกไม่สำเร็จ')
+  }
+}
+
+export default { login, register }

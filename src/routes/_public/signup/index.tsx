@@ -11,14 +11,12 @@ import PageContainer from '@/components/ui/PageContainer'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import TextInput from '@/components/ui/TextInput'
 import Button from '@/components/ui/Button'
-import { signup } from '@/services/auth/auth.service'
+
+import authService from '@/services/v2/auth.service'
 import { ChevronLeft as IoIosArrowBack } from 'lucide-react'
 const signupSchema = yup.object({
   fullName: yup.string().required('form.name_require'),
-  email: yup
-    .string()
-    .required('form.email_require')
-    .email('form.email_invalid'),
+  username: yup.string().required('form.username_require'),
   password: yup
     .string()
     .required('form.password_require')
@@ -39,9 +37,9 @@ function RouteComponent() {
   const { goTo } = useCustomRouter()
   const { t } = useTranslation('register')
   const signUpMutation = useMutation({
-    mutationFn: signup,
+    mutationFn: authService.register,
     onSuccess: () => {
-      goTo('/chatapp')
+      goTo('/apps')
     },
     onError: (err) => {
       console.log(err)
@@ -51,7 +49,7 @@ function RouteComponent() {
   const method = useForm({
     defaultValues: {
       fullName: '',
-      email: '',
+      username: '',
       password: '',
       confirmPassword: '',
     },
@@ -60,9 +58,8 @@ function RouteComponent() {
   const { handleSubmit, control } = method
   const onSubmit = useCallback((data: FormValues) => {
     signUpMutation.mutate({
-      email: data.email,
+      username: data.username,
       password: data.password,
-      fullName: data.fullName,
     })
   }, [])
   return (
@@ -94,15 +91,14 @@ function RouteComponent() {
         />
         <Controller
           control={control}
-          name="email"
+          name="username"
           render={({
             field: { onChange, value, name },
             fieldState: { error },
           }) => (
             <TextInput
               id={name}
-              type={name}
-              placeholder={t('form.email_ph')}
+              placeholder={t('form.username_ph')}
               errorMessage={t(error?.message || '')}
               onChange={(evt) => onChange(evt.currentTarget.value)}
               value={value}
