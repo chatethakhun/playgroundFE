@@ -5,8 +5,9 @@ import { getMe } from '@/services/auth/auth.service'
 
 interface AuthContextType {
   authUser: User | null
-  login: (data: { user: User; token: string }) => void
+  login: () => void
   logout: () => void
+  isLoggedIn: boolean
 }
 
 interface Props {
@@ -17,22 +18,21 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 const AuthProvider = ({ children }: Props) => {
   const [authUser, setAuthUser] = useState<User | null>(null)
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { goTo } = useCustomRouter()
   const { data } = useQuery({
     queryFn: () => getMe(),
     queryKey: ['me'],
   })
 
-  const login = useCallback((userData: { user: User; token: string }) => {
-    setAuthUser(userData.user)
-    localStorage.setItem('token', userData.token)
+  const login = useCallback(() => {
+    setIsLoggedIn(true)
     goTo('/apps')
   }, [])
 
   const logout = useCallback(() => {
-    setAuthUser(null)
-    localStorage.removeItem('token')
+    setIsLoggedIn(false)
+    localStorage.removeItem('v2Token')
     goTo('/')
   }, [])
 
@@ -43,7 +43,7 @@ const AuthProvider = ({ children }: Props) => {
   }, [data])
 
   return (
-    <AuthContext.Provider value={{ authUser, login, logout }}>
+    <AuthContext.Provider value={{ authUser, login, logout, isLoggedIn }}>
       {children}
     </AuthContext.Provider>
   )

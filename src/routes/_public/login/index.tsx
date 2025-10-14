@@ -11,16 +11,14 @@ import IconButton from '@/components/ui/IconButton'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import TextInput from '@/components/ui/TextInput'
 import Button from '@/components/ui/Button'
-import { login } from '@/services/auth/auth.service'
+import authService from '@/services/v2/auth.service'
 import useAuth from '@/hooks/useAuth'
 import { ChevronLeft as IoIosArrowBack } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 const loginSchema = yup.object({
-  email: yup
-    .string()
-    .required('form.email_require')
-    .email('form.email_invalid'),
+  username: yup.string().required('form.username_require'),
+
   password: yup
     .string()
     .required('form.password_require')
@@ -40,10 +38,15 @@ function RouteComponent() {
 
   // Access the client
   const mutation = useMutation({
-    mutationFn: ({ email, password }: { email: string; password: string }) =>
-      login(email, password),
-    onSuccess: (data) => {
-      loginUser({ user: data.user, token: data.token })
+    mutationFn: ({
+      username,
+      password,
+    }: {
+      username: string
+      password: string
+    }) => authService.login({ username, password }),
+    onSuccess: (_) => {
+      loginUser()
     },
     onError: (error) => {
       console.error(`error from login ${error}`)
@@ -52,7 +55,7 @@ function RouteComponent() {
   })
   const method = useForm({
     defaultValues: {
-      email: '',
+      username: '',
       password: '',
     },
     resolver: yupResolver(loginSchema),
@@ -61,9 +64,9 @@ function RouteComponent() {
   const { handleSubmit, control } = method
 
   const onSumbit = useCallback((formValue: FormValues) => {
-    const { email, password } = formValue
+    const { username, password } = formValue
 
-    mutation.mutate({ email, password })
+    mutation.mutate({ username, password })
   }, [])
   return (
     <PageContainer>
@@ -76,12 +79,12 @@ function RouteComponent() {
       <FormProvider {...method}>
         <Controller
           control={control}
-          name="email"
+          name="username"
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <TextInput
-              id="email"
+              id="username"
               type="email"
-              placeholder={t('form.email_ph')}
+              placeholder={t('form.username_ph')}
               errorMessage={t(error?.message || '')}
               onChange={(evt) => onChange(evt.currentTarget.value)}
               value={value}
