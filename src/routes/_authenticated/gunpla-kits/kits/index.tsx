@@ -9,8 +9,9 @@ import { ToyBrick } from 'lucide-react'
 import GunplaSVG from '@/assets/images/gunpla.webp'
 import { useTranslation } from 'react-i18next'
 import { queryClient } from '@/utils/queryClient'
-import { getKitsQuery } from '@/services/gunplaKits/kit.service'
+
 import MenuTab from '@/components/ui/MenuTab'
+import kitService from '@/services/v2/kit.service'
 
 type KitSearch = {
   isFinished: boolean
@@ -31,7 +32,7 @@ export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/')({
     isFinished,
   }),
   loader: async ({ deps: { isFinished } }) => {
-    const kits = await queryClient.ensureQueryData(getKitsQuery(isFinished))
+    const kits = await queryClient.ensureQueryData(kitService.getAllKitQuery())
     return kits
   },
   head: () => ({

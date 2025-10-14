@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { Check, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import NoData from '../NoData'
+import kitService from '@/services/v2/kit.service'
 
 const KitItem = memo(
   ({
@@ -96,20 +97,20 @@ const KitItem = memo(
 )
 
 const ListKits = memo(({ isFinished }: { isFinished: boolean }) => {
-  const { data, isLoading } = useSuspenseQuery(getKitsQuery(isFinished))
+  const { data, isLoading } = useSuspenseQuery(kitService.getAllKitQuery())
 
   if (isLoading) return <LoadingFullPage />
 
   return (
     <div className="flex flex-col gap-4 divide-gray-500">
-      {data.length === 0 && <NoData />}
+      {(data ?? []).length === 0 && <NoData />}
       {data?.map((kit) => (
         <KitItem
-          key={kit._id}
-          kitId={kit._id}
+          key={kit.id}
+          kitId={kit.id}
           kitName={kit.name}
           grade={kit.grade}
-          isCompleted={kit.isFinished}
+          isCompleted={kit.is_finished}
         />
       ))}
     </div>
