@@ -1,9 +1,8 @@
 import ColorForm from '@/components/ui/Kits/ColorForm'
+import LoadingFullPage from '@/components/ui/LoadingFullPage'
 import PageContainer from '@/components/ui/PageContainer'
-import {
-  getColorQuery,
-  getColorsQuery,
-} from '@/services/gunplaKits/color.service'
+
+import colorService from '@/services/v2/color.service'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -15,7 +14,7 @@ export const Route = createFileRoute(
 
 function RouteComponent() {
   const { colorId } = Route.useParams()
-  const { data: colors } = useSuspenseQuery(getColorsQuery())
+  const { data: colors } = useSuspenseQuery(colorService.getAllColorQuery())
 
   // const { data: color } = useQuery({
   //   queryFn: () => getColor(colorId),
@@ -27,9 +26,11 @@ function RouteComponent() {
   //
 
   const { data: color } = useSuspenseQuery({
-    ...getColorQuery(colorId),
-    initialData: () => colors.find((c) => c._id === colorId),
+    ...colorService.getColorByIdQuery(colorId),
+    initialData: () => colors.find((c) => c.id === colorId),
   })
+
+  if (!color) return <LoadingFullPage></LoadingFullPage>
 
   return (
     <PageContainer>

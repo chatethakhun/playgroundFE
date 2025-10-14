@@ -15,6 +15,21 @@ const getAllColorQuery = () => ({
   queryFn: getAllColors,
 })
 
+const getColorById = async (id: string) => {
+  try {
+    const response = await axiosInstanceV2.get<ColorV2>(`/colors/${id}`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
+const getColorByIdQuery = (id: string) => ({
+  queryKey: ['color', id],
+  queryFn: () => getColorById(id),
+})
+
 const createColor = async (data: CreateColorPayload) => {
   const response = await axiosInstanceV2.post<ColorV2>('/colors', {
     ...data,
@@ -38,4 +53,22 @@ const deleteColor = async (id: string) => {
   return null
 }
 
-export default { getAllColors, getAllColorQuery, createColor, deleteColor }
+const updateColor = async (id: ColorV2['id'], data: UpdateColorPayload) => {
+  const response = await axiosInstanceV2.patch<ColorV2>(`/colors/${id}`, data)
+
+  if (response.status === 200) {
+    return response.data
+  }
+
+  return null
+}
+
+export default {
+  getAllColors,
+  getAllColorQuery,
+  getColorById,
+  getColorByIdQuery,
+  createColor,
+  deleteColor,
+  updateColor,
+}

@@ -5,7 +5,7 @@ import { Controller, FormProvider, useForm } from 'react-hook-form'
 import TextInput from '../TextInput'
 import Button from '../Button'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { updateColor } from '@/services/gunplaKits/color.service'
+
 import { Sketch } from '@uiw/react-color'
 
 import SwitchInput from '../SwitchInput'
@@ -23,7 +23,7 @@ const schema = yup.object({
 type Data = yup.Asserts<typeof schema>
 
 const ColorForm = memo(
-  ({ onClose, color }: { onClose?: () => void; color?: Color }) => {
+  ({ onClose, color }: { onClose?: () => void; color?: ColorV2 }) => {
     const queryClient = useQueryClient()
     const { goTo } = useCustomRouter()
     const { t } = useTranslation(['common', 'color'])
@@ -32,8 +32,8 @@ const ColorForm = memo(
       defaultValues: {
         name: color?.name || '',
         hex: color?.hex ?? '#ffffff',
-        multiple: color?.multiple ?? false,
-        clearColor: color?.clearColor ?? false,
+        multiple: color?.is_multiple ?? false,
+        clearColor: color?.is_clear ?? false,
       },
     })
 
@@ -61,16 +61,23 @@ const ColorForm = memo(
     })
 
     const { mutate: editColor } = useMutation({
-      mutationFn: (data: Data) => updateColor(color?._id ?? '', data),
+      mutationFn: (data: Data) =>
+        colorService.updateColor(color?.id ?? '', {
+          name: data.name,
+          hex: data.hex,
+          is_multiple: data.multiple,
+          is_clear: data.clearColor,
+        }),
       onSuccess: (newData) => {
+        if (!newData) return
         // refetch query data in cached queryClient
-        queryClient.setQueryData<Array<Color>>(['colors'], (oldData) => {
+        queryClient.setQueryData<Array<ColorV2>>(['colors'], (oldData) => {
           return (oldData ?? []).map((c) =>
-            c._id === newData?._id ? newData : c,
+            c.id === newData?.id ? newData : c,
           )
         })
         // refetch query data in cached queryClient
-        queryClient.setQueryData<Color>(['colors', newData?._id], newData)
+        queryClient.setQueryData<ColorV2>(['colors', newData?.id], newData)
 
         goTo(`/gunpla-kits/kits/colors`)
       },
@@ -81,9 +88,9 @@ const ColorForm = memo(
 
     const onSubmit = useCallback(
       (data: Data) => {
-        color?._id ? editColor(data) : addColor(data)
+        color?.id ? editColor(data) : addColor(data)
       },
-      [color?._id],
+      [color?.id],
     )
 
     return (

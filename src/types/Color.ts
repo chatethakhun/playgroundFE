@@ -25,3 +25,10 @@ interface CreateColorPayload {
 interface ColorsResponse {
   data: Array<Color>
 }
+
+interface UpdateColorPayload {
+  name: string
+  hex: string
+  is_multiple: boolean
+  is_clear: boolean
+}
