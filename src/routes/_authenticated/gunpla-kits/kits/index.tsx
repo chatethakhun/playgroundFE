@@ -13,26 +13,31 @@ import { queryClient } from '@/utils/queryClient'
 import MenuTab from '@/components/ui/MenuTab'
 import kitService from '@/services/v2/kit.service'
 
+const MAP_INDEX_STATUS = {
+  ['in_progress']: 0,
+  ['pending']: 1,
+  ['done']: 2,
+}
+
 type KitSearch = {
-  isFinished: boolean
+  status: KitStatus
 }
 export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/')({
   validateSearch: (args: KitSearch) => {
-    if (
-      !!args.isFinished &&
-      args.isFinished !== true &&
-      args.isFinished !== false
-    ) {
+    const validStatus = ['in_progress', 'pending', 'done']
+    if (!!args.status && !validStatus.includes(args.status as KitStatus)) {
       throw new Error('Invalid isFinished search parameter')
     }
 
     return args
   },
-  loaderDeps: ({ search: { isFinished } }: { search: KitSearch }) => ({
-    isFinished,
+  loaderDeps: ({ search: { status } }) => ({
+    status,
   }),
-  loader: async ({ deps: { isFinished } }) => {
-    const kits = await queryClient.ensureQueryData(kitService.getAllKitQuery())
+  loader: async ({ deps: { status } }) => {
+    const kits = await queryClient.ensureQueryData(
+      kitService.getAllKitQuery(status),
+    )
     return kits
   },
   head: () => ({
@@ -43,8 +48,9 @@ export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/')({
 
 function RouteComponent() {
   const { goTo } = useCustomRouter()
-  const { isFinished } = Route.useSearch()
+  const { status } = Route.useSearch()
   const { t } = useTranslation('kit')
+
   return (
     <PageContainer>
       <div className="flex justify-between items-center">
@@ -70,13 +76,23 @@ function RouteComponent() {
       </div>
 
       <MenuTab
-        tabs={[t('kit:tab-1'), t('kit:tab-2')]}
-        onChange={(index) =>
-          goTo(`/gunpla-kits/kits${index === 0 ? '' : '?isFinished=true'}`)
-        }
-        currentIndex={!!isFinished ? 1 : 0}
+        tabs={[t('kit:tab-1'), t('kit:tab-2'), t('kit:tab-3')]}
+        onChange={(index) => {
+          switch (index) {
+            case 0:
+              goTo('/gunpla-kits/kits?status=in_progress')
+              break
+            case 1:
+              goTo('/gunpla-kits/kits?status=pending')
+              break
+            case 2:
+              goTo('/gunpla-kits/kits?status=done')
+              break
+          }
+        }}
+        currentIndex={MAP_INDEX_STATUS[status] ?? 0}
       />
-      <ListKits isFinished={!!isFinished} />
+      <ListKits status={status} />
     </PageContainer>
   )
 }

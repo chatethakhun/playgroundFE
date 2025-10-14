@@ -1,7 +1,4 @@
-import {
-  getKitsQuery,
-  updateIsFinished,
-} from '@/services/gunplaKits/kit.service'
+import { updateIsFinished } from '@/services/gunplaKits/kit.service'
 import {
   useMutation,
   useQueryClient,
@@ -96,8 +93,10 @@ const KitItem = memo(
     prev.isCompleted === next.isCompleted,
 )
 
-const ListKits = memo(({ isFinished }: { isFinished: boolean }) => {
-  const { data, isLoading } = useSuspenseQuery(kitService.getAllKitQuery())
+const ListKits = memo(({ status }: { status: KitStatus }) => {
+  const { data, isLoading } = useSuspenseQuery(
+    kitService.getAllKitQuery(status),
+  )
 
   if (isLoading) return <LoadingFullPage />
 
