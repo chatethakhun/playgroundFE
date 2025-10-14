@@ -7,12 +7,13 @@ const useSocket = () => {
   const socketRef = useRef<Socket | undefined>(undefined)
   const { authUser } = useAuth()
 
+  const userId = authUser?.id ?? ''
   const connectSocket = useCallback(() => {
-    if (socketRef.current?.connected || !authUser?._id) return
+    if (socketRef.current?.connected || !userId) return
 
     const newSocket = io(import.meta.env.VITE_API_URL, {
       query: {
-        userId: authUser._id,
+        userId: userId,
       },
     })
 
@@ -23,7 +24,7 @@ const useSocket = () => {
     }
 
     socketRef.current = newSocket
-  }, [authUser?._id])
+  }, [userId])
 
   useEffect(() => {
     connectSocket()
