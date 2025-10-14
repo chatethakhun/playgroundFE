@@ -8,3 +8,14 @@ interface User {
   updatedAt: string
   role: 'user' | 'admin'
 }
+
+interface UserV2 {
+  username: string
+  id: string
+  full_name: string
+  bio: string
+  avatar_url: string
+  role: 'user' | 'admin'
+  created_at: string
+  updated_at: string
+}

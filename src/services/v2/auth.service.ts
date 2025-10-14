@@ -30,4 +30,14 @@ const register = async (data: RegisterPayload) => {
   }
 }
 
-export default { login, register }
+const me = async () => {
+  try {
+    const response = await axiosInstanceV2.get<UserV2>('/auth/me')
+
+    return response.data
+  } catch {
+    throw new Error('การเข้าสู่ระบบล้มเหลว')
+  }
+}
+
+export default { login, register, me }
