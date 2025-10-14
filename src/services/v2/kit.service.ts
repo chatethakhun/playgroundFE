@@ -14,7 +14,7 @@ const getAllKits = async (status?: KitStatus): Promise<Array<KitV2>> => {
 }
 
 const getAllKitQuery = (status: KitStatus) => ({
-  queryFn: () => getAllKits(status ?? 'pending'),
+  queryFn: () => getAllKits(status ?? 'in_progress'),
   queryKey: ['kits', status],
 })
 
