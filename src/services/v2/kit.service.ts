@@ -13,12 +13,29 @@ const getAllKits = async (status?: KitStatus): Promise<Array<KitV2>> => {
   }
 }
 
-const getAllKitQuery = (status: KitStatus) => ({
-  queryFn: () => getAllKits(status ?? 'in_progress'),
+const getAllKitQuery = (status?: KitStatus) => ({
+  queryFn: () => getAllKits(status),
   queryKey: ['kits', status],
+})
+
+const getKitById = async (id: string): Promise<KitV2 | null> => {
+  try {
+    const response = await axiosInstanceV2.get<KitV2>(`/kits/${id}`)
+    return response.data
+  } catch (err) {
+    console.error('Error fetching kit:', err)
+    return null // หรือ return null ถ้าต้องการ fallback
+  }
+}
+
+const getKitByIdQuery = (id: string) => ({
+  queryFn: () => getKitById(id),
+  queryKey: ['kit', id],
 })
 
 export default {
   getAllKits,
   getAllKitQuery,
+  getKitById,
+  getKitByIdQuery,
 }

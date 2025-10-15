@@ -1,17 +1,19 @@
-import { getKitQuery, getKitsQuery } from '@/services/gunplaKits/kit.service'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { memo, useMemo } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
 import ListItemContainer from '../ListItemContainer'
 import { useTranslation } from 'react-i18next'
+import kitService from '@/services/v2/kit.service'
 
 const Overview = memo(
   ({ kitId }: { kitId: string }) => {
-    const { data: kits, isLoading } = useSuspenseQuery(getKitsQuery())
+    const { data: kits, isLoading } = useSuspenseQuery(
+      kitService.getAllKitQuery(),
+    )
 
     const { data } = useSuspenseQuery({
-      ...getKitQuery(kitId),
-      initialData: kits?.find((kit) => kit._id === kitId),
+      ...kitService.getKitByIdQuery(kitId),
+      initialData: kits?.find((kit) => kit.id === kitId),
     })
 
     const { t } = useTranslation('kit')
@@ -38,7 +40,9 @@ const Overview = memo(
         </ListItemContainer>
         <ListItemContainer>
           <h6 className="text-primary font-bold">{t('overview.grade')}: </h6>
-          <span className="text-gray-500 text-sm font-bold">{data?.grade}</span>
+          <span className="text-gray-500 text-sm font-bold">
+            {data?.grade.toUpperCase()}
+          </span>
         </ListItemContainer>
         <ListItemContainer>
           <h6 className="text-primary font-bold">

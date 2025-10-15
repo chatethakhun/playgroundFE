@@ -3,7 +3,8 @@ import LoadingFullPage from '@/components/ui/LoadingFullPage'
 
 import MenuTab from '@/components/ui/MenuTab'
 import PageContainer from '@/components/ui/PageContainer'
-import { getKit } from '@/services/gunplaKits/kit.service'
+
+import kitService from '@/services/v2/kit.service'
 import { queryClient } from '@/utils/queryClient'
 import { createFileRoute } from '@tanstack/react-router'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
@@ -12,17 +13,13 @@ const KitPart = lazy(() => import('@/components/ui/Kits/KitPart'))
 const KitSubassembly = lazy(() => import('@/components/ui/Kits/KitSubassembly'))
 const Runners = lazy(() => import('@/components/ui/Kits/Runners'))
 
-// กำหนด query key + fetcher
-const kitQuery = (kitId: string) => ({
-  queryKey: ['kit', kitId],
-  queryFn: () => getKit(kitId),
-})
-
 export const Route = createFileRoute(
   '/_authenticated/gunpla-kits/kits/$kitId/',
 )({
   loader: async ({ params: { kitId } }) => {
-    const kit = await queryClient.ensureQueryData(kitQuery(kitId))
+    const kit = await queryClient.ensureQueryData(
+      kitService.getKitByIdQuery(kitId),
+    )
     return { kit }
   },
   head: ({ loaderData }) => {
