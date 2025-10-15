@@ -1,5 +1,4 @@
 import {
-  getKitParts,
   updateCutInRequires,
   updateKitPart,
 } from '@/services/gunplaKits/kit.service'
@@ -19,6 +18,7 @@ import RunnerColor from './RunnderColor'
 import { Switch } from '../switch'
 import MultipleColorBox from './MultipleColorBox'
 import { useTranslation } from 'react-i18next'
+import kitPartService from '@/services/v2/kitPart.service'
 
 const GateBox = memo(({ gate }: { gate: string }) => {
   const arrayGate = gate.split(',').map((g) => Number(g.trim()))
@@ -227,7 +227,7 @@ const KitPartItem = memo(
 const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
   const { data, isLoading } = useQuery({
     queryKey: ['kit', kitId, 'parts'],
-    queryFn: () => getKitParts(kitId),
+    queryFn: () => kitPartService.getKitPart(kitId),
     enabled: !!kitId,
   })
 

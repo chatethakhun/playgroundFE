@@ -46,7 +46,7 @@ const updateKitRunner = async (
 }
 
 const updateIsUsed = async (
-  id: string,
+  id: number,
   data: UpdateIsUsedPayload,
 ): Promise<RunnerV2 | null> => {
   try {

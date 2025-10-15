@@ -32,7 +32,9 @@ const RunnerItem = memo(
 
     const { mutate: toggleRunner } = useMutation({
       mutationFn: () =>
-        runnerService.updateIsUsed(runner.id, { is_used: !runnerIsCut }),
+        runnerService.updateIsUsed(Number(runner.id), {
+          is_used: !runnerIsCut,
+        }),
       onSuccess: (newData) => {
         if (!newData) return
         queryClient.setQueryData<Array<RunnerColor>>(
