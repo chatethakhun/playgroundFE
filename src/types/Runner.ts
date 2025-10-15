@@ -15,20 +15,20 @@ interface Runner {
 
 interface RunnerV2 {
   name: string
-  kit_id: string
-  color_id: string
-  id: string
+  kit_id: number
+  color_id: number
+  id: number
   amount: number
 }
 interface CreateKitRunnerPayload {
-  color_id: string
-  kit_id: string
+  color_id: number
+  kit_id: number
   amount: number
   name: string
 }
 
 interface UpdateKitRunnerPayload {
-  id: string
+  id: number
   name: string
   kit_id: string
   color_id: string
@@ -44,6 +44,6 @@ interface RunnerColor {
   kit_id: string
   is_used: boolean
   color: ColorV2
-  id: string
+  id: number
   amount: number
 }

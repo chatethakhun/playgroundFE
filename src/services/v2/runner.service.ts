@@ -28,10 +28,11 @@ const createKitRunner = async (
 }
 
 const updateKitRunner = async (
-  data: UpdateKitRunnerPayload,
+  runnerId: RunnerV2['id'],
+  data: Omit<RunnerV2, 'id' | 'created_at' | 'updated_at' | 'is_used'>,
 ): Promise<RunnerV2 | null> => {
   try {
-    const response = await axiosInstanceV2.patch(`/runners/${data.id}`, {
+    const response = await axiosInstanceV2.patch(`/runners/${runnerId}`, {
       ...data,
       name: data.name,
       kit_id: Number(data.kit_id),
@@ -59,9 +60,29 @@ const updateIsUsed = async (
   }
 }
 
+const getRunnerById = async (runnerId: number): Promise<RunnerV2 | null> => {
+  try {
+    const response = await axiosInstanceV2.get(`/runners/${runnerId}  `)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching kit by runner ID:', error)
+    return null
+  }
+}
+
+const getRunnerByIdQuery = (
+  kitId: RunnerV2['kit_id'],
+  runnerId: RunnerV2['id'],
+) => ({
+  queryFn: () => getRunnerById(Number(kitId)),
+  queryKey: ['kits', kitId, 'runners', runnerId],
+})
+
 export default {
   getKitRunners,
+  getRunnerById,
   createKitRunner,
+  getRunnerByIdQuery,
   updateKitRunner,
   updateIsUsed,
 }
