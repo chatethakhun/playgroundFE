@@ -74,7 +74,7 @@ const getRunnerByIdQuery = (
   kitId: RunnerV2['kit_id'],
   runnerId: RunnerV2['id'],
 ) => ({
-  queryFn: () => getRunnerById(Number(kitId)),
+  queryFn: () => getRunnerById(Number(runnerId)),
   queryKey: ['kits', kitId, 'runners', runnerId],
 })
 

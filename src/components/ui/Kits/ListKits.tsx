@@ -60,7 +60,7 @@ const KitItem = memo(
         <div>
           <h6 className="text-primary font-bold">{kitName}</h6>
           <span className="text-gray-500 text-sm">
-            {t('list.size-kit')}: {grade}
+            {t('list.size-kit')}: {grade.toUpperCase()}
           </span>
         </div>
         <div className="ml-auto flex gap-5 items-center">
