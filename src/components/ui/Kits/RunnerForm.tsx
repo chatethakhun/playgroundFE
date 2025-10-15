@@ -5,16 +5,15 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import TextInput from '../TextInput'
 import Button from '../Button'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { getColors } from '@/services/gunplaKits/color.service'
+
 import LoadingSpinner from '../LoadingSpinner'
 import DropDown from '../Dropdown'
-import {
-  createKitRunner,
-  updateKitRunner,
-} from '@/services/gunplaKits/kit.service'
+import { updateKitRunner } from '@/services/gunplaKits/kit.service'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
+import runnerService from '@/services/v2/runner.service'
+import colorService from '@/services/v2/color.service'
 
 const schema = yup.object({
   code: yup.string().required('runner:runner.form.code_error'),
@@ -41,7 +40,7 @@ const RunnerForm = memo(
 
     const { data, isLoading } = useQuery({
       queryKey: ['colors'],
-      queryFn: () => getColors(),
+      queryFn: () => colorService.getAllColors(),
     })
 
     const { t } = useTranslation(['common', 'runner'])
@@ -49,12 +48,19 @@ const RunnerForm = memo(
     const { goTo } = useCustomRouter()
 
     const { mutate: addRunner } = useMutation({
-      mutationFn: (data: Data) => createKitRunner(data, kitId),
+      mutationFn: (data: Data) =>
+        runnerService.createKitRunner({
+          amount: data.qty,
+          color_id: data.color,
+          kit_id: kitId,
+          name: data.code,
+        }),
       onSuccess: (data) => {
+        if (!data) return
         toast(t('save-success'), { position: 'bottom-center' })
         method.reset()
         queryClient.refetchQueries({
-          queryKey: ['kits', data.kit._id, 'runners'],
+          queryKey: ['kits', data.kit_id, 'runners'],
         })
       },
     })
@@ -107,14 +113,15 @@ const RunnerForm = memo(
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropDown
                 options={(data || []).map((color) => ({
-                  label: `${color.name}${color.clearColor ? ` (${t('color:color.clear-color')})` : ''}`,
-                  value: color._id,
+                  label: `${color.name}${color.is_clear ? ` (${t('color:color.clear-color')})` : ''}`,
+                  value: color.id,
                 }))}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={t('runner:runner.form.color_ph')}
                 label={t('runner:runner.form.runner_label')}
                 errorMessage={t(error?.message ?? '')}
+                disabled={data?.length === 0}
               />
             )}
           />

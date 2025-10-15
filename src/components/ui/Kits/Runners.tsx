@@ -1,9 +1,6 @@
 import { lazy, memo, useMemo } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
-import {
-  getKitRunners,
-  updateKitRunner,
-} from '@/services/gunplaKits/kit.service'
+import { updateKitRunner } from '@/services/gunplaKits/kit.service'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Plus, PencilIcon } from 'lucide-react'
 import FloatButton from '../FloatButton'
@@ -15,6 +12,7 @@ import NoData from '../NoData'
 import RunnerColor from './RunnderColor'
 import MultipleColorBox from './MultipleColorBox'
 import { Check, X } from 'lucide-react'
+import runnerService from '@/services/v2/runner.service'
 
 const CustomModal = lazy(() => import('../Modal'))
 
@@ -115,7 +113,7 @@ const sortedByIsCutAndRunnerCode = (a: Runner, b: Runner) => {
 
 const Runners = memo(({ kitId }: { kitId: string }) => {
   const { data, isLoading } = useQuery({
-    queryFn: () => getKitRunners(kitId),
+    queryFn: () => runnerService.getKitRunners(kitId),
     queryKey: ['kits', kitId, 'runners'],
     enabled: !!kitId,
   })

@@ -12,3 +12,16 @@ interface Runner {
   pieces: Array<Piece>
   isCut: boolean
 }
+
+interface RunnerV2 {
+  name: string
+  kit_id: string
+  color_id: string
+  id: string
+}
+interface CreateKitRunnerPayload {
+  color_id: string
+  kit_id: string
+  amount: number
+  name: string
+}
