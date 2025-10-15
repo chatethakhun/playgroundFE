@@ -1,7 +1,3 @@
-import {
-  updateCutInRequires,
-  updateKitPart,
-} from '@/services/gunplaKits/kit.service'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { memo } from 'react'
 import ListItemContainer from '../ListItemContainer'
@@ -121,34 +117,34 @@ const RequireItem = memo(
 )
 
 const KitPartItem = memo(
-  ({ part }: { part: KitPart }) => {
-    const { isCollapsed, toggleCollapse } = useCollapse(false)
+  ({ part }: { part: KitPartV2 }) => {
+    // const { isCollapsed, toggleCollapse } = useCollapse(false)
     const { goTo } = useCustomRouter()
 
-    const { mutate: checkedPart } = useMutation({
-      mutationFn: (isCut: boolean) =>
-        updateKitPart(
-          {
-            ...part,
-            subassembly: part.subassembly._id,
-            requires: part.requires.map((req) => {
-              return {
-                ...req,
-                runner: req.runner._id,
-                isCut: req.isCut,
-              }
-            }),
-            isCut,
-          },
-          part._id,
-        ),
-    })
+    // const { mutate: checkedPart } = useMutation({
+    //   mutationFn: (isCut: boolean) =>
+    //     updateKitPart(
+    //       {
+    //         ...part,
+    //         subassembly: part.subassembly._id,
+    //         requires: part.requires.map((req) => {
+    //           return {
+    //             ...req,
+    //             runner: req.runner._id,
+    //             isCut: req.isCut,
+    //           }
+    //         }),
+    //         isCut,
+    //       },
+    //       part._id,
+    //     ),
+    // })
 
-    const { mutate: cutRequire } = useMutation({
-      onSuccess: () => {},
-      mutationFn: ({ isCut, runnerId }: { isCut: boolean; runnerId: string }) =>
-        updateCutInRequires(part._id, runnerId, isCut),
-    })
+    // const { mutate: cutRequire } = useMutation({
+    //   onSuccess: () => {},
+    //   mutationFn: ({ isCut, runnerId }: { isCut: boolean; runnerId: string }) =>
+    //     updateCutInRequires(part._id, runnerId, isCut),
+    // })
 
     return (
       <ListItemContainer>
@@ -156,51 +152,51 @@ const KitPartItem = memo(
           <div className={cn('flex justify-between items-center ', {})}>
             <div className="flex gap-2 items-center">
               <Switch
-                name={part._id}
-                checked={part.isCut}
+                name={String(part.id)}
+                checked={part.is_cut}
                 onCheckedChange={(e) => {
                   const isChecked = Boolean(e)
-                  checkedPart(isChecked)
-                  part.isCut = isChecked
+                  // checkedPart(isChecked)
+                  part.is_cut = isChecked
                 }}
               />
 
               <p
                 className={cn('text-primary font text-md line-clamp-1', {
-                  'line-through text-gray-300': part.isCut,
+                  'line-through text-gray-300': part.is_cut,
                 })}
               >
-                {part.subassembly.name}
+                {'name'}
               </p>
             </div>
             <div className="flex gap-2">
               <button
                 className="btn btn-ghost btn-xs"
                 onClick={() =>
-                  goTo(`/gunpla-kits/kits/${part.kit}/part/${part._id}`)
+                  goTo(`/gunpla-kits/kits/${part.kit_id}/part/${part.id}`)
                 }
               >
                 <Pen className="w-3 h-3 text-gray-500" />
               </button>
-              {isCollapsed && part.requires.length > 0 && (
+              {/*{isCollapsed && part.requires.length > 0 && (
                 <button
                   className="btn btn-ghost btn-xs"
                   onClick={() => toggleCollapse()}
                 >
                   <ChevronUp className="w-5 h-5" />
                 </button>
-              )}
-              {!isCollapsed && part.requires.length > 0 && (
+              )}*/}
+              {/*{!isCollapsed && part.requires.length > 0 && (
                 <button
                   className="btn btn-ghost btn-xs"
                   onClick={() => toggleCollapse()}
                 >
                   <ChevronDown className="w-5 h-5" />
                 </button>
-              )}
+              )}*/}
             </div>
           </div>
-          <div
+          {/*<div
             className={cn('flex flex-col gap-2 mt-2', {
               hidden: !isCollapsed && part.requires.length > 0,
             })}
@@ -216,18 +212,18 @@ const KitPartItem = memo(
                 />
               )
             })}
-          </div>
+          </div>*/}
         </div>
       </ListItemContainer>
     )
   },
-  (prev, next) => prev.part._id === next.part._id,
+  (prev, next) => prev.part.id === next.part.id,
 )
 
 const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
   const { data, isLoading } = useQuery({
     queryKey: ['kit', kitId, 'parts'],
-    queryFn: () => kitPartService.getKitPart(kitId),
+    queryFn: () => kitPartService.getAllKitParts(kitId),
     enabled: !!kitId,
   })
 

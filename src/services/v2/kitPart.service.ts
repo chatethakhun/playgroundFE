@@ -1,6 +1,6 @@
 import axiosInstanceV2 from './apiBase'
 
-const getKitPart = async (kitId: string): Promise<Array<KitPart>> => {
+const getAllKitParts = async (kitId: string): Promise<Array<KitPartV2>> => {
   try {
     const response = await axiosInstanceV2.get(`/kits/${kitId}/kit_parts`)
     return response.data
@@ -10,4 +10,4 @@ const getKitPart = async (kitId: string): Promise<Array<KitPart>> => {
   }
 }
 
-export default { getKitPart }
+export default { getAllKitParts }
