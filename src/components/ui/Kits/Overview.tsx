@@ -7,14 +7,9 @@ import kitService from '@/services/v2/kit.service'
 
 const Overview = memo(
   ({ kitId }: { kitId: string }) => {
-    const { data: kits, isLoading } = useSuspenseQuery(
-      kitService.getAllKitQuery(),
+    const { data, isLoading } = useSuspenseQuery(
+      kitService.getKitByIdQuery(kitId),
     )
-
-    const { data } = useSuspenseQuery({
-      ...kitService.getKitByIdQuery(kitId),
-      initialData: kits?.find((kit) => kit.id === kitId),
-    })
 
     const { t } = useTranslation('kit')
 
@@ -25,7 +20,7 @@ const Overview = memo(
 
       let count = 0
       for (const runner of data?.runners ?? []) {
-        count = count + (runner.qty ?? 0)
+        count = count + (runner.amount ?? 0)
       }
       return count
     }, [data?.runners])

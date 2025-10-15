@@ -15,7 +15,7 @@ interface KitV2 {
   id: string
   name: string
   grade: string
-  runners: Array<Runner>
+  runners: Array<RunnerV2>
   is_finished: boolean
   status: KitStatus
 }
