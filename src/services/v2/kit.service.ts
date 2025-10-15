@@ -33,9 +33,19 @@ const getKitByIdQuery = (id: string) => ({
   queryKey: ['kit', id],
 })
 
+const createKit = async (data: Partial<KitV2>): Promise<Partial<KitV2>> => {
+  const response = await axiosInstanceV2.post<Partial<KitV2>>('/kits', {
+    ...data,
+    grade: data.grade?.toLowerCase(),
+  })
+
+  return response.data
+}
+
 export default {
   getAllKits,
   getAllKitQuery,
   getKitById,
   getKitByIdQuery,
+  createKit,
 }

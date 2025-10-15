@@ -95,7 +95,7 @@ const KitItem = memo(
 
 const ListKits = memo(({ status }: { status: KitStatus }) => {
   const { data, isLoading } = useSuspenseQuery(
-    kitService.getAllKitQuery(status),
+    kitService.getAllKitQuery(status ?? 'in_progress'),
   )
 
   if (isLoading) return <LoadingFullPage />

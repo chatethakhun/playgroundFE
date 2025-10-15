@@ -36,7 +36,7 @@ export const Route = createFileRoute('/_authenticated/gunpla-kits/kits/')({
   }),
   loader: async ({ deps: { status } }) => {
     const kits = await queryClient.ensureQueryData(
-      kitService.getAllKitQuery(status),
+      kitService.getAllKitQuery(status ?? 'in_progress'),
     )
     return kits
   },
