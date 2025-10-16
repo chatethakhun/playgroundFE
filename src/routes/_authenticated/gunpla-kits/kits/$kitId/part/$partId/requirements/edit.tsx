@@ -1,20 +1,18 @@
-// import KitPartForm from '@/components/ui/Kits/KitPartForm'
-import KitPartRequirementForm from '@/components/ui/Kits/RequirementForm'
+import RequirementForm from '@/components/ui/Kits/RequirementForm'
 import LoadingFullPage from '@/components/ui/LoadingFullPage'
 import PageContainer from '@/components/ui/PageContainer'
-
-import kitPartRequirement from '@/services/v2/kitPartRequirement'
+import kitPartRequirementService from '@/services/v2/kitPartRequirement.service'
 import { queryClient } from '@/utils/queryClient'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
-  '/_authenticated/gunpla-kits/kits/$kitId/part/$partId',
+  '/_authenticated/gunpla-kits/kits/$kitId/part/$partId/requirements/edit',
 )({
   component: RouteComponent,
   loader: async ({ params }) => {
     const data = await queryClient.ensureQueryData(
-      kitPartRequirement.getAllKitPartRequirementsQuery(
+      kitPartRequirementService.getAllKitPartRequirementsQuery(
         Number(params.partId),
         Number(params.kitId),
       ),
@@ -27,7 +25,7 @@ function RouteComponent() {
   const { kitId, partId } = Route.useParams()
 
   const { data, isLoading } = useSuspenseQuery(
-    kitPartRequirement.getAllKitPartRequirementsQuery(
+    kitPartRequirementService.getAllKitPartRequirementsQuery(
       Number(partId),
       Number(kitId),
     ),
@@ -36,7 +34,12 @@ function RouteComponent() {
   if (isLoading || !data) return <LoadingFullPage />
   return (
     <PageContainer>
-      <KitPartRequirementForm kitId={Number(kitId)} />
+      <RequirementForm
+        kitId={Number(kitId)}
+        req={data}
+        kitPartId={Number(partId)}
+        mode="edit"
+      />
       {/*<KitPartForm kitId={kitId} part={data} />*/}
     </PageContainer>
   )

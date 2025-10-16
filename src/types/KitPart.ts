@@ -17,4 +17,5 @@ interface KitPartV2 {
   created_at: string
   updated_at: string
   sub_assembly?: KitSubassemblyV2
+  requirements: Array<KitPartRequirement>
 }

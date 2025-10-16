@@ -30,8 +30,44 @@ const getKitPartRequirementById = async (
   }
 }
 
+const bulkCreateKitPartRequirements = async (
+  kit_part_id: number,
+  requirements: Array<Omit<KitPartRequirement, 'id' | 'user_id'>>,
+) => {
+  try {
+    const response = await axiosInstanceV2.post(`kit_parts/requirements/bulk`, {
+      kit_part_id,
+      items: requirements,
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error creating kit part requirements:', error)
+    return []
+  }
+}
+const bulkUpdateKitPartRequirements = async (
+  kit_part_id: number,
+  requirements: Array<BulkUpdateKitPartRequirement>,
+) => {
+  try {
+    const response = await axiosInstanceV2.patch(
+      `kit_parts/requirements/bulk`,
+      {
+        kit_part_id,
+        items: requirements,
+      },
+    )
+    return response.data
+  } catch (error) {
+    console.error('Error updating kit part requirements:', error)
+    return []
+  }
+}
+
 export default {
   getAllKitPartRequirements,
   getAllKitPartRequirementsQuery,
   getKitPartRequirementById,
+  bulkCreateKitPartRequirements,
+  bulkUpdateKitPartRequirements,
 }

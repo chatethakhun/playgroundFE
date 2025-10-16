@@ -3,10 +3,12 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import DropDown from '../Dropdown'
 import { useTranslation } from 'react-i18next'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import runnerService from '@/services/v2/runner.service'
 import Button from '../Button'
 import TagInput from '../TagInput'
+import kitPartRequirementService from '@/services/v2/kitPartRequirement.service'
+import { useCallback } from 'react'
 
 const schema = yup.object().shape({
   requirements: yup.array().of(
@@ -16,6 +18,9 @@ const schema = yup.object().shape({
         .array()
         .of(yup.string().required())
         .min(1, 'form.gate_required'),
+      kit_part_id: yup.number().required(),
+      qty: yup.number().required(),
+      requirement_id: yup.number(),
     }),
   ),
 })
@@ -26,7 +31,67 @@ const toOption = (runner: RunnerV2) => ({
   value: String(runner.id),
   label: runner.name,
 })
-const RequirementForm = ({ kitId }: { kitId: number }) => {
+
+const initialValue = (kitPartId: number, reqs?: Array<KitPartRequirement>) => {
+  if (!!reqs && reqs.length > 0) {
+    return reqs.map((req) => ({
+      runner_id: String(req.runner_id),
+      gates: req.gate,
+      kit_part_id: req.kit_part_id,
+      qty: 1,
+      requirement_id: req.id,
+    }))
+  }
+  return [
+    {
+      gates: [],
+      runner_id: '',
+      kit_part_id: kitPartId,
+      qty: 1,
+    },
+  ]
+}
+
+type FormMode = 'edit' | 'new'
+
+const toUpdatePayload = (
+  req: FormData,
+): Array<BulkUpdateKitPartRequirement> => {
+  if (!req.requirements) return []
+
+  return req.requirements.map((r) => ({
+    id: Number(r.requirement_id),
+    gate: r.gates ?? [],
+    qty: Number(r.qty),
+    runner_id: Number(r.runner_id),
+    kit_part_id: Number(r.kit_part_id),
+  }))
+}
+
+const toCreatePayload = (
+  req: FormData,
+): Omit<KitPartRequirement, 'id' | 'user_id'>[] => {
+  if (!req.requirements) return []
+
+  return req.requirements.map((r) => ({
+    runner_id: Number(r.runner_id),
+    gate: r.gates ?? [],
+    is_cut: false,
+    qty: Number(r.qty),
+    kit_part_id: Number(r.kit_part_id),
+  }))
+}
+const RequirementForm = ({
+  kitId,
+  req,
+  kitPartId,
+  mode = 'new',
+}: {
+  kitId: number
+  kitPartId: number
+  req?: Array<KitPartRequirement>
+  mode?: FormMode
+}) => {
   const { t } = useTranslation('part')
 
   const { data } = useQuery({
@@ -35,15 +100,26 @@ const RequirementForm = ({ kitId }: { kitId: number }) => {
     enabled: !!kitId,
   })
 
+  const { mutate: createRequirements } = useMutation({
+    mutationFn: (data: FormData) =>
+      kitPartRequirementService.bulkCreateKitPartRequirements(
+        kitPartId,
+        toCreatePayload(data),
+      ),
+  })
+
+  const { mutate: updateRequirements } = useMutation({
+    mutationFn: (data: FormData) =>
+      kitPartRequirementService.bulkUpdateKitPartRequirements(
+        kitPartId,
+        toUpdatePayload(data),
+      ),
+  })
+
   const form = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      requirements: [
-        {
-          gates: [],
-          runner_id: '',
-        },
-      ],
+      requirements: initialValue(kitPartId, mode === 'new' ? [] : req),
     },
   })
 
@@ -52,9 +128,18 @@ const RequirementForm = ({ kitId }: { kitId: number }) => {
     name: 'requirements',
   })
 
-  const onSubmit = (data: FormData) => {
-    console.log(data)
-  }
+  const onSubmit = useCallback(
+    (data: FormData) => {
+      if (mode === 'new') {
+        createRequirements(data)
+        return
+      }
+
+      updateRequirements(data)
+      // edit
+    },
+    [mode],
+  )
   return (
     <div className="space-y-4">
       <h1 className="font-bold text-2xl">
@@ -115,6 +200,8 @@ const RequirementForm = ({ kitId }: { kitId: number }) => {
           append({
             runner_id: '',
             gates: [],
+            qty: 1,
+            kit_part_id: kitPartId,
           })
         }
       >
