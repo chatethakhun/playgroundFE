@@ -33,7 +33,8 @@ const AuthProvider = ({ children }: Props) => {
   const logout = useCallback(() => {
     setIsLoggedIn(false)
     localStorage.removeItem('v2Token')
-    goTo('/')
+    setAuthUser(null)
+    window.location.href = '/login'
   }, [])
 
   useEffect(() => {
