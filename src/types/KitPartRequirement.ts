@@ -1,0 +1,3 @@
+interface KitPartRequirement {
+  id: number
+}
