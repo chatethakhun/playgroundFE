@@ -1,8 +1,18 @@
 import axiosInstanceV2 from './apiBase'
 
-const getKitRunners = async (kitId: string): Promise<RunnerColor[]> => {
+const getKitRunnerColors = async (kitId: string): Promise<RunnerColor[]> => {
   try {
     const response = await axiosInstanceV2.get(`/kits/${kitId}/runner_colors`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching kit runners:', error)
+    return []
+  }
+}
+
+const getKitRunners = async (kitId: number): Promise<RunnerV2[]> => {
+  try {
+    const response = await axiosInstanceV2.get(`/kits/${kitId}/runners`)
     return response.data
   } catch (error) {
     console.error('Error fetching kit runners:', error)
@@ -79,10 +89,11 @@ const getRunnerByIdQuery = (
 })
 
 export default {
-  getKitRunners,
+  getKitRunnerColors,
   getRunnerById,
   createKitRunner,
   getRunnerByIdQuery,
   updateKitRunner,
   updateIsUsed,
+  getKitRunners,
 }

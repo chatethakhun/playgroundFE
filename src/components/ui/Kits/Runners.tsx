@@ -109,7 +109,7 @@ const sortedByIsCutAndRunnerCode = (a: RunnerColor, b: RunnerColor) => {
 
 const Runners = memo(({ kitId }: { kitId: string }) => {
   const { data, isLoading } = useQuery({
-    queryFn: () => runnerService.getKitRunners(kitId),
+    queryFn: () => runnerService.getKitRunnerColors(kitId),
     queryKey: ['kits', Number(kitId), 'runners'],
     enabled: !!kitId,
   })

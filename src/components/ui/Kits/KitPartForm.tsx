@@ -1,321 +1,77 @@
-import { memo, useCallback, useMemo, useRef } from 'react'
-import * as Yup from 'yup'
+import kitSubassemblyService from '@/services/v2/kitSubassembly.service'
 import { yupResolver } from '@hookform/resolvers/yup'
-import {
-  createKitPart,
-  getKitRunners,
-  getKitSubassemblies,
-  updateKitPart,
-} from '@/services/gunplaKits/kit.service'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import LoadingSpinner from '../LoadingSpinner'
-import {
-  Controller,
-  FormProvider,
-  useFieldArray,
-  useForm,
-} from 'react-hook-form'
-
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
+import * as yup from 'yup'
 import DropDown from '../Dropdown'
 import Button from '../Button'
-import { Trash } from 'lucide-react'
-import useCustomRouter from '@/hooks/useCustomRouter'
-import TagInput from '../TagInput'
-import { convertStringArrayToNumberArray, sortNumberArray } from '@/utils/array'
-import { toast } from 'react-toastify'
+
 import { useTranslation } from 'react-i18next'
+import kitPartService from '@/services/v2/kitPart.service'
 
-const sortedRequires = (
-  requires: { runner: string; gate?: number[] | undefined; isCut?: boolean }[],
-) => requires.sort((a, b) => a.runner.localeCompare(b.runner))
+const schema = yup.object({
+  kit_id: yup.string().required(),
+  sub_assembly_id: yup.string().required(),
+})
+interface KitPartRequirementFormProps {
+  kit_id: number
+}
 
-const schema = Yup.object().shape({
-  subassembly: Yup.string().required('part:part.form.subassembly_error'),
-  kit: Yup.string().required('part:part.form.kit_error'),
-  requires: Yup.array()
-    .of(
-      Yup.object().shape({
-        runner: Yup.string().required('part:part.form.runner_error'),
-        gate: Yup.array()
-          .of(Yup.number().required('part:part.form.gate_error'))
-          .min(1, 'part:part.form.gate_error'),
-      }),
-    )
-    .min(1, 'part:part.form.requires_error'),
+const toOption = (subassembly: KitSubassemblyV2) => ({
+  value: subassembly.id,
+  label: subassembly.name,
 })
 
-type KitPartFormData = Yup.Asserts<typeof schema>
+type FormData = yup.Asserts<typeof schema>
+const KitPartForm = ({ kit_id }: KitPartRequirementFormProps) => {
+  const { data } = useQuery({
+    queryKey: ['kit', Number(kit_id), 'subassemblies'],
+    queryFn: () =>
+      kitSubassemblyService.getAllKitSubassemblies(kit_id.toString()),
+  })
 
-const KitPartForm = memo(
-  ({
-    kitId,
-    part,
-  }: {
-    kitId: string
-    subAssemblyId?: string
-    part?: KitPart
-  }) => {
-    const { goTo } = useCustomRouter()
-    const queryClient = useQueryClient()
-    const { data: kitSubAssembly, isLoading: isLoadingSubAssembly } = useQuery({
-      queryKey: ['kit', kitId, 'subAssembly'],
-      queryFn: () => getKitSubassemblies(kitId, true),
-      enabled: !!kitId,
-    })
+  const { mutate: createReq } = useMutation({
+    mutationFn: (data: FormData) =>
+      kitPartService.createKitPart({
+        kit_id: Number(data.kit_id),
+        sub_assembly_id: Number(data.sub_assembly_id),
+      }),
+  })
+  const { t } = useTranslation(['common', 'part'])
+  const form = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      sub_assembly_id: '',
+      kit_id: kit_id.toString(),
+    },
+  })
 
-    const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const onSubmit = (data: FormData) => {
+    createReq(data)
+  }
+  return (
+    <div className="space-y-2">
+      <FormProvider {...form}>
+        <Controller
+          control={form.control}
+          name="sub_assembly_id"
+          render={({ field: { value, onChange } }) => (
+            <DropDown
+              label={t('part:part.form.subassembly_label')}
+              options={(data ?? []).map(toOption)}
+              value={value}
+              onChange={onChange}
+              required
+            />
+          )}
+        />
 
-    const { t } = useTranslation(['common', 'part'])
-
-    const { data: runners, isLoading: isLoadingRunners } = useQuery({
-      queryFn: () => getKitRunners(kitId),
-      enabled: !!kitId,
-      queryKey: ['kits', kitId, 'runners'],
-    })
-
-    const requies = useMemo(() => {
-      if (!part)
-        return [
-          {
-            gate: [],
-            runner: '',
-          },
-        ]
-
-      return part.requires.map((req) => ({
-        gate: req.gate.split(','),
-        runner: req.runner._id,
-      }))
-    }, [part?.requires])
-
-    const form = useForm({
-      resolver: yupResolver(schema),
-      defaultValues: {
-        subassembly: part?.subassembly._id || '',
-        kit: kitId,
-        requires: requies.map((r) => ({
-          runner: r.runner,
-          gate: convertStringArrayToNumberArray(r.gate),
-        })),
-      },
-    })
-
-    const { fields, append, remove } = useFieldArray({
-      control: form.control, // control props comes from useForm (optional: if you are using FormProvider)
-      name: 'requires', // unique name for your Field Array
-    })
-
-    const { mutate: addKitPart } = useMutation({
-      mutationFn: (data: KitPartFormData) =>
-        createKitPart({
-          ...data,
-          requires: sortedRequires(data.requires || []).map((req) => ({
-            ...req,
-            runner: req.runner,
-            gate: sortNumberArray(req.gate || []).join(', '),
-            isCut: false,
-          })),
-        }),
-      onSuccess: () => {
-        toast(t('save-success'), { position: 'bottom-center' })
-        form.reset()
-      },
-    })
-
-    const { mutate: editKitPart } = useMutation({
-      mutationFn: (data: KitPartFormData) =>
-        updateKitPart(
-          {
-            ...data,
-            requires: sortedRequires(data.requires || []).map((req, index) => ({
-              ...req,
-              runner: req.runner,
-              gate: sortNumberArray(req.gate || []).join(', '),
-              isCut: part?.requires[index]?.isCut || false,
-            })),
-            isCut: part?.isCut || false,
-          },
-          part?._id!,
-        ),
-      onSuccess: () => {
-        toast(t('save-success'), { position: 'bottom-center' })
-        queryClient.refetchQueries({
-          queryKey: ['kit', kitId, 'parts'],
-        })
-      },
-    })
-
-    const onSubmit = useCallback(
-      (data: KitPartFormData) => {
-        !part ? addKitPart(data) : editKitPart(data)
-      },
-      [part],
-    )
-
-    const kitOptions = useMemo(() => {
-      if (!kitSubAssembly) return []
-      return kitSubAssembly.map((kit) => ({
-        label: kit.name,
-        value: kit._id,
-      }))
-    }, [kitSubAssembly])
-
-    const runnersOptions = useMemo(() => {
-      if (!runners) return []
-      return runners.map((runner) => ({
-        label: `${runner.code} ${runner.isCut ? '(Cut)' : ''}`,
-        value: runner._id,
-        disabled: runner.isCut,
-      }))
-    }, [runners])
-
-    if (isLoadingSubAssembly || isLoadingRunners) return <LoadingSpinner />
-    return (
-      <div className="flex gap-2">
-        <div className="flex flex-col gap-4 basis-[75%]">
-          <FormProvider {...form}>
-            {!part && (
-              <Controller
-                control={form.control}
-                name="subassembly"
-                render={({ field, fieldState }) => (
-                  <DropDown
-                    options={kitOptions}
-                    onChange={(e) => field.onChange(e.target.value)}
-                    value={field.value}
-                    errorMessage={t(fieldState.error?.message ?? '')}
-                    label={t('part:part.form.subassembly_label')}
-                    placeholder={t('part:part.form.subassembly_ph')}
-                  />
-                )}
-              />
-            )}
-
-            <div className="flex ">
-              <div className="border-b border-primary flex-grow">
-                <h1 className="font-bold text-primary text-lg ">
-                  {t('part:part.form.runner_title')}
-                </h1>
-              </div>
-            </div>
-            {(fields ?? []).map((field, index) => (
-              <div
-                key={field.id}
-                id={String(index)}
-                ref={(el) => {
-                  sectionRefs.current[String(index)] = el
-                }}
-                className="flex md:flex-row gap-4 flex-col"
-              >
-                <div className="flex-grow ">
-                  <Controller
-                    name={`requires.${index}.runner`}
-                    control={form.control}
-                    render={({ field: { onChange, value }, fieldState }) => (
-                      <DropDown
-                        options={runnersOptions}
-                        onChange={(e) => onChange(e.target.value)}
-                        value={value}
-                        errorMessage={t(fieldState.error?.message ?? '')}
-                        label={t('part:part.form.runner_label')}
-                        placeholder={t('part:part.form.runner_ph')}
-                      />
-                    )}
-                  />
-                </div>
-
-                <div className="basis-1/2">
-                  <Controller
-                    key={index}
-                    name={`requires.${index}.gate`}
-                    control={form.control}
-                    render={({
-                      field: { onChange, value, name },
-                      fieldState,
-                    }) => (
-                      <TagInput
-                        type="number"
-                        tags={(value || []).map((t) => t.toString())}
-                        handleTag={(tags) => onChange(tags.map((t) => t))}
-                        label={t('part:part.form.gate_label')}
-                        id={name}
-                        name={name}
-                        errorMessage={t(fieldState.error?.message ?? '')}
-                        placeholder={t('part:part.form.gate_ph')}
-                      />
-                    )}
-                  />
-                </div>
-                {fields.length > 1 && (
-                  <div className="flex items-end">
-                    <button
-                      className="btn btn-xs btn-error"
-                      onClick={() => {
-                        remove(index)
-                      }}
-                    >
-                      <Trash className="w-4 h-4 text-red-500" />
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-
-            <Button
-              onClick={() => {
-                append({
-                  runner: '',
-                  gate: [],
-                })
-              }}
-              secondary
-            >
-              {t('part:part.form.add_part')}
-            </Button>
-            <Button onClick={form.handleSubmit(onSubmit)}>
-              {t('common:save')}
-            </Button>
-          </FormProvider>
-          <Button
-            secondary
-            onClick={() => goTo(`/gunpla-kits/kits/${kitId}?tab=part`)}
-          >
-            {t('common:back')}
-          </Button>
-        </div>
-
-        <div className="basis-[80px] flex flex-col gap-2 fixed right-4 bg-white">
-          {(fields ?? []).map((runner, idx) => {
-            return (
-              <div
-                key={idx}
-                className="flex flex-col gap-2 px-1 py-1 border border-primary text-center rounded-xs cursor-pointer  text-xs "
-                onClick={() => {
-                  // add #runner_id to url
-                  const targetElement = document.getElementById(String(idx))
-
-                  if (targetElement) {
-                    sectionRefs.current[idx]?.scrollIntoView({
-                      behavior: 'smooth',
-                      block: 'center',
-                    })
-
-                    // targetElement.scrollIntoView({
-                    //   behavior: 'smooth',
-                    //   block: 'center',
-                    // })
-                  }
-                }}
-              >
-                {runnersOptions.find((kit) => kit.value === runner.runner)
-                  ?.label ?? `#${idx + 1}`}
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    )
-  },
-)
+        <Button onClick={form.handleSubmit(onSubmit)} isBlock>
+          {t('common:save')}
+        </Button>
+      </FormProvider>
+    </div>
+  )
+}
 
 export default KitPartForm

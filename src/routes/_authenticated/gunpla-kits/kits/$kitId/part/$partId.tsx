@@ -1,4 +1,5 @@
 // import KitPartForm from '@/components/ui/Kits/KitPartForm'
+import KitPartRequirementForm from '@/components/ui/Kits/RequirementForm'
 import LoadingFullPage from '@/components/ui/LoadingFullPage'
 import PageContainer from '@/components/ui/PageContainer'
 
@@ -35,7 +36,7 @@ function RouteComponent() {
   if (isLoading || !data) return <LoadingFullPage />
   return (
     <PageContainer>
-      <div></div>
+      <KitPartRequirementForm kitId={Number(kitId)} />
       {/*<KitPartForm kitId={kitId} part={data} />*/}
     </PageContainer>
   )

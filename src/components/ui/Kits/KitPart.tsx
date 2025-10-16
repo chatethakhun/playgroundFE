@@ -16,7 +16,7 @@ import { Switch } from '../switch'
 import kitPartService from '@/services/v2/kitPart.service'
 import useModal from '@/hooks/useModal'
 import CustomModal from '../Modal'
-import KitPartRequirementForm from './KitPartRequirementForm'
+import KitPartRequirementForm from './KitPartForm'
 
 // const GateBox = memo(({ gate }: { gate: string }) => {
 //   const arrayGate = gate.split(',').map((g) => Number(g.trim()))
