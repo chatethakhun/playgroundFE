@@ -234,7 +234,7 @@ const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
         <Plus className="w-5 h-5" />
       </FloatButton>
       <CustomModal modalIsOpen={isOpen} onClose={closeModal}>
-        <KitPartRequirementForm kit_id={Number(kitId)} />
+        <KitPartRequirementForm kitId={Number(kitId)} />
       </CustomModal>
     </>
   )

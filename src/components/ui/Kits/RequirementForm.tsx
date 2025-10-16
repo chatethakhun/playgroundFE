@@ -9,6 +9,7 @@ import Button from '../Button'
 import TagInput from '../TagInput'
 import kitPartRequirementService from '@/services/v2/kitPartRequirement.service'
 import { useCallback } from 'react'
+import useCustomRouter from '@/hooks/useCustomRouter'
 
 const schema = yup.object().shape({
   requirements: yup.array().of(
@@ -73,6 +74,8 @@ const RequirementForm = ({
   req?: Array<KitPartRequirement>
 }) => {
   const { t } = useTranslation('part')
+
+  const { goTo } = useCustomRouter()
 
   const { data } = useQuery({
     queryFn: () => runnerService.getKitRunners(kitId),
@@ -147,12 +150,7 @@ const RequirementForm = ({
           />
 
           {fields.length > 1 && (
-            <Button
-              isBlock
-              secondary
-              type="button"
-              onClick={() => remove(index)}
-            >
+            <Button isBlock ghost onClick={() => remove(index)}>
               {t('part.form.remove_part')}
             </Button>
           )}
@@ -177,6 +175,13 @@ const RequirementForm = ({
       </Button>
       <Button isBlock type="submit" onClick={form.handleSubmit(onSubmit)}>
         {t('common:save')}
+      </Button>
+      <Button
+        isBlock
+        onClick={() => goTo(`/gunpla-kits/kits/${kitId}?tab=part`)}
+        ghost
+      >
+        {t('common:back')}
       </Button>
     </div>
   )

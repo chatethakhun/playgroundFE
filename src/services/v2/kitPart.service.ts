@@ -13,7 +13,13 @@ const getAllKitParts = async (kitId: string): Promise<Array<KitPartV2>> => {
 const createKitPart = async (
   data: Omit<
     KitPartV2,
-    'id' | 'updated_at' | 'created_at' | 'code' | 'is_cut' | 'user_id'
+    | 'id'
+    | 'updated_at'
+    | 'created_at'
+    | 'code'
+    | 'is_cut'
+    | 'user_id'
+    | 'requirements'
   >,
 ) => {
   try {

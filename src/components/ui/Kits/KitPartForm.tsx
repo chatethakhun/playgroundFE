@@ -14,7 +14,7 @@ const schema = yup.object({
   sub_assembly_id: yup.string().required(),
 })
 interface KitPartRequirementFormProps {
-  kit_id: number
+  kitId: number
 }
 
 const toOption = (subassembly: KitSubassemblyV2) => ({
@@ -23,11 +23,11 @@ const toOption = (subassembly: KitSubassemblyV2) => ({
 })
 
 type FormData = yup.Asserts<typeof schema>
-const KitPartForm = ({ kit_id }: KitPartRequirementFormProps) => {
+const KitPartForm = ({ kitId }: KitPartRequirementFormProps) => {
   const { data } = useQuery({
-    queryKey: ['kit', Number(kit_id), 'subassemblies'],
+    queryKey: ['kit', Number(kitId), 'subassemblies'],
     queryFn: () =>
-      kitSubassemblyService.getAllKitSubassemblies(kit_id.toString()),
+      kitSubassemblyService.getAllKitSubassemblies(kitId.toString()),
   })
 
   const { mutate: createReq } = useMutation({
@@ -42,7 +42,7 @@ const KitPartForm = ({ kit_id }: KitPartRequirementFormProps) => {
     resolver: yupResolver(schema),
     defaultValues: {
       sub_assembly_id: '',
-      kit_id: kit_id.toString(),
+      kit_id: kitId.toString(),
     },
   })
 
