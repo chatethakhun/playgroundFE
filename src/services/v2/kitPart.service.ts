@@ -40,6 +40,24 @@ const updateIsCut = async (
   }
 }
 
+const getKitPartById = async (
+  id: number,
+  kitId: number,
+): Promise<KitPartV2 | null> => {
+  try {
+    const response = await axiosInstanceV2.get(`/kits/${kitId}/kit_parts/${id}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching kit part:', error)
+    return null
+  }
+}
+
+const getKitPartByIdQuery = (id: number, kitId: number) => ({
+  queryFn: () => getKitPartById(id, kitId),
+  queryKey: ['kitPart', id],
+})
+
 // const updateCutInRequires = async (
 //   id: string,
 //   runnerId: string,
@@ -52,4 +70,10 @@ const updateIsCut = async (
 //         isCut,
 //
 
-export default { getAllKitParts, createKitPart, updateIsCut }
+export default {
+  getAllKitParts,
+  createKitPart,
+  updateIsCut,
+  getKitPartById,
+  getKitPartByIdQuery,
+}
