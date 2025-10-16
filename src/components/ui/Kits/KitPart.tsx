@@ -164,9 +164,7 @@ const KitPartItem = memo(
               <button
                 className="btn btn-ghost btn-xs"
                 onClick={() =>
-                  goTo(
-                    `/gunpla-kits/kits/${part.kit_id}/part/${part.id}/requirements/${part.requirements.length > 0 ? 'edit' : 'new'}`,
-                  )
+                  goTo(`/gunpla-kits/kits/${part.kit_id}/part/${part.id}`)
                 }
               >
                 <Pen className="w-3 h-3 text-gray-500" />

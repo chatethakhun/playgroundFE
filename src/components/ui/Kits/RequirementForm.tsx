@@ -52,11 +52,7 @@ const initialValue = (kitPartId: number, reqs?: Array<KitPartRequirement>) => {
   ]
 }
 
-type FormMode = 'edit' | 'new'
-
-const toUpdatePayload = (
-  req: FormData,
-): Array<BulkUpdateKitPartRequirement> => {
+const toCompareSyncPayload = (req: FormData): Array<CompareSyncPayload> => {
   if (!req.requirements) return []
 
   return req.requirements.map((r) => ({
@@ -67,30 +63,14 @@ const toUpdatePayload = (
     kit_part_id: Number(r.kit_part_id),
   }))
 }
-
-const toCreatePayload = (
-  req: FormData,
-): Omit<KitPartRequirement, 'id' | 'user_id'>[] => {
-  if (!req.requirements) return []
-
-  return req.requirements.map((r) => ({
-    runner_id: Number(r.runner_id),
-    gate: r.gates ?? [],
-    is_cut: false,
-    qty: Number(r.qty),
-    kit_part_id: Number(r.kit_part_id),
-  }))
-}
 const RequirementForm = ({
   kitId,
   req,
   kitPartId,
-  mode = 'new',
 }: {
   kitId: number
   kitPartId: number
   req?: Array<KitPartRequirement>
-  mode?: FormMode
 }) => {
   const { t } = useTranslation('part')
 
@@ -100,26 +80,15 @@ const RequirementForm = ({
     enabled: !!kitId,
   })
 
-  const { mutate: createRequirements } = useMutation({
-    mutationFn: (data: FormData) =>
-      kitPartRequirementService.bulkCreateKitPartRequirements(
-        kitPartId,
-        toCreatePayload(data),
-      ),
-  })
-
-  const { mutate: updateRequirements } = useMutation({
-    mutationFn: (data: FormData) =>
-      kitPartRequirementService.bulkUpdateKitPartRequirements(
-        kitPartId,
-        toUpdatePayload(data),
-      ),
+  const { mutate: compareSync } = useMutation({
+    mutationFn: (data: Array<CompareSyncPayload>) =>
+      kitPartRequirementService.requirementCompareSync(kitPartId, data),
   })
 
   const form = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      requirements: initialValue(kitPartId, mode === 'new' ? [] : req),
+      requirements: initialValue(kitPartId, req),
     },
   })
 
@@ -128,18 +97,10 @@ const RequirementForm = ({
     name: 'requirements',
   })
 
-  const onSubmit = useCallback(
-    (data: FormData) => {
-      if (mode === 'new') {
-        createRequirements(data)
-        return
-      }
-
-      updateRequirements(data)
-      // edit
-    },
-    [mode],
-  )
+  const onSubmit = useCallback((data: FormData) => {
+    compareSync(toCompareSyncPayload(data))
+    // edit
+  }, [])
   return (
     <div className="space-y-4">
       <h1 className="font-bold text-2xl">
@@ -185,9 +146,16 @@ const RequirementForm = ({
             )}
           />
 
-          <Button isBlock secondary type="button" onClick={() => remove(index)}>
-            {t('part.form.remove_part')}
-          </Button>
+          {fields.length > 1 && (
+            <Button
+              isBlock
+              secondary
+              type="button"
+              onClick={() => remove(index)}
+            >
+              {t('part.form.remove_part')}
+            </Button>
+          )}
           <hr />
         </div>
       ))}

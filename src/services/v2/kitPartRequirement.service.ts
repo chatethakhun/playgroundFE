@@ -64,10 +64,31 @@ const bulkUpdateKitPartRequirements = async (
   }
 }
 
+const requirementCompareSync = async (
+  kit_part_id: number,
+  requirement: Array<CompareSyncPayload>,
+) => {
+  try {
+    const { data } = await axiosInstanceV2.patch<Array<KitPartRequirement>>(
+      `kit_parts/requirements/compare_sync`,
+      {
+        kit_part_id,
+        items: requirement,
+      },
+    )
+
+    return data
+  } catch (error) {
+    console.error('Error comparing kit part requirements:', error)
+    return []
+  }
+}
+
 export default {
   getAllKitPartRequirements,
   getAllKitPartRequirementsQuery,
   getKitPartRequirementById,
   bulkCreateKitPartRequirements,
   bulkUpdateKitPartRequirements,
+  requirementCompareSync,
 }

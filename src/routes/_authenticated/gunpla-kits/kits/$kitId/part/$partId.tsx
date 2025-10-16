@@ -7,7 +7,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
-  '/_authenticated/gunpla-kits/kits/$kitId/part/$partId/requirements/edit',
+  '/_authenticated/gunpla-kits/kits/$kitId/part/$partId',
 )({
   component: RouteComponent,
   loader: async ({ params }) => {
@@ -38,7 +38,6 @@ function RouteComponent() {
         kitId={Number(kitId)}
         req={data}
         kitPartId={Number(partId)}
-        mode="edit"
       />
       {/*<KitPartForm kitId={kitId} part={data} />*/}
     </PageContainer>

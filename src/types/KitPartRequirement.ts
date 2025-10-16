@@ -14,3 +14,11 @@ interface BulkUpdateKitPartRequirement {
   qty: number
   kit_part_id: KitPartRequirement['kit_part_id']
 }
+
+interface CompareSyncPayload {
+  id?: KitPartRequirement['id']
+  runner_id: KitPartRequirement['runner_id']
+  gate: KitPartRequirement['gate']
+  qty: KitPartRequirement['qty']
+  kit_part_id: KitPartRequirement['kit_part_id']
+}
