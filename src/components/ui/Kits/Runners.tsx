@@ -21,7 +21,7 @@ const RunnerItem = memo(
     const { goTo } = useCustomRouter()
     const { t } = useTranslation(['runner', 'color'])
     const queryClient = useQueryClient()
-    const backgroundColor = runner.color.hex
+    const backgroundColor = runner.color ? runner.color.hex : 'white'
     const isMultipleRunerColor =
       typeof runner.color === 'object' && (runner.color?.is_multiple || false)
 
