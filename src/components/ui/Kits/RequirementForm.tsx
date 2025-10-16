@@ -14,8 +14,11 @@ import useCustomRouter from '@/hooks/useCustomRouter'
 const schema = yup.object().shape({
   requirements: yup.array().of(
     yup.object().shape({
-      runner_id: yup.string().required('form.runner_error'),
-      gates: yup.array().of(yup.string().required()).min(1, 'form.gate_error'),
+      runner_id: yup.string().required('part.form.runner_error'),
+      gates: yup
+        .array()
+        .of(yup.string().required())
+        .min(1, 'part.form.gate_error'),
       kit_part_id: yup.number().required(),
       qty: yup.number().required(),
       requirement_id: yup.number(),
