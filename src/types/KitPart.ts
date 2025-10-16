@@ -16,4 +16,5 @@ interface KitPartV2 {
   user_id: number
   created_at: string
   updated_at: string
+  sub_assembly?: KitSubassemblyV2
 }

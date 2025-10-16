@@ -1,144 +1,135 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { memo } from 'react'
 import ListItemContainer from '../ListItemContainer'
-import useCollapse from '@/hooks/useCollapse'
-import { ChevronDown, ChevronUp, Plus, Pen } from 'lucide-react'
+
+import { Plus, Pen } from 'lucide-react'
 import { cn } from '@/utils/cn'
 
 import FloatButton from '../FloatButton'
 
 import useCustomRouter from '@/hooks/useCustomRouter'
-import { Checkbox } from '../checkbox'
+
 import NoData from '../NoData'
-import RunnerColor from './RunnderColor'
+
 import { Switch } from '../switch'
-import MultipleColorBox from './MultipleColorBox'
-import { useTranslation } from 'react-i18next'
+
 import kitPartService from '@/services/v2/kitPart.service'
+import useModal from '@/hooks/useModal'
+import CustomModal from '../Modal'
+import KitPartRequirementForm from './KitPartRequirementForm'
 
-const GateBox = memo(({ gate }: { gate: string }) => {
-  const arrayGate = gate.split(',').map((g) => Number(g.trim()))
-  return (
-    <div className="flex gap-2 items-center mt-2 flex-wrap">
-      {arrayGate.map((g) => (
-        <div
-          key={g}
-          className="box w-6 h-6 border border-gray-500 rounded-sm shadow-md"
-        >
-          <p className=" text-center font-bold">{g}</p>
-        </div>
-      ))}
-    </div>
-  )
-})
+// const GateBox = memo(({ gate }: { gate: string }) => {
+//   const arrayGate = gate.split(',').map((g) => Number(g.trim()))
+//   return (
+//     <div className="flex gap-2 items-center mt-2 flex-wrap">
+//       {arrayGate.map((g) => (
+//         <div
+//           key={g}
+//           className="box w-6 h-6 border border-gray-500 rounded-sm shadow-md"
+//         >
+//           <p className=" text-center font-bold">{g}</p>
+//         </div>
+//       ))}
+//     </div>
+//   )
+// })
 
-const RequireItem = memo(
-  ({
-    req,
-    onChecked,
-  }: {
-    req: KitRequirement
-    onChecked?: (checked: boolean) => void
-  }) => {
-    const { t } = useTranslation('color')
-    const runnerColor =
-      typeof req.runner?.color !== 'string'
-        ? (req.runner?.color.hex as string)
-        : ''
+// const RequireItem = memo(
+//   ({
+//     req,
+//     onChecked,
+//   }: {
+//     req: KitRequirement
+//     onChecked?: (checked: boolean) => void
+//   }) => {
+//     const { t } = useTranslation('color')
+//     const runnerColor =
+//       typeof req.runner?.color !== 'string'
+//         ? (req.runner?.color.hex as string)
+//         : ''
 
-    const runnerName = req.runner?.code ?? ''
+//     const runnerName = req.runner?.code ?? ''
 
-    const runnerQty = typeof req.runner !== 'number' ? req.runner?.qty : 1
+//     const runnerQty = typeof req.runner !== 'number' ? req.runner?.qty : 1
 
-    const isMultipleRunnerColors =
-      typeof req.runner?.color !== 'string' ? req.runner.color?.multiple : false
+//     const isMultipleRunnerColors =
+//       typeof req.runner?.color !== 'string' ? req.runner.color?.multiple : false
 
-    const runnerIsClearColor =
-      typeof req.runner?.color !== 'string'
-        ? req.runner.color?.clearColor
-        : false
+//     const runnerIsClearColor =
+//       typeof req.runner?.color !== 'string'
+//         ? req.runner.color?.clearColor
+//         : false
 
-    const colorName =
-      typeof req.runner?.color !== 'string' ? req.runner.color?.name : ''
+//     const colorName =
+//       typeof req.runner?.color !== 'string' ? req.runner.color?.name : ''
 
-    const isCut = req.isCut
+//     const isCut = req.isCut
 
-    return (
-      <div
-        className={cn(
-          'flex gap-2 items-center border-b-gray-500 border-b p-2 w-full',
-          {
-            'opacity-30': isCut,
-          },
-        )}
-      >
-        <div className="flex flex-col w-full">
-          <div className="flex gap-2 items-center border-b border-gray-200 py-2">
-            {isMultipleRunnerColors ? (
-              <MultipleColorBox />
-            ) : (
-              <RunnerColor color={runnerColor} />
-            )}
-            <p>{colorName}</p>
-            <p>
-              <span className="font-bold text-primary">{runnerName}</span>{' '}
-              {runnerIsClearColor && (
-                <span className="text-sm text-gray-400">
-                  ({t('color.clear-color')})
-                </span>
-              )}{' '}
-              x {runnerQty}
-            </p>
-          </div>
-          <div className="flex gap-2 items-center">
-            <GateBox gate={req.gate} />
-            {/*<p>{req.gate}</p>*/}
-          </div>
-        </div>
-        <Checkbox
-          name={req.gate}
-          checked={isCut}
-          onCheckedChange={(e) => {
-            const isChecked = Boolean(e)
-            onChecked?.(isChecked)
-            req.isCut = isChecked
-          }}
-        />
-        {/*<p className="font-bold flex flex-col">
-          <span className="text-xs font-light">Runner:</span>{' '}
-          {req.runner?.code ?? ''} {` x ${req.runner?.qty ?? ''} `}
-          <span className="text-xs font-light">| Number: </span> {req.gate}
-        </p>*/}
-      </div>
-    )
-  },
-  (prev, next) =>
-    prev.req.isCut === next.req.isCut && prev.onChecked === next.onChecked,
-)
+//     return (
+//       <div
+//         className={cn(
+//           'flex gap-2 items-center border-b-gray-500 border-b p-2 w-full',
+//           {
+//             'opacity-30': isCut,
+//           },
+//         )}
+//       >
+//         <div className="flex flex-col w-full">
+//           <div className="flex gap-2 items-center border-b border-gray-200 py-2">
+//             {isMultipleRunnerColors ? (
+//               <MultipleColorBox />
+//             ) : (
+//               <RunnerColor color={runnerColor} />
+//             )}
+//             <p>{colorName}</p>
+//             <p>
+//               <span className="font-bold text-primary">{runnerName}</span>{' '}
+//               {runnerIsClearColor && (
+//                 <span className="text-sm text-gray-400">
+//                   ({t('color.clear-color')})
+//                 </span>
+//               )}{' '}
+//               x {runnerQty}
+//             </p>
+//           </div>
+//           <div className="flex gap-2 items-center">
+//             <GateBox gate={req.gate} />
+//             {/*<p>{req.gate}</p>*/}
+//           </div>
+//         </div>
+//         <Checkbox
+//           name={req.gate}
+//           checked={isCut}
+//           onCheckedChange={(e) => {
+//             const isChecked = Boolean(e)
+//             onChecked?.(isChecked)
+//             req.isCut = isChecked
+//           }}
+//         />
+//         {/*<p className="font-bold flex flex-col">
+//           <span className="text-xs font-light">Runner:</span>{' '}
+//           {req.runner?.code ?? ''} {` x ${req.runner?.qty ?? ''} `}
+//           <span className="text-xs font-light">| Number: </span> {req.gate}
+//         </p>*/}
+//       </div>
+//     )
+//   },
+//   (prev, next) =>
+//     prev.req.isCut === next.req.isCut && prev.onChecked === next.onChecked,
+// )
 
 const KitPartItem = memo(
   ({ part }: { part: KitPartV2 }) => {
     // const { isCollapsed, toggleCollapse } = useCollapse(false)
     const { goTo } = useCustomRouter()
 
-    // const { mutate: checkedPart } = useMutation({
-    //   mutationFn: (isCut: boolean) =>
-    //     updateKitPart(
-    //       {
-    //         ...part,
-    //         subassembly: part.subassembly._id,
-    //         requires: part.requires.map((req) => {
-    //           return {
-    //             ...req,
-    //             runner: req.runner._id,
-    //             isCut: req.isCut,
-    //           }
-    //         }),
-    //         isCut,
-    //       },
-    //       part._id,
-    //     ),
-    // })
+    const { mutate: checkedPart } = useMutation({
+      mutationFn: (isCut: boolean) =>
+        kitPartService.updateIsCut(Number(part.id), isCut),
+      onSuccess: (newData) => {
+        if (!newData) return
+      },
+    })
 
     // const { mutate: cutRequire } = useMutation({
     //   onSuccess: () => {},
@@ -156,7 +147,7 @@ const KitPartItem = memo(
                 checked={part.is_cut}
                 onCheckedChange={(e) => {
                   const isChecked = Boolean(e)
-                  // checkedPart(isChecked)
+                  checkedPart(isChecked)
                   part.is_cut = isChecked
                 }}
               />
@@ -166,7 +157,7 @@ const KitPartItem = memo(
                   'line-through text-gray-300': part.is_cut,
                 })}
               >
-                {'name'}
+                {part.sub_assembly?.name}
               </p>
             </div>
             <div className="flex gap-2">
@@ -221,13 +212,14 @@ const KitPartItem = memo(
 )
 
 const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
+  const { isOpen, openModal, closeModal } = useModal()
   const { data, isLoading } = useQuery({
     queryKey: ['kit', kitId, 'parts'],
     queryFn: () => kitPartService.getAllKitParts(kitId),
     enabled: !!kitId,
   })
 
-  const { goTo } = useCustomRouter()
+  // const { goTo } = useCustomRouter()
   if (isLoading) return null
 
   return (
@@ -238,9 +230,12 @@ const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
       ))}
       <br />
       <br />
-      <FloatButton onClick={() => goTo(`/gunpla-kits/kits/${kitId}/part/new`)}>
+      <FloatButton onClick={() => openModal()}>
         <Plus className="w-5 h-5" />
       </FloatButton>
+      <CustomModal modalIsOpen={isOpen} onClose={closeModal}>
+        <KitPartRequirementForm kit_id={Number(kitId)} />
+      </CustomModal>
     </>
   )
 })

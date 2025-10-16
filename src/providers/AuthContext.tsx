@@ -23,6 +23,7 @@ const AuthProvider = ({ children }: Props) => {
   const { data } = useQuery({
     queryFn: authService.me,
     queryKey: ['me'],
+    enabled: isLoggedIn,
   })
 
   const login = useCallback(() => {

@@ -10,4 +10,46 @@ const getAllKitParts = async (kitId: string): Promise<Array<KitPartV2>> => {
   }
 }
 
-export default { getAllKitParts }
+const createKitPart = async (
+  data: Omit<
+    KitPartV2,
+    'id' | 'updated_at' | 'created_at' | 'code' | 'is_cut' | 'user_id'
+  >,
+) => {
+  try {
+    const response = await axiosInstanceV2.post(`/kit_parts`, data)
+    return response.data
+  } catch (error) {
+    console.error('Error creating kit part:', error)
+    return null
+  }
+}
+
+const updateIsCut = async (
+  id: number,
+  isCut: boolean,
+): Promise<KitPartV2 | null> => {
+  try {
+    const response = await axiosInstanceV2.patch(`/kit_parts/${id}/is_cut`, {
+      is_cut: isCut,
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error updating kit part:', error)
+    return null
+  }
+}
+
+// const updateCutInRequires = async (
+//   id: string,
+//   runnerId: string,
+//   isCut: boolean,
+// ) => {
+//   try {
+//     const response = await axiosInstanceV2.patch(
+//       `/kit_parts/${id}/requires/${runnerId}`,
+//       {
+//         isCut,
+//
+
+export default { getAllKitParts, createKitPart, updateIsCut }
