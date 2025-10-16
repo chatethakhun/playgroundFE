@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { memo } from 'react'
 import ListItemContainer from '../ListItemContainer'
 
-import { Plus, Pen } from 'lucide-react'
+import { Plus, Pen, EyeIcon } from 'lucide-react'
 import { cn } from '@/utils/cn'
 
 import FloatButton from '../FloatButton'
@@ -54,14 +54,25 @@ const KitPartItem = memo(
                 {part.sub_assembly?.name}
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="space-x-4">
               <button
                 className="btn btn-ghost btn-xs"
                 onClick={() =>
                   goTo(`/gunpla-kits/kits/${part.kit_id}/part/${part.id}`)
                 }
               >
-                <Pen className="w-3 h-3 text-gray-500" />
+                <Pen className="w-5 h-5 text-gray-500" />
+              </button>
+
+              <button
+                className="btn btn-ghost btn-xs"
+                onClick={() =>
+                  goTo(
+                    `/gunpla-kits/kits/${part.kit_id}/part/${part.id}/requirements`,
+                  )
+                }
+              >
+                <EyeIcon className="w-5 h-5 text-gray-500" />
               </button>
             </div>
           </div>

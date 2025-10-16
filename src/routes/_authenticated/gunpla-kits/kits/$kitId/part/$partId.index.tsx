@@ -7,7 +7,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
-  '/_authenticated/gunpla-kits/kits/$kitId/part/$partId',
+  '/_authenticated/gunpla-kits/kits/$kitId/part/$partId/',
 )({
   component: RouteComponent,
   loader: async ({ params }) => {
