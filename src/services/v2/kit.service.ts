@@ -42,10 +42,22 @@ const createKit = async (data: Partial<KitV2>): Promise<Partial<KitV2>> => {
   return response.data
 }
 
+const updateKitStatus = async (
+  id: string,
+  status: KitStatus,
+): Promise<KitV2> => {
+  const response = await axiosInstanceV2.patch<KitV2>(`/kits/${id}/status`, {
+    status,
+  })
+
+  return response.data
+}
+
 export default {
   getAllKits,
   getAllKitQuery,
   getKitById,
   getKitByIdQuery,
   createKit,
+  updateKitStatus,
 }

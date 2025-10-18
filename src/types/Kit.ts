@@ -1,7 +1,7 @@
 enum KitStatus {
   PENDING = 'pending',
   IN_PROGRESS = 'in_progress',
-  done = 'done',
+  DONE = 'done',
 }
 interface Kit {
   _id: string
