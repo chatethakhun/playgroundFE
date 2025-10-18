@@ -27,7 +27,8 @@ import { Route as AuthenticatedGunplaKitsKitsColorsNewRouteImport } from './rout
 import { Route as AuthenticatedGunplaKitsKitsColorsColorIdRouteImport } from './routes/_authenticated/gunpla-kits/kits/colors/$colorId'
 import { Route as AuthenticatedGunplaKitsKitsKitIdRunnersRunnerRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/runners/$runner'
 import { Route as AuthenticatedGunplaKitsKitsKitIdPartNewRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/part/new'
-import { Route as AuthenticatedGunplaKitsKitsKitIdPartPartIdRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/part/$partId'
+import { Route as AuthenticatedGunplaKitsKitsKitIdPartPartIdIndexRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/part/$partId.index'
+import { Route as AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRouteImport } from './routes/_authenticated/gunpla-kits/kits/$kitId/part/$partId.requirements'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -126,10 +127,16 @@ const AuthenticatedGunplaKitsKitsKitIdPartNewRoute =
     path: '/gunpla-kits/kits/$kitId/part/new',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedGunplaKitsKitsKitIdPartPartIdRoute =
-  AuthenticatedGunplaKitsKitsKitIdPartPartIdRouteImport.update({
-    id: '/gunpla-kits/kits/$kitId/part/$partId',
-    path: '/gunpla-kits/kits/$kitId/part/$partId',
+const AuthenticatedGunplaKitsKitsKitIdPartPartIdIndexRoute =
+  AuthenticatedGunplaKitsKitsKitIdPartPartIdIndexRouteImport.update({
+    id: '/gunpla-kits/kits/$kitId/part/$partId/',
+    path: '/gunpla-kits/kits/$kitId/part/$partId/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRoute =
+  AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRouteImport.update({
+    id: '/gunpla-kits/kits/$kitId/part/$partId/requirements',
+    path: '/gunpla-kits/kits/$kitId/part/$partId/requirements',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -147,9 +154,10 @@ export interface FileRoutesByFullPath {
   '/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
   '/gunpla-kits/kits/$kitId': typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   '/gunpla-kits/kits/colors': typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
-  '/gunpla-kits/kits/$kitId/part/$partId': typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdRoute
   '/gunpla-kits/kits/$kitId/part/new': typeof AuthenticatedGunplaKitsKitsKitIdPartNewRoute
   '/gunpla-kits/kits/$kitId/runners/$runner': typeof AuthenticatedGunplaKitsKitsKitIdRunnersRunnerRoute
+  '/gunpla-kits/kits/$kitId/part/$partId/requirements': typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRoute
+  '/gunpla-kits/kits/$kitId/part/$partId': typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -165,9 +173,10 @@ export interface FileRoutesByTo {
   '/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
   '/gunpla-kits/kits/$kitId': typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   '/gunpla-kits/kits/colors': typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
-  '/gunpla-kits/kits/$kitId/part/$partId': typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdRoute
   '/gunpla-kits/kits/$kitId/part/new': typeof AuthenticatedGunplaKitsKitsKitIdPartNewRoute
   '/gunpla-kits/kits/$kitId/runners/$runner': typeof AuthenticatedGunplaKitsKitsKitIdRunnersRunnerRoute
+  '/gunpla-kits/kits/$kitId/part/$partId/requirements': typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRoute
+  '/gunpla-kits/kits/$kitId/part/$partId': typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -187,9 +196,10 @@ export interface FileRoutesById {
   '/_authenticated/gunpla-kits/kits/colors/new': typeof AuthenticatedGunplaKitsKitsColorsNewRoute
   '/_authenticated/gunpla-kits/kits/$kitId/': typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   '/_authenticated/gunpla-kits/kits/colors/': typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
-  '/_authenticated/gunpla-kits/kits/$kitId/part/$partId': typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdRoute
   '/_authenticated/gunpla-kits/kits/$kitId/part/new': typeof AuthenticatedGunplaKitsKitsKitIdPartNewRoute
   '/_authenticated/gunpla-kits/kits/$kitId/runners/$runner': typeof AuthenticatedGunplaKitsKitsKitIdRunnersRunnerRoute
+  '/_authenticated/gunpla-kits/kits/$kitId/part/$partId/requirements': typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRoute
+  '/_authenticated/gunpla-kits/kits/$kitId/part/$partId/': typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -207,9 +217,10 @@ export interface FileRouteTypes {
     | '/gunpla-kits/kits/colors/new'
     | '/gunpla-kits/kits/$kitId'
     | '/gunpla-kits/kits/colors'
-    | '/gunpla-kits/kits/$kitId/part/$partId'
     | '/gunpla-kits/kits/$kitId/part/new'
     | '/gunpla-kits/kits/$kitId/runners/$runner'
+    | '/gunpla-kits/kits/$kitId/part/$partId/requirements'
+    | '/gunpla-kits/kits/$kitId/part/$partId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -225,9 +236,10 @@ export interface FileRouteTypes {
     | '/gunpla-kits/kits/colors/new'
     | '/gunpla-kits/kits/$kitId'
     | '/gunpla-kits/kits/colors'
-    | '/gunpla-kits/kits/$kitId/part/$partId'
     | '/gunpla-kits/kits/$kitId/part/new'
     | '/gunpla-kits/kits/$kitId/runners/$runner'
+    | '/gunpla-kits/kits/$kitId/part/$partId/requirements'
+    | '/gunpla-kits/kits/$kitId/part/$partId'
   id:
     | '__root__'
     | '/'
@@ -246,9 +258,10 @@ export interface FileRouteTypes {
     | '/_authenticated/gunpla-kits/kits/colors/new'
     | '/_authenticated/gunpla-kits/kits/$kitId/'
     | '/_authenticated/gunpla-kits/kits/colors/'
-    | '/_authenticated/gunpla-kits/kits/$kitId/part/$partId'
     | '/_authenticated/gunpla-kits/kits/$kitId/part/new'
     | '/_authenticated/gunpla-kits/kits/$kitId/runners/$runner'
+    | '/_authenticated/gunpla-kits/kits/$kitId/part/$partId/requirements'
+    | '/_authenticated/gunpla-kits/kits/$kitId/part/$partId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -386,11 +399,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGunplaKitsKitsKitIdPartNewRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/gunpla-kits/kits/$kitId/part/$partId': {
-      id: '/_authenticated/gunpla-kits/kits/$kitId/part/$partId'
+    '/_authenticated/gunpla-kits/kits/$kitId/part/$partId/': {
+      id: '/_authenticated/gunpla-kits/kits/$kitId/part/$partId/'
       path: '/gunpla-kits/kits/$kitId/part/$partId'
       fullPath: '/gunpla-kits/kits/$kitId/part/$partId'
-      preLoaderRoute: typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdRouteImport
+      preLoaderRoute: typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/gunpla-kits/kits/$kitId/part/$partId/requirements': {
+      id: '/_authenticated/gunpla-kits/kits/$kitId/part/$partId/requirements'
+      path: '/gunpla-kits/kits/$kitId/part/$partId/requirements'
+      fullPath: '/gunpla-kits/kits/$kitId/part/$partId/requirements'
+      preLoaderRoute: typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
   }
@@ -427,9 +447,10 @@ interface AuthenticatedRouteChildren {
   AuthenticatedGunplaKitsKitsColorsNewRoute: typeof AuthenticatedGunplaKitsKitsColorsNewRoute
   AuthenticatedGunplaKitsKitsKitIdIndexRoute: typeof AuthenticatedGunplaKitsKitsKitIdIndexRoute
   AuthenticatedGunplaKitsKitsColorsIndexRoute: typeof AuthenticatedGunplaKitsKitsColorsIndexRoute
-  AuthenticatedGunplaKitsKitsKitIdPartPartIdRoute: typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdRoute
   AuthenticatedGunplaKitsKitsKitIdPartNewRoute: typeof AuthenticatedGunplaKitsKitsKitIdPartNewRoute
   AuthenticatedGunplaKitsKitsKitIdRunnersRunnerRoute: typeof AuthenticatedGunplaKitsKitsKitIdRunnersRunnerRoute
+  AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRoute: typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRoute
+  AuthenticatedGunplaKitsKitsKitIdPartPartIdIndexRoute: typeof AuthenticatedGunplaKitsKitsKitIdPartPartIdIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -444,12 +465,14 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
     AuthenticatedGunplaKitsKitsKitIdIndexRoute,
   AuthenticatedGunplaKitsKitsColorsIndexRoute:
     AuthenticatedGunplaKitsKitsColorsIndexRoute,
-  AuthenticatedGunplaKitsKitsKitIdPartPartIdRoute:
-    AuthenticatedGunplaKitsKitsKitIdPartPartIdRoute,
   AuthenticatedGunplaKitsKitsKitIdPartNewRoute:
     AuthenticatedGunplaKitsKitsKitIdPartNewRoute,
   AuthenticatedGunplaKitsKitsKitIdRunnersRunnerRoute:
     AuthenticatedGunplaKitsKitsKitIdRunnersRunnerRoute,
+  AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRoute:
+    AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRoute,
+  AuthenticatedGunplaKitsKitsKitIdPartPartIdIndexRoute:
+    AuthenticatedGunplaKitsKitsKitIdPartPartIdIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

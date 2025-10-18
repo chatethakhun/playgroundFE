@@ -11,7 +11,7 @@ interface MessageItemProps {
 }
 const MessageItem = ({ message, sender, reciever }: MessageItemProps) => {
   const { authUser } = useAuth()
-  const isSender = message.senderId === authUser?._id
+  const isSender = message.senderId === authUser?.id
   return (
     <div
       className={cn('flex  items-center-safe gap-2  my-2 ', {

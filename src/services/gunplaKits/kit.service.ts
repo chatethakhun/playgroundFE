@@ -82,8 +82,8 @@ export const getKitRunner = async (kitId: string, runnerId: string) => {
 
 export const updateKitRunner = async (
   data: Partial<Runner>,
-  kitId: string,
-  runnerId: string,
+  kitId: number,
+  runnerId: number,
 ) => {
   try {
     return (

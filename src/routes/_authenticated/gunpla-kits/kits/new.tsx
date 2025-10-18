@@ -4,7 +4,8 @@ import PageContainer from '@/components/ui/PageContainer'
 import TextInput from '@/components/ui/TextInput'
 import { GUNPLA_GRADE } from '@/constant/gunplaKits'
 import useCustomRouter from '@/hooks/useCustomRouter'
-import { createKit } from '@/services/gunplaKits/kit.service'
+
+import kitService from '@/services/v2/kit.service'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
@@ -36,12 +37,16 @@ function RouteComponent() {
   })
 
   const { mutate: addKit } = useMutation({
-    mutationFn: (data: Data) => createKit(data),
+    mutationFn: (data: Data) => kitService.createKit(data),
     onSuccess: (newKit) => {
-      queryClient.setQueryData<Kit[]>(['kits', false], (oldKits) => {
-        if (!oldKits) return [newKit]
-        return [...oldKits, newKit]
-      })
+      if (!newKit) return
+      queryClient.setQueryData<Partial<KitV2>[]>(
+        ['kits', newKit.status],
+        (oldKits) => {
+          if (!oldKits) return [newKit]
+          return [...oldKits, newKit]
+        },
+      )
       goTo('/gunpla-kits/kits')
     },
   })

@@ -1,9 +1,6 @@
 import { lazy, memo, useMemo } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
-import {
-  getKitRunners,
-  updateKitRunner,
-} from '@/services/gunplaKits/kit.service'
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Plus, PencilIcon } from 'lucide-react'
 import FloatButton from '../FloatButton'
@@ -12,44 +9,41 @@ import RunnerForm from './RunnerForm'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { useTranslation } from 'react-i18next'
 import NoData from '../NoData'
-import RunnerColor from './RunnderColor'
+import RunnerColor from './RunnerColor'
 import MultipleColorBox from './MultipleColorBox'
 import { Check, X } from 'lucide-react'
+import runnerService from '@/services/v2/runner.service'
 
 const CustomModal = lazy(() => import('../Modal'))
 
 const RunnerItem = memo(
-  ({ runner }: { runner: Runner }) => {
+  ({ runner }: { runner: RunnerColor }) => {
     const { goTo } = useCustomRouter()
     const { t } = useTranslation(['runner', 'color'])
     const queryClient = useQueryClient()
-    const backgroundColor =
-      typeof runner.color === 'string'
-        ? '#ffffff'
-        : runner.color?.hex || '#ffffff'
+    const backgroundColor = runner.color ? runner.color.hex : 'white'
     const isMultipleRunerColor =
-      typeof runner.color === 'object' && (runner.color?.multiple || false)
+      typeof runner.color === 'object' && (runner.color?.is_multiple || false)
 
     const isClearColor =
-      typeof runner.color === 'string'
-        ? false
-        : runner.color?.clearColor || false
+      typeof runner.color === 'string' ? false : runner.color?.is_clear || false
 
-    const runnerIsCut = runner.isCut || false
-
-    const kitId = typeof runner.kit === 'string' ? runner.kit : ''
+    const runnerIsCut = runner.is_used || false
 
     const { mutate: toggleRunner } = useMutation({
       mutationFn: () =>
-        updateKitRunner({ ...runner, isCut: !runnerIsCut }, kitId, runner._id),
+        runnerService.updateIsUsed(Number(runner.id), {
+          is_used: !runnerIsCut,
+        }),
       onSuccess: (newData) => {
-        queryClient.setQueryData<Array<Runner>>(
-          ['kits', kitId, 'runners'],
+        if (!newData) return
+        queryClient.setQueryData<Array<RunnerColor>>(
+          ['kits', newData.kit_id, 'runners'],
           (oldData) => {
             if (!oldData) return oldData
 
-            return oldData.map((r: Runner) =>
-              r._id === newData._id ? { ...runner, isCut: !runnerIsCut } : r,
+            return oldData.map((r: RunnerColor) =>
+              r.id === newData.id ? { ...runner, is_used: !runnerIsCut } : r,
             )
           },
         )
@@ -60,7 +54,7 @@ const RunnerItem = memo(
         <div className="flex  items-center  gap-2 basis-[30%] md:basis-[10%]">
           {!isMultipleRunerColor && <RunnerColor color={backgroundColor} />}
           {isMultipleRunerColor && <MultipleColorBox />}
-          {runner.code}
+          {runner.name}
           {isClearColor ? (
             <span className="text-gray-500 text-sm">
               ( {t('color:color.clear-color')} )
@@ -71,7 +65,7 @@ const RunnerItem = memo(
         </div>
         <span className="text-gray-500 text-sm">
           {t('runner:runner.qty')}:{' '}
-          <span className="font-bold text-primary">{runner.qty}</span>
+          <span className="font-bold text-primary">{runner.amount}</span>
         </span>
 
         <div className="ml-auto flex gap-4">
@@ -89,7 +83,7 @@ const RunnerItem = memo(
           <PencilIcon
             className="w-3 h-3 cursor-pointer text-primary"
             onClick={() => {
-              goTo(`/gunpla-kits/kits/${runner.kit}/runners/${runner._id}`)
+              goTo(`/gunpla-kits/kits/${runner.kit_id}/runners/${runner.id}`)
             }}
           />
         </div>
@@ -97,26 +91,26 @@ const RunnerItem = memo(
     )
   },
   (prev, next) =>
-    prev.runner._id === next.runner._id &&
-    prev.runner.isCut === next.runner.isCut,
+    prev.runner.id === next.runner.id &&
+    prev.runner.is_used === next.runner.is_used,
 )
 
-const sortByRunnerCode = (a: Runner, b: Runner) => {
-  if (a.code < b.code) return -1
-  if (a.code > b.code) return 1
+const sortByRunnerCode = (a: RunnerColor, b: RunnerColor) => {
+  if (a.name < b.name) return -1
+  if (a.name > b.name) return 1
   return 0
 }
 
-const sortedByIsCutAndRunnerCode = (a: Runner, b: Runner) => {
-  if (a.isCut < b.isCut) return -1
-  if (a.isCut > b.isCut) return 1
+const sortedByIsCutAndRunnerCode = (a: RunnerColor, b: RunnerColor) => {
+  if (a.is_used < b.is_used) return -1
+  if (a.is_used > b.is_used) return 1
   return sortByRunnerCode(a, b)
 }
 
 const Runners = memo(({ kitId }: { kitId: string }) => {
   const { data, isLoading } = useQuery({
-    queryFn: () => getKitRunners(kitId),
-    queryKey: ['kits', kitId, 'runners'],
+    queryFn: () => runnerService.getKitRunnerColors(kitId),
+    queryKey: ['kits', Number(kitId), 'runners'],
     enabled: !!kitId,
   })
 
@@ -132,7 +126,7 @@ const Runners = memo(({ kitId }: { kitId: string }) => {
     <>
       {sortedData?.length === 0 && <NoData />}
       {sortedData?.map((runner) => (
-        <RunnerItem key={runner._id} runner={runner} />
+        <RunnerItem key={runner.id} runner={runner} />
       ))}
       <br />
       <br />

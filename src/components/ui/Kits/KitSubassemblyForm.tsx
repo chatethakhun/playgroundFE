@@ -3,12 +3,13 @@ import { Controller, FormProvider, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createKitSubassembly } from '@/services/gunplaKits/kit.service'
+
 import TextInput from '../TextInput'
 import Button from '../Button'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 import { toSnakeCase } from '@/utils/string'
+import kitSubassemblyService from '@/services/v2/kitSubassembly.service'
 
 const schema = yup.object({
   name: yup.string().required('subassembly:subassembly.form.name_error'),
@@ -30,12 +31,25 @@ const KitSubassemblyForm = memo(({ kitId }: { kitId: string }) => {
   const { t } = useTranslation(['common', 'subassembly'])
 
   const { mutate: addSubassembly } = useMutation({
-    mutationFn: (data: Data) => createKitSubassembly(data, kitId),
-    onSuccess: () => {
+    mutationFn: (data: Data) =>
+      kitSubassemblyService.createKitSubassembly(kitId, {
+        name: data.name,
+        kit_id: kitId,
+      }),
+    onSuccess: (newData) => {
       form.reset()
-      queryClient.refetchQueries({
-        queryKey: ['kit', kitId, 'subassemblies'],
-      })
+      // queryClient.refetchQueries({
+      //   queryKey: ['kit', Number(kitId), 'subassemblies'],
+      // })
+      if (newData) {
+        queryClient.setQueryData<Array<KitSubassemblyV2>>(
+          ['kit', Number(kitId), 'subassemblies'],
+          (oldData) => {
+            if (!oldData) return oldData
+            return [...oldData, newData]
+          },
+        )
+      }
       toast(t('save-success'), { position: 'bottom-center' })
     },
   })

@@ -1,57 +1,56 @@
 import {
-  deleteColor,
-  getColorsQuery,
-} from '@/services/gunplaKits/color.service'
-import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from '@tanstack/react-query'
 import { memo, useCallback } from 'react'
-import ListItemContainer from '../ListItemContainer'
-import MultipleColorBox from './MultipleColorBox'
-import RunnerColor from './RunnderColor'
+import ListItemContainer from '@/components/ui/ListItemContainer'
+import MultipleColorBox from '@/components/ui/Kits/MultipleColorBox'
+import RunnerColor from '@/components/ui/Kits/RunnerColor'
 import { Trash, Pencil } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { confirm } from '../ComfirmDialog'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import NoData from '../NoData'
+import colorSevice from '@/services/v2/color.service'
+import LoadingFullPage from '../LoadingFullPage'
 
 const Color = memo(
-  ({ color, onRemove }: { color: Color; onRemove: () => void }) => {
+  ({ color, onRemove }: { color: ColorV2; onRemove: () => void }) => {
     const { goTo } = useCustomRouter()
     const { t } = useTranslation('color')
     return (
       <ListItemContainer>
         <div className="flex gap-2 items-center">
-          {!color.multiple && <RunnerColor color={color.hex} />}
-          {color.multiple && <MultipleColorBox />}
+          {!color.is_multiple && <RunnerColor color={color.hex} />}
+          {color.is_multiple && <MultipleColorBox />}
           {color.name}{' '}
-          {color.clearColor ? `(${t('color:color.clear-color')})` : ''}
+          {color.is_clear ? `(${t('color:color.clear-color')})` : ''}
         </div>
         <div className="flex ml-auto gap-2">
           <Pencil
             className="text-gray-400 ml-auto"
-            onClick={() => goTo(`/gunpla-kits/kits/colors/${color._id}`)}
+            onClick={() => goTo(`/gunpla-kits/kits/colors/${color.id}`)}
           />
           <Trash className="text-red-400 ml-auto" onClick={onRemove} />
         </div>
       </ListItemContainer>
     )
   },
-  (prev, next) => prev.color._id === next.color._id,
+  (prev, next) => prev.color.id === next.color.id,
 )
 const ListColors = memo(() => {
-  const { data } = useSuspenseQuery(getColorsQuery())
+  const { data, isLoading } = useSuspenseQuery(colorSevice.getAllColorQuery())
   const { t } = useTranslation('common')
 
   const queryClient = useQueryClient()
 
   const { mutate: removeColor } = useMutation({
-    mutationFn: (id: string) => deleteColor(id),
-    onSuccess: (id: string) => {
-      queryClient.setQueryData<Array<Color>>(['colors'], (oldData) => {
-        return oldData?.filter((c) => c._id !== id)
+    mutationFn: (id: string) => colorSevice.deleteColor(id),
+    onSuccess: (id: string | null) => {
+      if (!id) return
+      queryClient.setQueryData<Array<ColorV2>>(['colors'], (oldData) => {
+        return oldData?.filter((c) => c.id !== id)
       })
     },
   })
@@ -64,14 +63,16 @@ const ListColors = memo(() => {
 
     removeColor(id)
   }, [])
+
+  if (isLoading) return <LoadingFullPage />
   return (
     <div>
-      {data.length === 0 && <NoData />}
+      {(data ?? []).length === 0 && <NoData />}
       {data?.map((color) => (
         <Color
-          key={color._id}
+          key={color.id}
           color={color}
-          onRemove={() => onRemoveColor(color._id)}
+          onRemove={() => onRemoveColor(color.id)}
         />
       ))}
     </div>

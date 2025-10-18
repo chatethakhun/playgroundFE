@@ -1,4 +1,3 @@
-import { getKitSubassemblies } from '@/services/gunplaKits/kit.service'
 import { useQuery } from '@tanstack/react-query'
 import { lazy, memo } from 'react'
 import FloatButton from '../FloatButton'
@@ -7,10 +6,11 @@ import useModal from '@/hooks/useModal'
 import LoadingFullPage from '../LoadingFullPage'
 import KitSubassemblyForm from './KitSubassemblyForm'
 import NoData from '../NoData'
+import kitSubassemblyService from '@/services/v2/kitSubassembly.service'
 const CustomModal = lazy(() => import('../Modal'))
 
 const KitSubassemblyItem = memo(
-  ({ kitSubassembly }: { kitSubassembly: KitSubassembly }) => {
+  ({ kitSubassembly }: { kitSubassembly: KitSubassemblyV2 }) => {
     return (
       <div className="flex flex-col gap-2 border-b border-gray-200 p-2">
         <div className="flex gap-2 flex-col">
@@ -21,14 +21,14 @@ const KitSubassemblyItem = memo(
       </div>
     )
   },
-  (prev, next) => prev.kitSubassembly._id === next.kitSubassembly._id,
+  (prev, next) => prev.kitSubassembly.id === next.kitSubassembly.id,
 )
 
 const KitSubassembly = memo(({ kitId }: { kitId: string }) => {
   const { data, isLoading } = useQuery({
-    queryFn: () => getKitSubassemblies(kitId),
+    queryFn: () => kitSubassemblyService.getAllKitSubassemblies(kitId),
     enabled: !!kitId,
-    queryKey: ['kit', kitId, 'subassemblies'],
+    queryKey: ['kit', Number(kitId), 'subassemblies'],
   })
   const { isOpen, openModal, closeModal } = useModal()
 
@@ -39,7 +39,7 @@ const KitSubassembly = memo(({ kitId }: { kitId: string }) => {
       {data?.length === 0 && <NoData />}
       {data?.map((kitSubassembly) => (
         <KitSubassemblyItem
-          key={kitSubassembly._id}
+          key={kitSubassembly.id}
           kitSubassembly={kitSubassembly}
         />
       ))}

@@ -5,43 +5,39 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import TextInput from '../TextInput'
 import Button from '../Button'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { getColors } from '@/services/gunplaKits/color.service'
+
 import LoadingSpinner from '../LoadingSpinner'
 import DropDown from '../Dropdown'
-import {
-  createKitRunner,
-  updateKitRunner,
-} from '@/services/gunplaKits/kit.service'
+
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
+import runnerService from '@/services/v2/runner.service'
+import colorService from '@/services/v2/color.service'
 
 const schema = yup.object({
   code: yup.string().required('runner:runner.form.code_error'),
-  color: yup.string().required('runner:runner.form.color_error'),
+  color: yup.number().required('runner:runner.form.color_error'),
   qty: yup.number().required('runner:runner.form.qty_error'),
-  numberOfPieces: yup.number(),
 })
 
 type Data = yup.Asserts<typeof schema>
 
 const RunnerForm = memo(
-  ({ kitId, runner }: { kitId: string; runner?: Runner }) => {
+  ({ kitId, runner }: { kitId: string; runner?: RunnerV2 }) => {
     const queryClient = useQueryClient()
     const method = useForm({
       defaultValues: {
-        code: runner?.code ?? '',
-        color:
-          typeof runner?.color !== 'string' ? (runner?.color?._id ?? '') : '',
-        qty: runner?.qty ?? 1,
-        numberOfPieces: 1,
+        code: runner?.name ?? '',
+        color: runner?.color_id ?? 0,
+        qty: runner?.amount ?? 1,
       },
       resolver: yupResolver(schema),
     })
 
     const { data, isLoading } = useQuery({
       queryKey: ['colors'],
-      queryFn: () => getColors(),
+      queryFn: () => colorService.getAllColors(),
     })
 
     const { t } = useTranslation(['common', 'runner'])
@@ -49,25 +45,64 @@ const RunnerForm = memo(
     const { goTo } = useCustomRouter()
 
     const { mutate: addRunner } = useMutation({
-      mutationFn: (data: Data) => createKitRunner(data, kitId),
+      mutationFn: (data: Data) =>
+        runnerService.createKitRunner({
+          amount: data.qty,
+          color_id: data.color,
+          kit_id: Number(kitId),
+          name: data.code,
+        }),
       onSuccess: (data) => {
+        if (!data) return
         toast(t('save-success'), { position: 'bottom-center' })
         method.reset()
         queryClient.refetchQueries({
-          queryKey: ['kits', data.kit._id, 'runners'],
+          queryKey: ['kits', data.kit_id, 'runners'],
         })
       },
     })
     const { mutate: updateRunner } = useMutation({
-      mutationFn: (data: Data) =>
-        updateKitRunner(data, kitId, runner?._id ?? ''),
-      onSuccess: (data) => {
-        method.reset()
-        queryClient.refetchQueries({
-          queryKey: ['kits', data.kit._id, 'runners'],
+      mutationFn: (data: Data) => {
+        if (!runner?.id) throw new Error('Missing runner id')
+        return runnerService.updateKitRunner(runner?.id, {
+          ...data,
+          color_id: data.color,
+          name: data.code,
+          amount: data.qty,
+          kit_id: Number(kitId),
         })
+      },
+      onSuccess: (data) => {
+        if (!data) return
         toast(t('save-success'), { position: 'bottom-center' })
-        goTo(`/gunpla-kits/kits/${data.kit._id}`)
+        method.reset()
+
+        queryClient.setQueryData<Array<RunnerV2>>(
+          ['kits', data.kit_id, 'runners'],
+          (oldData) => {
+            if (!oldData) return oldData
+
+            const target = oldData.find((r) => r.id === data.id)
+            if (!target) return oldData
+
+            return oldData.map((r) => {
+              if (r.id === data.id) {
+                return {
+                  ...r,
+                  name: data.name,
+                  color_id: data.color_id,
+                  amount: data.amount,
+                }
+              }
+              return r
+            })
+          },
+        )
+        // queryClient.refetchQueries({
+        //   queryKey: ['kits', data.kit._id, 'runners'],
+        // })
+        // toast(t('save-success'), { position: 'bottom-center' })
+        goTo(`/gunpla-kits/kits/${data.kit_id}`)
       },
     })
 
@@ -107,14 +142,15 @@ const RunnerForm = memo(
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropDown
                 options={(data || []).map((color) => ({
-                  label: `${color.name}${color.clearColor ? ` (${t('color:color.clear-color')})` : ''}`,
-                  value: color._id,
+                  label: `${color.name}${color.is_clear ? ` (${t('color:color.clear-color')})` : ''}`,
+                  value: color.id,
                 }))}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={t('runner:runner.form.color_ph')}
                 label={t('runner:runner.form.runner_label')}
                 errorMessage={t(error?.message ?? '')}
+                disabled={data?.length === 0}
               />
             )}
           />

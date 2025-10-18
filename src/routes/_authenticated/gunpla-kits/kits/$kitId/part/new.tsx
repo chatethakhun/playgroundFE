@@ -12,7 +12,7 @@ function RouteComponent() {
   const { kitId } = Route.useParams()
   return (
     <PageContainer>
-      <KitPartForm kitId={kitId} />
+      <KitPartForm kitId={Number(kitId)} />
     </PageContainer>
   )
 }
