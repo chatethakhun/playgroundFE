@@ -15,7 +15,7 @@ import { toast } from 'react-toastify'
 import colorService from '@/services/v2/color.service'
 const schema = yup.object({
   name: yup.string().required(),
-  hex: yup.string().required().min(6).max(7),
+  hex: yup.string().required().min(3).max(7),
   multiple: yup.boolean().required(),
   clearColor: yup.boolean().required(),
 })
