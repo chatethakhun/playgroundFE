@@ -1,14 +1,22 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { memo, useMemo } from 'react'
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
+import { memo, useEffect, useMemo, useState } from 'react'
 import LoadingFullPage from '../LoadingFullPage'
 import ListItemContainer from '../ListItemContainer'
 import { useTranslation } from 'react-i18next'
 import kitService from '@/services/v2/kit.service'
+import DropDown from '../Dropdown'
+import { KIT_STATIS } from '@/constant/gunplaKits'
+import { queryClient } from '@/utils/queryClient'
 
+const STATUS = [KIT_STATIS.PENDING, KIT_STATIS.IN_PROGRESS, KIT_STATIS.DONE]
 const Overview = memo(
   ({ kitId }: { kitId: string }) => {
     const { data, isLoading } = useSuspenseQuery(
       kitService.getKitByIdQuery(kitId),
+    )
+
+    const [kitStatus, setKitStatus] = useState<KitStatus>(
+      KIT_STATIS.PENDING as KitStatus,
     )
 
     const { t } = useTranslation('kit')
@@ -24,6 +32,42 @@ const Overview = memo(
       }
       return count
     }, [data?.runners])
+
+    const { mutate } = useMutation({
+      mutationFn: (status: KitStatus) =>
+        kitService.updateKitStatus(kitId, status),
+      onSuccess: (newData) => {
+        queryClient.setQueryData(['kit', kitId], newData)
+
+        // update in old list status
+        queryClient.setQueryData<Array<KitV2>>(
+          ['kits', kitStatus],
+          (oldData) => {
+            if (!oldData) return oldData
+
+            return oldData.filter((kit) => {
+              return kit.id === kitId
+            })
+          },
+        )
+
+        // push to new list status
+        queryClient.setQueryData<Array<KitV2>>(
+          ['kits', newData.status],
+          (oldData) => {
+            if (!oldData) return oldData
+            oldData.push(newData)
+            return oldData
+          },
+        )
+      },
+    })
+
+    useEffect(() => {
+      if (data) {
+        setKitStatus(data.status)
+      }
+    }, [data])
 
     if (isLoading) return <LoadingFullPage />
 
@@ -46,6 +90,17 @@ const Overview = memo(
           <span className="text-gray-500 text-sm font-bold">
             {numberOfRunners}
           </span>
+        </ListItemContainer>
+
+        <ListItemContainer>
+          <h6 className="text-primary font-bold">{t('overview.status')}: </h6>
+          <DropDown
+            value={kitStatus}
+            options={STATUS.map((status) => ({ value: status, label: status }))}
+            onChange={(e) => {
+              mutate(e.target.value as KitStatus)
+            }}
+          />
         </ListItemContainer>
       </div>
     )

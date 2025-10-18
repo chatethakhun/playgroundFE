@@ -8,3 +8,9 @@ export const GUNPLA_GRADE = [
   'MGSD',
   'Other',
 ]
+
+export const KIT_STATIS = {
+  PENDING: 'pending',
+  IN_PROGRESS: 'in_progress',
+  DONE: 'done',
+}
