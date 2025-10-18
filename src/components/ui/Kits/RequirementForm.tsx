@@ -10,6 +10,8 @@ import TagInput from '../TagInput'
 import kitPartRequirementService from '@/services/v2/kitPartRequirement.service'
 import { useCallback } from 'react'
 import useCustomRouter from '@/hooks/useCustomRouter'
+import { toast } from 'react-toastify'
+import { queryClient } from '@/utils/queryClient'
 
 const schema = yup.object().shape({
   requirements: yup.array().of(
@@ -86,6 +88,13 @@ const RequirementForm = ({
   const { mutate: compareSync } = useMutation({
     mutationFn: (data: Array<CompareSyncPayload>) =>
       kitPartRequirementService.requirementCompareSync(kitPartId, data),
+    onSuccess: (data) => {
+      toast.success(t('common.success'))
+      queryClient.setQueryData(
+        ['kits', kitId, 'kit_parts', kitPartId, 'requirements'],
+        data,
+      )
+    },
   })
 
   const form = useForm({
