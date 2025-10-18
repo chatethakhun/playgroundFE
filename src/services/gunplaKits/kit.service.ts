@@ -48,7 +48,7 @@ export const getKitRunners = async (id: string) => {
   }
 }
 
-export const updateIsFinished = async (id: string, isFinished: boolean) => {
+export const updateIsFinished = async (id: number, isFinished: boolean) => {
   try {
     return (
       await axiosInstance.put<Kit>(`/kits/${id}/is-finished`, { isFinished })

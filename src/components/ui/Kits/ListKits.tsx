@@ -24,7 +24,7 @@ const KitItem = memo(
   }: {
     kitName: string
     grade: string
-    kitId: string
+    kitId: number
     isCompleted?: boolean
   }) => {
     const { goTo } = useCustomRouter()
