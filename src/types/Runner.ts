@@ -30,7 +30,7 @@ interface CreateKitRunnerPayload {
 interface UpdateKitRunnerPayload {
   id: number
   name: string
-  kit_id: string
+  kit_id: number
   color_id: string
   is_used: boolean
 }
@@ -41,7 +41,7 @@ interface UpdateIsUsedPayload {
 
 interface RunnerColor {
   name: string
-  kit_id: string
+  kit_id: number
   is_used: boolean
   color: ColorV2
   id: number

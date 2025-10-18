@@ -30,7 +30,7 @@ const getKitById = async (id: string): Promise<KitV2 | null> => {
 
 const getKitByIdQuery = (id: string) => ({
   queryFn: () => getKitById(id),
-  queryKey: ['kit', id],
+  queryKey: ['kits', id],
 })
 
 const createKit = async (data: Partial<KitV2>): Promise<Partial<KitV2>> => {

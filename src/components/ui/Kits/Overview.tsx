@@ -37,7 +37,7 @@ const Overview = memo(
       mutationFn: (status: KitStatus) =>
         kitService.updateKitStatus(kitId, status),
       onSuccess: (newData) => {
-        queryClient.setQueryData(['kit', kitId], newData)
+        queryClient.setQueryData(['kits', kitId], newData)
 
         // update in old list status
         queryClient.setQueryData<Array<KitV2>>(
@@ -45,21 +45,24 @@ const Overview = memo(
           (oldData) => {
             if (!oldData) return oldData
 
-            return oldData.filter((kit) => {
-              return kit.id === kitId
-            })
+            oldData = oldData.filter((kit) => kit.id !== Number(kitId))
+
+            // oldData.push(newData)
+            return oldData
           },
         )
 
-        // push to new list status
         queryClient.setQueryData<Array<KitV2>>(
           ['kits', newData.status],
           (oldData) => {
             if (!oldData) return oldData
             oldData.push(newData)
+
             return oldData
           },
         )
+
+        setKitStatus(newData.status)
       },
     })
 

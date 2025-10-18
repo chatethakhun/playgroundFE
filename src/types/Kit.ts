@@ -12,7 +12,7 @@ interface Kit {
 }
 
 interface KitV2 {
-  id: string
+  id: number
   name: string
   grade: string
   runners: Array<RunnerV2>
