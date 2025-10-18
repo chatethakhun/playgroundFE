@@ -22,3 +22,7 @@ interface CompareSyncPayload {
   qty: KitPartRequirement['qty']
   kit_part_id: KitPartRequirement['kit_part_id']
 }
+
+interface KitRequirementWithRunnerAndColor extends KitPartRequirement {
+  runner: RunnerColor
+}

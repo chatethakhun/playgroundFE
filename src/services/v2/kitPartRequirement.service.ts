@@ -1,10 +1,10 @@
 import axiosInstanceV2 from './apiBase'
 const getAllKitPartRequirements = async (
   kitPartId: number,
-): Promise<Array<KitPartRequirement>> => {
+): Promise<Array<KitRequirementWithRunnerAndColor>> => {
   try {
     const response = await axiosInstanceV2.get(
-      `kit_parts/${kitPartId}/requirements`,
+      `kit_parts/${kitPartId}/requirements_with_runners_and_color`,
     )
     return response.data
   } catch (error) {
@@ -35,7 +35,7 @@ const bulkCreateKitPartRequirements = async (
   requirements: Array<Omit<KitPartRequirement, 'id' | 'user_id'>>,
 ) => {
   try {
-    const response = await axiosInstanceV2.post(`kit_parts/requirements/bulk`, {
+    const response = await axiosInstanceV2.post(`/requirements/bulk`, {
       kit_part_id,
       items: requirements,
     })
@@ -50,13 +50,10 @@ const bulkUpdateKitPartRequirements = async (
   requirements: Array<BulkUpdateKitPartRequirement>,
 ) => {
   try {
-    const response = await axiosInstanceV2.patch(
-      `kit_parts/requirements/bulk`,
-      {
-        kit_part_id,
-        items: requirements,
-      },
-    )
+    const response = await axiosInstanceV2.patch(`/requirements/bulk`, {
+      kit_part_id,
+      items: requirements,
+    })
     return response.data
   } catch (error) {
     console.error('Error updating kit part requirements:', error)
@@ -70,7 +67,7 @@ const requirementCompareSync = async (
 ) => {
   try {
     const { data } = await axiosInstanceV2.patch<Array<KitPartRequirement>>(
-      `kit_parts/requirements/compare_sync`,
+      `/requirements/compare_sync`,
       {
         kit_part_id,
         items: requirement,
