@@ -4,9 +4,9 @@ import {
   useSuspenseQuery,
 } from '@tanstack/react-query'
 import { memo, useCallback } from 'react'
-import ListItemContainer from '../ListItemContainer'
-import MultipleColorBox from './MultipleColorBox'
-import RunnerColor from './RunnderColor'
+import ListItemContainer from '@/components/ui/ListItemContainer'
+import MultipleColorBox from '@/components/ui/Kits/MultipleColorBox'
+import RunnerColor from '@/components/ui/Kits/RunnerColor'
 import { Trash, Pencil } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { confirm } from '../ComfirmDialog'
