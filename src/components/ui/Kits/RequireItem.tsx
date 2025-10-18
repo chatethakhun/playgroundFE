@@ -32,7 +32,7 @@ const RequireItem = ({
       </ItemHeader>
       <ItemMedia />
       <ItemContent>
-        <div className="flex flex-wrap space-y-2">
+        <div className="flex flex-wrap space-x-2">
           {item.gate.map((gate, index) => (
             <Badge key={index} variant="outline" className="shadow-sm">
               {gate}
