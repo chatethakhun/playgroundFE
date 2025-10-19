@@ -148,7 +148,7 @@ const RequirementForm = ({
               fieldState: { error },
             }) => (
               <TagInput
-                type="number"
+                inputMode="numeric"
                 tags={value}
                 handleTag={onChange}
                 label={t('part.form.gate_label')}

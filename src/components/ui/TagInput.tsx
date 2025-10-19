@@ -33,6 +33,7 @@ const TagInput = ({
   errorMessage,
   disabled,
   type = 'text',
+  inputMode,
 }: ITagInput) => {
   const [inputValue, setInputValue] = useState('') // 👈 ใช้ state แทน ref
 
@@ -83,7 +84,8 @@ const TagInput = ({
             <input
               id={id}
               name={name}
-              type={type}
+              type="text"
+              inputMode={inputMode}
               value={inputValue} // 👈 controlled input
               onChange={(e) => setInputValue(e.target.value)} // 👈 update state
               onKeyDown={onKeyDown}
