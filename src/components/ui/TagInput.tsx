@@ -1,4 +1,4 @@
-import { memo, useRef } from 'react'
+import { memo, useState } from 'react'
 import { X } from 'lucide-react'
 import { cn } from '@/utils/cn'
 
@@ -8,18 +8,21 @@ interface ITagInput extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   errorMessage?: string
 }
+
 const TagItem = memo(
   ({ tag, onRemoveTag }: { tag: string; onRemoveTag?: () => void }) => {
     return (
       <li className="input-tag__tags__item border border-primary rounded-sm px-2 py-0 flex gap-2 items-center">
         {tag}
-        <X className="w-4 h-4 text-red-500" onClick={onRemoveTag} />
+        <X
+          className="w-4 h-4 text-red-500 cursor-pointer"
+          onClick={onRemoveTag}
+        />
       </li>
     )
   },
-  (prev, next) =>
-    prev.tag === next.tag && prev.onRemoveTag === next.onRemoveTag,
 )
+
 const TagInput = ({
   tags,
   handleTag: onChange,
@@ -31,33 +34,28 @@ const TagInput = ({
   disabled,
   type = 'text',
 }: ITagInput) => {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [inputValue, setInputValue] = useState('') // 👈 ใช้ state แทน ref
 
   const addTag = (tag: string) => {
-    onChange([...tags, tag])
+    const trimmedTag = tag.trim()
+    if (trimmedTag && !tags.includes(trimmedTag)) {
+      // 👈 ป้องกัน duplicate
+      onChange([...tags, trimmedTag])
+    }
   }
+
   const onRemoveTag = (i: number) => {
     onChange(tags.filter((_, index) => index !== i))
   }
 
-  const isEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    return e.key === 'Enter'
-  }
-
-  const isComma = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    return e.key === ','
-  }
-
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value
-    if ((isEnter(e) || isComma(e)) && !!value) {
-      addTag(e.currentTarget.value)
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault() // 👈 ป้องกัน default behavior
 
-      setTimeout(() => {
-        if (!inputRef.current) return
-        inputRef.current.focus()
-        inputRef.current.value = ''
-      }, 200)
+      if (inputValue.trim()) {
+        addTag(inputValue)
+        setInputValue('') // 👈 clear โดยใช้ state
+      }
     }
   }
 
@@ -76,7 +74,7 @@ const TagInput = ({
         <ul className="input-tag__tags flex gap-1 flex-wrap">
           {tags.map((tag, i) => (
             <TagItem
-              key={`${i}_${tag}`}
+              key={`${tag}_${i}`} // 👈 เปลี่ยน key order
               tag={tag}
               onRemoveTag={() => onRemoveTag(i)}
             />
@@ -86,13 +84,13 @@ const TagInput = ({
               id={id}
               name={name}
               type={type}
+              value={inputValue} // 👈 controlled input
+              onChange={(e) => setInputValue(e.target.value)} // 👈 update state
               onKeyDown={onKeyDown}
-              ref={(c) => {
-                inputRef.current = c
-              }}
               autoComplete="off"
               placeholder={placeholder || 'Add a tag'}
-              className=" focus:outline-none"
+              className="focus:outline-none"
+              disabled={disabled}
             />
           </li>
         </ul>
