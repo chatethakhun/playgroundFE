@@ -53,6 +53,12 @@ const updateKitStatus = async (
   return response.data
 }
 
+const deleteKit = async (id: number): Promise<KitV2> => {
+  const response = await axiosInstanceV2.delete<KitV2>(`/kits/${id}`)
+
+  return response.data
+}
+
 export default {
   getAllKits,
   getAllKitQuery,
@@ -60,4 +66,5 @@ export default {
   getKitByIdQuery,
   createKit,
   updateKitStatus,
+  deleteKit,
 }
