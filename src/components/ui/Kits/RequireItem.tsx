@@ -12,6 +12,7 @@ import MultipleColorBox from './MultipleColorBox'
 import { CheckCircle } from 'lucide-react'
 import { memo } from 'react'
 import { sortGates } from '@/utils/requirement'
+import { cn } from '@/lib/utils'
 
 const RequireItem = memo(
   ({
@@ -22,7 +23,12 @@ const RequireItem = memo(
     onChecked: (item: KitRequirementWithRunnerAndColor) => void
   }) => {
     return (
-      <Item className="border border-gray-600 rounded-2xl shadow-md">
+      <Item
+        className={cn('border rounded-2xl shadow-md', {
+          'border-green-500 border-2 bg-green-200': item.is_cut,
+          'border-gray-300': !item.is_cut,
+        })}
+      >
         <ItemHeader>
           <div className="flex space-x-4">
             {item.runner.color.is_multiple ? (

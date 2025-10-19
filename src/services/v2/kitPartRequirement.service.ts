@@ -1,3 +1,4 @@
+import { sortGates } from '@/utils/requirement'
 import axiosInstanceV2 from './apiBase'
 const getAllKitPartRequirements = async (
   kitPartId: number,
@@ -70,7 +71,10 @@ const requirementCompareSync = async (
       `/requirements/compare_sync`,
       {
         kit_part_id,
-        items: requirement,
+        items: requirement.map((r) => ({
+          ...r,
+          gate: sortGates(r.gate),
+        })),
       },
     )
 
