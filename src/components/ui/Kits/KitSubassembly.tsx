@@ -1,22 +1,56 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { lazy, memo } from 'react'
 import FloatButton from '../FloatButton'
-import { Plus } from 'lucide-react'
+import { Plus, TrashIcon } from 'lucide-react'
 import useModal from '@/hooks/useModal'
 import LoadingFullPage from '../LoadingFullPage'
 import KitSubassemblyForm from './KitSubassemblyForm'
 import NoData from '../NoData'
 import kitSubassemblyService from '@/services/v2/kitSubassembly.service'
+import { confirm } from '../ComfirmDialog'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { queryClient } from '@/utils/queryClient'
 const CustomModal = lazy(() => import('../Modal'))
 
 const KitSubassemblyItem = memo(
   ({ kitSubassembly }: { kitSubassembly: KitSubassemblyV2 }) => {
+    const { t } = useTranslation('common')
+    const { mutate } = useMutation({
+      mutationFn: () =>
+        kitSubassemblyService.deleteKitSubassembly(kitSubassembly.id),
+      onSuccess: () => {
+        toast.success(t('common:success'))
+        queryClient.setQueryData<Array<KitSubassemblyV2>>(
+          ['kits', Number(kitSubassembly.kit_id), 'subassemblies'],
+          (oldData) => {
+            if (!oldData) return []
+
+            return oldData.filter(
+              (subassembly) => subassembly.id !== kitSubassembly.id,
+            )
+          },
+        )
+      },
+    })
     return (
       <div className="flex flex-col gap-2 border-b border-gray-200 p-2">
-        <div className="flex gap-2 flex-col">
+        <div className="flex gap-2  justify-between items-center">
           <p className="text-sm font-medium line-clamp-1">
             {kitSubassembly.name}
           </p>
+          <TrashIcon
+            className="text-red-500"
+            onClick={async () => {
+              const isConfirmed = await confirm({
+                message: t('common:remove-confirm'),
+              })
+
+              if (isConfirmed) {
+                mutate()
+              }
+            }}
+          />
         </div>
       </div>
     )
@@ -28,7 +62,7 @@ const KitSubassembly = memo(({ kitId }: { kitId: string }) => {
   const { data, isLoading } = useQuery({
     queryFn: () => kitSubassemblyService.getAllKitSubassemblies(kitId),
     enabled: !!kitId,
-    queryKey: ['kit', Number(kitId), 'subassemblies'],
+    queryKey: ['kits', Number(kitId), 'subassemblies'],
   })
   const { isOpen, openModal, closeModal } = useModal()
 

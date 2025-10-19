@@ -43,7 +43,7 @@ const KitSubassemblyForm = memo(({ kitId }: { kitId: string }) => {
       // })
       if (newData) {
         queryClient.setQueryData<Array<KitSubassemblyV2>>(
-          ['kit', Number(kitId), 'subassemblies'],
+          ['kits', Number(kitId), 'subassemblies'],
           (oldData) => {
             if (!oldData) return oldData
             return [...oldData, newData]

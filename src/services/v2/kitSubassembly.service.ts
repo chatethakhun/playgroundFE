@@ -28,7 +28,20 @@ const createKitSubassembly = async (
   }
 }
 
+const deleteKitSubassembly = async (
+  id: string,
+): Promise<KitSubassemblyV2 | null> => {
+  try {
+    const response = await axiosInstanceV2.delete(`/sub_assemblies/${id}`)
+    return response.data
+  } catch (error) {
+    console.error('Error deleting kit subassembly:', error)
+    return null
+  }
+}
+
 export default {
   getAllKitSubassemblies,
   createKitSubassembly,
+  deleteKitSubassembly,
 }
