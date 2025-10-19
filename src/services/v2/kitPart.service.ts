@@ -23,7 +23,7 @@ const createKitPart = async (
   >,
 ) => {
   try {
-    const response = await axiosInstanceV2.post(`/kit_parts`, data)
+    const response = await axiosInstanceV2.post<KitPartV2>(`/kit_parts`, data)
     return response.data
   } catch (error) {
     console.error('Error creating kit part:', error)

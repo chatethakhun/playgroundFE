@@ -8,6 +8,7 @@ import Button from '../Button'
 
 import { useTranslation } from 'react-i18next'
 import kitPartService from '@/services/v2/kitPart.service'
+import { queryClient } from '@/utils/queryClient'
 
 const schema = yup.object({
   kit_id: yup.string().required(),
@@ -36,6 +37,17 @@ const KitPartForm = ({ kitId }: KitPartRequirementFormProps) => {
         kit_id: Number(data.kit_id),
         sub_assembly_id: Number(data.sub_assembly_id),
       }),
+
+    onSuccess: (newData) => {
+      if (!newData) return
+      queryClient.setQueryData<Array<KitPartV2>>(
+        ['kits', Number(kitId), 'kit_parts'],
+        (oldData) => {
+          if (!oldData) return oldData
+          return oldData.concat(newData)
+        },
+      )
+    },
   })
   const { t } = useTranslation(['common', 'part'])
   const form = useForm({
