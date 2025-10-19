@@ -7,6 +7,14 @@ interface ITagInput extends React.InputHTMLAttributes<HTMLInputElement> {
   handleTag: (tags: Array<string>) => void
   label?: string
   errorMessage?: string
+  inputMode?:
+    | 'text'
+    | 'numeric'
+    | 'decimal'
+    | 'tel'
+    | 'email'
+    | 'url'
+    | 'search' // 👈 เพิ่ม inputMode
 }
 
 const TagItem = memo(
@@ -23,6 +31,8 @@ const TagItem = memo(
   },
 )
 
+TagItem.displayName = 'TagItem'
+
 const TagInput = ({
   tags,
   handleTag: onChange,
@@ -33,14 +43,13 @@ const TagInput = ({
   errorMessage,
   disabled,
   type = 'text',
-  inputMode,
+  inputMode = 'text', // 👈 default inputMode
 }: ITagInput) => {
-  const [inputValue, setInputValue] = useState('') // 👈 ใช้ state แทน ref
+  const [inputValue, setInputValue] = useState('')
 
   const addTag = (tag: string) => {
     const trimmedTag = tag.trim()
     if (trimmedTag && !tags.includes(trimmedTag)) {
-      // 👈 ป้องกัน duplicate
       onChange([...tags, trimmedTag])
     }
   }
@@ -49,14 +58,32 @@ const TagInput = ({
     onChange(tags.filter((_, index) => index !== i))
   }
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  // 👇 ใช้ทั้ง onKeyDown และ onKeyPress
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // ป้องกัน Enter ทำงานต่อ
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      e.stopPropagation() // 👈 เพิ่มบรรทัดนี้
+    }
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.key === ',') {
-      e.preventDefault() // 👈 ป้องกัน default behavior
+      e.preventDefault()
+      e.stopPropagation() // 👈 เพิ่มบรรทัดนี้
 
       if (inputValue.trim()) {
         addTag(inputValue)
-        setInputValue('') // 👈 clear โดยใช้ state
+        setInputValue('')
       }
+    }
+  }
+
+  // 👇 เพิ่ม onBlur เพื่อเพิ่ม tag เมื่อ blur
+  const handleBlur = () => {
+    if (inputValue.trim()) {
+      addTag(inputValue)
+      setInputValue('')
     }
   }
 
@@ -75,7 +102,7 @@ const TagInput = ({
         <ul className="input-tag__tags flex gap-1 flex-wrap">
           {tags.map((tag, i) => (
             <TagItem
-              key={`${tag}_${i}`} // 👈 เปลี่ยน key order
+              key={`${tag}_${i}`}
               tag={tag}
               onRemoveTag={() => onRemoveTag(i)}
             />
@@ -84,11 +111,14 @@ const TagInput = ({
             <input
               id={id}
               name={name}
-              type="text"
-              inputMode={inputMode}
-              value={inputValue} // 👈 controlled input
-              onChange={(e) => setInputValue(e.target.value)} // 👈 update state
-              onKeyDown={onKeyDown}
+              type={type} // 👈 เปลี่ยนเป็น text เสมอ
+              inputMode={inputMode} // 👈 ใช้ inputMode แทน
+              pattern={inputMode === 'numeric' ? '[0-9]*' : undefined} // 👈 เพิ่ม pattern
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown} // 👈 ป้องกัน Enter
+              onKeyPress={handleKeyPress} // 👈 จัดการ Enter
+              onBlur={handleBlur} // 👈 เพิ่ม tag เมื่อ blur
               autoComplete="off"
               placeholder={placeholder || 'Add a tag'}
               className="focus:outline-none"
