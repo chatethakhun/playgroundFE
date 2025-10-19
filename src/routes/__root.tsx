@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { ErrorComponent, Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import Navbar from '@/components/ui/Navbar'
 import { AuthProvider } from '@/providers/AuthContext'
@@ -36,7 +36,7 @@ export const Route = createRootRoute({
   errorComponent: (error) => {
     const isDev = import.meta.env.DEV
     if (isDev) {
-      return <div>{JSON.stringify(error)}</div>
+      return ErrorComponent
     }
     return (
       <Suspense fallback={<LoadingFullPage />}>

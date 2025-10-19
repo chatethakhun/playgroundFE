@@ -41,7 +41,7 @@ const RequireItem = memo(
         </ItemHeader>
         <ItemMedia />
         <ItemContent>
-          <div className="flex flex-wrap space-x-2">
+          <div className="flex flex-wrap space-x-2 space-y-2">
             {sortGates(item.gate).map((gate, index) => (
               <Badge key={index} variant="outline" className="shadow-sm">
                 {gate}

@@ -53,11 +53,11 @@ const KitPartItem = memo(
             return oldParts.map((oldPart) => {
               if (oldPart.id === newData.id) {
                 return {
-                  ...part,
+                  ...oldPart,
                   is_cut: newData.is_cut,
                 }
               }
-              return part
+              return oldPart
             })
           },
         )
