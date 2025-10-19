@@ -61,6 +61,16 @@ const getKitPartByIdQuery = (id: number, kitId: number) => ({
   queryKey: ['kits', kitId, 'kitPart', id],
 })
 
+const deleteKitPart = async (id: number) => {
+  try {
+    const response = await axiosInstanceV2.delete(`/kit_parts/${id}`)
+    return response.data
+  } catch (error) {
+    console.error('Error deleting kit part:', error)
+    return null
+  }
+}
+
 // const updateCutInRequires = async (
 //   id: string,
 //   runnerId: string,
@@ -79,4 +89,5 @@ export default {
   updateIsCut,
   getKitPartById,
   getKitPartByIdQuery,
+  deleteKitPart,
 }

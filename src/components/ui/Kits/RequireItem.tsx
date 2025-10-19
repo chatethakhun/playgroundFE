@@ -24,10 +24,8 @@ const RequireItem = memo(
   }) => {
     return (
       <Item
-        className={cn('border rounded-2xl shadow-md', {
-          'border-green-500 border-2 bg-green-200': item.is_cut,
-          'border-gray-300': !item.is_cut,
-        })}
+        className={cn('border rounded-2xl shadow-md')}
+        isChecked={item.is_cut}
       >
         <ItemHeader>
           <div className="flex space-x-4">
@@ -36,7 +34,9 @@ const RequireItem = memo(
             ) : (
               <RunnerColor color={item.runner.color.hex} />
             )}
-            <ItemTitle>{item.runner.name}</ItemTitle>
+            <ItemTitle className="text-2xl font-bold">
+              {item.runner.name} x {item.runner.amount}
+            </ItemTitle>
           </div>
         </ItemHeader>
         <ItemMedia />
