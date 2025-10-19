@@ -68,7 +68,12 @@ const TagInput = ({
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' || e.key === ',') {
+    const isNumericMode = inputMode === 'numeric'
+    const isEnterKey = e.key === 'Enter'
+    const isCommaKey = e.key === ','
+    const isSpaceKey = e.key === ' '
+
+    if (isEnterKey || isCommaKey || (isNumericMode && isSpaceKey)) {
       e.preventDefault()
       e.stopPropagation() // 👈 เพิ่มบรรทัดนี้
 
