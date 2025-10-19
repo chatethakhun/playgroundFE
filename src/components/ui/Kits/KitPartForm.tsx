@@ -44,7 +44,13 @@ const KitPartForm = ({ kitId }: KitPartRequirementFormProps) => {
         ['kits', Number(kitId), 'kit_parts'],
         (oldData) => {
           if (!oldData) return oldData
-          return oldData.concat(newData)
+          return oldData.concat({
+            ...newData,
+            sub_assembly: (data ?? []).find(
+              (sub) => parseInt(sub.id) === newData.sub_assembly_id,
+            ),
+            requirements: [],
+          })
         },
       )
     },
