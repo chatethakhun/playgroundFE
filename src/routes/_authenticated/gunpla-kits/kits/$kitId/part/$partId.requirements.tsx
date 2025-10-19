@@ -3,9 +3,10 @@ import LoadingFullPage from '@/components/ui/LoadingFullPage'
 import PageContainer from '@/components/ui/PageContainer'
 import kitPartRequirementService from '@/services/v2/kitPartRequirement.service'
 import { queryClient } from '@/utils/queryClient'
+import { sortRequirements } from '@/utils/requirement'
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import { useCallback, useRef } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
@@ -73,10 +74,14 @@ function RouteComponent() {
     [data],
   )
 
+  const sortedData = useMemo(() => {
+    return sortRequirements(data || [])
+  }, [data])
+
   if (isLoading || !data) return <LoadingFullPage />
   return (
     <PageContainer>
-      {data.map((item, index) => (
+      {sortedData.map((item, index) => (
         <RequireItem
           key={index}
           item={item}

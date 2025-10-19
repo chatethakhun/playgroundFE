@@ -11,6 +11,7 @@ import RunnerColor from './RunnerColor'
 import MultipleColorBox from './MultipleColorBox'
 import { CheckCircle } from 'lucide-react'
 import { memo } from 'react'
+import { sortGates } from '@/utils/requirement'
 
 const RequireItem = memo(
   ({
@@ -35,7 +36,7 @@ const RequireItem = memo(
         <ItemMedia />
         <ItemContent>
           <div className="flex flex-wrap space-x-2">
-            {item.gate.map((gate, index) => (
+            {sortGates(item.gate).map((gate, index) => (
               <Badge key={index} variant="outline" className="shadow-sm">
                 {gate}
               </Badge>
