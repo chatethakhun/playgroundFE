@@ -12,6 +12,7 @@ import { useCallback } from 'react'
 import useCustomRouter from '@/hooks/useCustomRouter'
 import { toast } from 'react-toastify'
 import { queryClient } from '@/utils/queryClient'
+import { sortRunners } from '@/utils/runner'
 
 const schema = yup.object().shape({
   requirements: yup.array().of(
@@ -128,7 +129,7 @@ const RequirementForm = ({
             rules={{ required: true }}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <DropDown
-                options={(data ?? []).map(toOption)}
+                options={sortRunners(data ?? []).map(toOption)}
                 label={t('part.form.runner_label')}
                 placeholder={t('part.form.runner_ph')}
                 value={value}
