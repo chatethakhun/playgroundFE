@@ -49,7 +49,7 @@ function RouteComponent() {
         ],
       })
 
-      toast.success(t('common.success'), { position: 'bottom-center' })
+      toast.success(t('save-success'), { position: 'bottom-center' })
     },
   })
 
