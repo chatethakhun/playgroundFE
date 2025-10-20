@@ -77,24 +77,6 @@ const TagInput = ({
     [],
   )
 
-  const handleKeyPress = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      const isEnterKey = e.key === 'Enter'
-      const isCommaKey = e.key === ','
-
-      if (isEnterKey || isCommaKey) {
-        e.preventDefault()
-        e.stopPropagation() // 👈 เพิ่มบรรทัดนี้
-
-        if (inputValue.trim()) {
-          addTag(inputValue)
-          setInputValue('')
-        }
-      }
-    },
-    [addTag, inputValue],
-  )
-
   // 👇 เพิ่ม onBlur เพื่อเพิ่ม tag เมื่อ blur
   const handleBlur = useCallback(() => {
     if (inputValue.trim()) {
