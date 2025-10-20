@@ -89,12 +89,11 @@ const RequirementForm = ({
   const { mutate: compareSync } = useMutation({
     mutationFn: (data: Array<CompareSyncPayload>) =>
       kitPartRequirementService.requirementCompareSync(kitPartId, data),
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success(t('save-success'))
-      queryClient.setQueryData(
-        ['kits', kitId, 'kit_parts', kitPartId, 'requirements'],
-        data,
-      )
+      queryClient.refetchQueries({
+        queryKey: ['kits', kitId, 'kit_parts', kitPartId, 'requirements'],
+      })
     },
   })
 

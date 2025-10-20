@@ -64,17 +64,22 @@ const TagInput = ({
     [onChange, tags],
   )
 
-  // 👇 ใช้ทั้ง onKeyDown และ onKeyPress
-  const handleKeyDown = useCallback(
+  const handleKeyPress = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      // ป้องกัน Enter ทำงานต่อ
       const isEnterKey = e.key === 'Enter'
-      if (isEnterKey) {
+      const isCommaKey = e.key === ','
+
+      if (isEnterKey || isCommaKey) {
         e.preventDefault()
         e.stopPropagation() // 👈 เพิ่มบรรทัดนี้
+
+        if (inputValue.trim()) {
+          addTag(inputValue)
+          setInputValue('')
+        }
       }
     },
-    [],
+    [addTag, inputValue],
   )
 
   // 👇 เพิ่ม onBlur เพื่อเพิ่ม tag เมื่อ blur
@@ -114,7 +119,7 @@ const TagInput = ({
               pattern={inputMode === 'numeric' ? '[0-9]*' : undefined} // 👈 เพิ่ม pattern
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={handleKeyDown} // 👈 ป้องกัน Enter
+              onKeyDown={handleKeyPress} // 👈 ป้องกัน Enter
               onBlur={handleBlur} // 👈 เพิ่ม tag เมื่อ blur
               autoComplete="off"
               placeholder={placeholder || 'Add a tag'}
