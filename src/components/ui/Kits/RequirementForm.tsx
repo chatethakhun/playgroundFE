@@ -90,7 +90,7 @@ const RequirementForm = ({
     mutationFn: (data: Array<CompareSyncPayload>) =>
       kitPartRequirementService.requirementCompareSync(kitPartId, data),
     onSuccess: () => {
-      toast.success(t('save-success'))
+      toast.success(t('common:success'))
       queryClient.refetchQueries({
         queryKey: ['kits', kitId, 'kit_parts', kitPartId, 'requirements'],
       })
