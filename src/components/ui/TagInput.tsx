@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { X } from 'lucide-react'
 import { cn } from '@/utils/cn'
 
@@ -47,50 +47,61 @@ const TagInput = ({
 }: ITagInput) => {
   const [inputValue, setInputValue] = useState('')
 
-  const addTag = (tag: string) => {
-    const trimmedTag = tag.trim()
-    if (trimmedTag && !tags.includes(trimmedTag)) {
-      onChange([...tags, trimmedTag])
-    }
-  }
+  const addTag = useCallback(
+    (tag: string) => {
+      const trimmedTag = tag.trim()
+      if (trimmedTag && !tags.includes(trimmedTag)) {
+        onChange([...tags, trimmedTag])
+      }
+    },
+    [onChange, tags],
+  )
 
-  const onRemoveTag = (i: number) => {
-    onChange(tags.filter((_, index) => index !== i))
-  }
+  const onRemoveTag = useCallback(
+    (i: number) => {
+      onChange(tags.filter((_, index) => index !== i))
+    },
+    [onChange, tags],
+  )
 
   // 👇 ใช้ทั้ง onKeyDown และ onKeyPress
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // ป้องกัน Enter ทำงานต่อ
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      e.stopPropagation() // 👈 เพิ่มบรรทัดนี้
-    }
-  }
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const isNumericMode = inputMode === 'numeric'
-    const isEnterKey = e.key === 'Enter'
-    const isCommaKey = e.key === ','
-    const isSpaceKey = e.key === ' '
-
-    if (isEnterKey || isCommaKey || (isNumericMode && isSpaceKey)) {
-      e.preventDefault()
-      e.stopPropagation() // 👈 เพิ่มบรรทัดนี้
-
-      if (inputValue.trim()) {
-        addTag(inputValue)
-        setInputValue('')
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      // ป้องกัน Enter ทำงานต่อ
+      const isEnterKey = e.key === 'Enter'
+      if (isEnterKey) {
+        e.preventDefault()
+        e.stopPropagation() // 👈 เพิ่มบรรทัดนี้
       }
-    }
-  }
+    },
+    [],
+  )
+
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      const isEnterKey = e.key === 'Enter'
+      const isCommaKey = e.key === ','
+
+      if (isEnterKey || isCommaKey) {
+        e.preventDefault()
+        e.stopPropagation() // 👈 เพิ่มบรรทัดนี้
+
+        if (inputValue.trim()) {
+          addTag(inputValue)
+          setInputValue('')
+        }
+      }
+    },
+    [addTag, inputValue],
+  )
 
   // 👇 เพิ่ม onBlur เพื่อเพิ่ม tag เมื่อ blur
-  const handleBlur = () => {
+  const handleBlur = useCallback(() => {
     if (inputValue.trim()) {
       addTag(inputValue)
       setInputValue('')
     }
-  }
+  }, [addTag, inputValue])
 
   return (
     <fieldset className="flex flex-col gap-2 relative">
@@ -122,7 +133,6 @@ const TagInput = ({
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown} // 👈 ป้องกัน Enter
-              onKeyPress={handleKeyPress} // 👈 จัดการ Enter
               onBlur={handleBlur} // 👈 เพิ่ม tag เมื่อ blur
               autoComplete="off"
               placeholder={placeholder || 'Add a tag'}
