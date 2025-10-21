@@ -1,6 +1,8 @@
+import Button from '@/components/ui/Button'
 import RequireItem from '@/components/ui/Kits/RequireItem'
 import LoadingFullPage from '@/components/ui/LoadingFullPage'
 import PageContainer from '@/components/ui/PageContainer'
+import useCustomRouter from '@/hooks/useCustomRouter'
 import kitPartRequirementService from '@/services/v2/kitPartRequirement.service'
 import { queryClient } from '@/utils/queryClient'
 import { sortRequirements } from '@/utils/requirement'
@@ -28,6 +30,7 @@ export const Route = createFileRoute(
 function RouteComponent() {
   const { kitId, partId } = Route.useParams()
   const { t } = useTranslation()
+  const { goTo } = useCustomRouter()
   const target = useRef<number | undefined>(undefined)
   const { data, isLoading } = useSuspenseQuery(
     kitPartRequirementService.getAllKitPartRequirementsQuery(
@@ -90,6 +93,14 @@ function RouteComponent() {
           }}
         />
       ))}
+
+      <Button
+        onClick={() => {
+          goTo(`/gunpla-kits/kits/${kitId}?tab=part`)
+        }}
+      >
+        {t('common:back')}
+      </Button>
     </PageContainer>
   )
 }
