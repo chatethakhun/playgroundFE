@@ -34,6 +34,7 @@ type FormData = yup.Asserts<typeof schema>
 const toOption = (runner: RunnerV2) => ({
   value: String(runner.id),
   label: runner.name,
+  disabled: runner.is_used,
 })
 
 const initialValue = (kitPartId: number, reqs?: Array<KitPartRequirement>) => {

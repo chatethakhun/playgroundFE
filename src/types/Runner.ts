@@ -19,6 +19,7 @@ interface RunnerV2 {
   color_id: number
   id: number
   amount: number
+  is_used: boolean
 }
 interface CreateKitRunnerPayload {
   color_id: number
