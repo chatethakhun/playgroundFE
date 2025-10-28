@@ -31,10 +31,14 @@ axiosInstanceV2.interceptors.response.use(
     return response
   },
   (error) => {
+    console.error(error)
     // Handle global errors, e.g., redirect to login on 401
     if (error.response && error.response.status === 401) {
       // Handle unauthorized access
       console.error('Unauthorized access, redirecting to login...')
+
+      localStorage.removeItem('v2Token')
+      window.location.href = '/login'
       // You might want to clear local storage and redirect here
     }
     return Promise.reject(error)
