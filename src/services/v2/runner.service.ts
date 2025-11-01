@@ -1,3 +1,4 @@
+import { sortRunners } from '@/utils/runner'
 import axiosInstanceV2 from './apiBase'
 
 const getKitRunnerColors = async (kitId: string): Promise<RunnerColor[]> => {
@@ -12,8 +13,10 @@ const getKitRunnerColors = async (kitId: string): Promise<RunnerColor[]> => {
 
 const getKitRunners = async (kitId: number): Promise<RunnerV2[]> => {
   try {
-    const response = await axiosInstanceV2.get(`/kits/${kitId}/runners`)
-    return response.data
+    const response = await axiosInstanceV2.get<Array<RunnerV2>>(
+      `/kits/${kitId}/runners`,
+    )
+    return sortRunners(response.data)
   } catch (error) {
     console.error('Error fetching kit runners:', error)
     return []
