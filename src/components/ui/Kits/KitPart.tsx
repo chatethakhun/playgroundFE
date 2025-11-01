@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 
 import {
   PlusIcon as Plus,
@@ -181,6 +181,13 @@ const KitPartItem = memo(
     prev.part.id === next.part.id && prev.part.is_cut === next.part.is_cut,
 )
 
+const sortByIsCut = (a: KitPartV2, b: KitPartV2) => {
+  if (a.is_cut === b.is_cut) {
+    return 0
+  }
+  return a.is_cut ? -1 : 1
+}
+
 const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
   const { isOpen, openModal, closeModal } = useModal()
   const { data, isLoading } = useQuery({
@@ -190,12 +197,17 @@ const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
   })
 
   // const { goTo } = useCustomRouter()
+  const sortedData = useMemo(() => {
+    if (!data) return
+    return data.sort(sortByIsCut)
+  }, [data])
+
   if (isLoading) return null
 
   return (
     <>
-      {data?.length === 0 && <NoData />}
-      {data?.map((part, index) => (
+      {sortedData?.length === 0 && <NoData />}
+      {sortedData?.map((part, index) => (
         <KitPartItem key={index} part={part} />
       ))}
       <br />
