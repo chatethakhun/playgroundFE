@@ -32,7 +32,10 @@ const RequireItem = memo(
             {item.runner.color.is_multiple ? (
               <MultipleColorBox />
             ) : (
-              <RunnerColor color={item.runner.color.hex} />
+              <RunnerColor
+                color={item.runner.color.hex}
+                name={item.runner.color.name}
+              />
             )}
             <ItemTitle className="text-2xl font-bold">
               {item.runner.name} x {item.runner.amount}
