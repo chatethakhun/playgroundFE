@@ -9,7 +9,7 @@ type Option = {
 
 interface IDropDown {
   id?: string
-  value: string
+  value?: string
   disabled?: boolean
   label?: string
   icon?: React.ReactNode
