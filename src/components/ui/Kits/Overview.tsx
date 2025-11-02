@@ -99,9 +99,12 @@ const Overview = memo(
           <h6 className="text-primary font-bold">{t('overview.status')}: </h6>
           <DropDown
             value={kitStatus}
-            options={STATUS.map((status) => ({ value: status, label: status }))}
+            options={STATUS.map((status) => ({
+              value: status,
+              label: status.toUpperCase(),
+            }))}
             onChange={(e) => {
-              mutate(e.target.value as KitStatus)
+              mutate(e as KitStatus)
             }}
           />
         </ListItemContainer>

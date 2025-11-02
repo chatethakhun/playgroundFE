@@ -20,7 +20,7 @@ const TextAreaInput = ({
   rows = 4,
 }: ITextAreaInput) => {
   return (
-    <fieldset className="flex flex-col gap-2 relative">
+    <fieldset className="space-y-1 relative">
       {label && <label className="text-dark">{label}</label>}
       <textarea
         id={id}
@@ -33,7 +33,7 @@ const TextAreaInput = ({
         )}
       />
       <div className="absolute right-2 top-2">{icon}</div>
-      {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+      {errorMessage && <p className="text-red-500 text-xs">{errorMessage}</p>}
     </fieldset>
   )
 }

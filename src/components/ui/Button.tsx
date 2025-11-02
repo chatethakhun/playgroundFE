@@ -9,22 +9,12 @@ interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   isBlock?: boolean
   ghost?: boolean
 }
-const Button = memo(
-  ({
-    children,
-    primary = true,
-    secondary = false,
-    ghost = false,
-    isBlock = false,
-    onClick,
-    disabled = false,
-  }: IButton) => {
-    return (
-      <RSButton onClick={onClick} type="button" disabled={disabled} block>
-        {children}
-      </RSButton>
-    )
-  },
-)
+const Button = memo(({ children, onClick, disabled = false }: IButton) => {
+  return (
+    <RSButton onClick={onClick} type="button" disabled={disabled} block>
+      {children}
+    </RSButton>
+  )
+})
 
 export default Button

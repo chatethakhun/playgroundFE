@@ -64,7 +64,7 @@ function RouteComponent() {
           control={method.control}
           name="name"
           render={({
-            field: { onChange, value, onBlur, name },
+            field: { onChange, value, name },
             fieldState: { error },
           }) => (
             <TextInput
@@ -74,9 +74,7 @@ function RouteComponent() {
               name={name}
               onChange={onChange}
               value={value}
-              onBlur={onBlur}
               errorMessage={error?.message || ''}
-              required
             />
           )}
         />
@@ -91,7 +89,7 @@ function RouteComponent() {
             <DropDown
               id={name}
               name={name}
-              onChange={(e) => onChange(e.target.value)}
+              onChange={onChange}
               options={GUNPLA_GRADE.map((g) => ({
                 value: g,
                 label: g,

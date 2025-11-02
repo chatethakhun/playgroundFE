@@ -104,7 +104,7 @@ const WorkoutForm = ({ workout }: { workout?: Workout }) => {
             id={name}
             name={name}
             label="Description"
-            value={value}
+            value={value ?? ''}
             onChange={onChange}
             errorMessage={error?.message}
           />
@@ -122,7 +122,7 @@ const WorkoutForm = ({ workout }: { workout?: Workout }) => {
             label="Workout Type"
             id={name}
             value={value}
-            onChange={(evt) => onChange(evt.target.value)}
+            onChange={onChange}
             options={[
               { label: 'Cardio', value: 'cardio' },
               { label: 'Strength', value: 'strength' },
@@ -145,7 +145,7 @@ const WorkoutForm = ({ workout }: { workout?: Workout }) => {
             type={'number'}
             name={name}
             label="Workout Reps"
-            value={value}
+            value={String(value)}
             onChange={onChange}
             errorMessage={error?.message}
           />
@@ -164,7 +164,7 @@ const WorkoutForm = ({ workout }: { workout?: Workout }) => {
             name={name}
             type="number"
             label="Workout Sets"
-            value={value}
+            value={String(value)}
             onChange={onChange}
             errorMessage={error?.message}
           />

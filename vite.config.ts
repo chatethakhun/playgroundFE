@@ -87,6 +87,7 @@ export default defineConfig({
           net: ['axios', 'socket.io-client'],
           icons: ['lucide-react', 'omoo-icons'],
           utils: ['tailwind-merge', 'react-scan', 'clsx'],
+          rsSuit: ['rsuite'],
         },
       },
     },

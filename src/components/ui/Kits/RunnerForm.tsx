@@ -145,8 +145,8 @@ const RunnerForm = memo(
                   label: `${color.name}${color.is_clear ? ` (${t('color:color.clear-color')})` : ''}`,
                   value: color.id,
                 }))}
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
+                value={String(value)}
+                onChange={onChange}
                 placeholder={t('runner:runner.form.color_ph')}
                 label={t('runner:runner.form.runner_label')}
                 errorMessage={t(error?.message ?? '')}
@@ -166,7 +166,7 @@ const RunnerForm = memo(
                 name={name}
                 id={name}
                 onChange={onChange}
-                value={value}
+                value={String(value)}
                 errorMessage={t(error?.message ?? '')}
                 label={t('runner:runner.form.qty_label')}
                 placeholder={t('runner:runner.form.qty_ph')}

@@ -86,7 +86,7 @@ function RouteComponent() {
               type="email"
               placeholder={t('form.username_ph')}
               errorMessage={t(error?.message || '')}
-              onChange={(evt) => onChange(evt.currentTarget.value)}
+              onChange={onChange}
               value={value}
             />
           )}
@@ -100,7 +100,7 @@ function RouteComponent() {
               placeholder={t('form.password_ph')}
               type="password"
               errorMessage={t(error?.message || '')}
-              onChange={(evt) => onChange(evt.currentTarget.value)}
+              onChange={onChange}
               value={value}
             />
           )}

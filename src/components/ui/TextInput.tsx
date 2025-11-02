@@ -1,10 +1,16 @@
-import { cn } from '@/utils/cn'
+import Input from 'rsuite/Input'
 
-interface ITextInput extends React.InputHTMLAttributes<HTMLInputElement> {
+interface ITextInput {
   label?: string
   id: string
   icon?: React.ReactNode
   errorMessage?: string
+  onChange: (value: string) => void
+  value?: string
+  type?: string
+  disabled?: boolean
+  placeholder?: string
+  name?: string
 }
 const TextInput = ({
   label,
@@ -16,11 +22,13 @@ const TextInput = ({
   value,
   type = 'text',
   disabled = false,
+  name,
 }: ITextInput) => {
   return (
-    <fieldset className="flex flex-col gap-2 relative">
+    <fieldset className="space-y-1 relative">
       {label && <label className="text-dark">{label}</label>}
-      <input
+      <Input
+        name={name}
         type={type}
         id={id}
         placeholder={placeholder}
@@ -28,18 +36,9 @@ const TextInput = ({
         value={value}
         autoComplete="off"
         disabled={disabled}
-        className={cn(
-          'rounded-md border-border border-1 bg-white py-2 px-4 text-dark rounde-lg focus:outline-dark-gray',
-          {
-            'bg-light-gray': disabled,
-            'border-red-500 border-2': errorMessage,
-          },
-        )}
       />
       <div className="absolute right-2 top-2">{icon}</div>
-      {errorMessage && (
-        <p className="text-red-500 text-sm font-bold px-1">{errorMessage}</p>
-      )}
+      {errorMessage && <p className="text-red-500 text-xs ">{errorMessage}</p>}
     </fieldset>
   )
 }

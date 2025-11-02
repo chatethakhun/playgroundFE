@@ -17,6 +17,7 @@ interface IDropDown {
   placeholder?: string
   options: Array<Option>
   onChange: (value: string | number | null) => void
+  name?: string
 }
 
 const DropDown = memo((props: IDropDown) => {
@@ -28,6 +29,7 @@ const DropDown = memo((props: IDropDown) => {
       {props.label && <label className="text-dark">{props.label}</label>}
       <SelectPicker
         id={props.id}
+        name={props.name}
         // className={cn(
         //   'rounded-md border-border border-1 bg-white py-2.5 px-4 text-dark rounde-lg focus:outline-dark-gray',
         //   {

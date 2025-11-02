@@ -79,7 +79,6 @@ const KitPartForm = ({ kitId }: KitPartRequirementFormProps) => {
               options={(data ?? []).map(toOption)}
               value={value}
               onChange={onChange}
-              required
             />
           )}
         />

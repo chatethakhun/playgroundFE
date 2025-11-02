@@ -84,7 +84,7 @@ function RouteComponent() {
               type="text"
               placeholder={t('form.name_ph')}
               errorMessage={t(error?.message || '')}
-              onChange={(evt) => onChange(evt.currentTarget.value)}
+              onChange={onChange}
               value={value}
             />
           )}
@@ -100,7 +100,7 @@ function RouteComponent() {
               id={name}
               placeholder={t('form.username_ph')}
               errorMessage={t(error?.message || '')}
-              onChange={(evt) => onChange(evt.currentTarget.value)}
+              onChange={onChange}
               value={value}
             />
           )}
@@ -117,7 +117,7 @@ function RouteComponent() {
               placeholder={t('form.password_ph')}
               type="password"
               errorMessage={t(error?.message || '')}
-              onChange={(evt) => onChange(evt.currentTarget.value)}
+              onChange={onChange}
               value={value}
             />
           )}
@@ -131,7 +131,7 @@ function RouteComponent() {
               placeholder={t('form.c_password_ph')}
               type="password"
               errorMessage={t(error?.message || '')}
-              onChange={(evt) => onChange(evt.currentTarget.value)}
+              onChange={onChange}
               value={value}
             />
           )}

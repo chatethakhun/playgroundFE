@@ -73,7 +73,7 @@ const KitSubassemblyForm = memo(({ kitId }: { kitId: string }) => {
               {...field}
               name={field.name}
               id={field.name}
-              onChange={(e) => field.onChange(e.target.value)}
+              onChange={field.onChange}
               value={field.value}
               errorMessage={fieldState.error?.message}
               label={t('subassembly:subassembly.form.name_label')}

@@ -1,21 +1,12 @@
 import { memo } from 'react'
 import ReactModal from 'react-modal'
-const styles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-}
+import Modal from 'rsuite/Modal'
+
 const CustomModal = memo(
   ({
     children,
     onClose,
     modalIsOpen,
-    customStyles = styles,
   }: {
     children: React.ReactNode
     onClose: () => void
@@ -23,14 +14,13 @@ const CustomModal = memo(
     customStyles?: ReactModal.Styles
   }) => {
     return (
-      <ReactModal
-        isOpen={modalIsOpen}
-        onRequestClose={onClose}
-        style={customStyles}
-        contentLabel="Example Modal"
+      <Modal
+        open={modalIsOpen}
+        onClose={onClose}
+        // style={customStyles}
       >
         {children}
-      </ReactModal>
+      </Modal>
     )
   },
 )
