@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import runnerService from '@/services/v2/runner.service'
 import Button from '../Button'
-import TagInput from '../TagInput'
+import TagInput from 'rsuite/TagInput'
+
 import kitPartRequirementService from '@/services/v2/kitPartRequirement.service'
 import { useCallback } from 'react'
 import useCustomRouter from '@/hooks/useCustomRouter'
@@ -148,14 +149,21 @@ const RequirementForm = ({
               field: { value = [], onChange },
               fieldState: { error },
             }) => (
-              <TagInput
-                inputMode="numeric"
-                tags={value}
-                handleTag={onChange}
-                label={t('part.form.gate_label')}
-                placeholder={t('part.form.gate_ph')}
-                errorMessage={t(error?.message ?? '')}
-              />
+              <fieldset className="space-y-2">
+                <legend>{t('part.form.gate_label')}</legend>
+                <TagInput
+                  inputMode="numeric"
+                  className=" w-full"
+                  value={value}
+                  onChange={onChange}
+                  placeholder={t('part.form.gate_ph')}
+                />
+                {error?.message && (
+                  <span className="text-xs text-red-500">
+                    {t(error?.message ?? '')}
+                  </span>
+                )}
+              </fieldset>
             )}
           />
 

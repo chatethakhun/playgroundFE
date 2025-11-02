@@ -9,12 +9,13 @@ import { ToastContainer } from 'react-toastify'
 import { queryClient } from '@/utils/queryClient'
 // Create a client
 import { HeadContent } from '@tanstack/react-router'
-
+import { CustomProvider } from 'rsuite'
 import { lazy, Suspense } from 'react'
 import LoadingFullPage from '@/components/ui/LoadingFullPage'
 
 const GlobalError = lazy(() => import('@/components/ui/GlobalError'))
 const NotFoundError = lazy(() => import('@/components/ui/NotFoundError'))
+import 'rsuite/dist/rsuite.min.css'
 
 export const Route = createRootRoute({
   component: () => (
@@ -22,10 +23,12 @@ export const Route = createRootRoute({
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <LocaleProvider>
-            <HeadContent />
-            <Outlet />
-            <Navbar />
-            <ToastContainer />
+            <CustomProvider theme="light">
+              <HeadContent />
+              <Outlet />
+              <Navbar />
+              <ToastContainer />
+            </CustomProvider>
           </LocaleProvider>
         </AuthProvider>
       </QueryClientProvider>
