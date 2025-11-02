@@ -65,11 +65,9 @@ function RouteComponent() {
   return (
     <PageContainer>
       <IconButton onClick={() => goTo('/')}>
-        <IoIosArrowBack className="text-2xl" />
+        <IoIosArrowBack className="text-lg" />
       </IconButton>
-
       <h1 className="text-3xl font-bold">{t('title')}</h1>
-
       <FormProvider {...method}>
         <Controller
           control={control}
@@ -144,7 +142,6 @@ function RouteComponent() {
           {signUpMutation.isPending ? t('form.saving') : t('form.save')}
         </Button>
       </FormProvider>
-
       <div className="flex justify-center items-center mt-auto gap-2">
         <p>{t('form.already_acc')}</p>
         <p

@@ -61,7 +61,7 @@ function RouteComponent() {
             className="w-8 h-8"
             loading="lazy"
           />
-          <h1 className="text-2xl font-bold text-primary">{t('list.title')}</h1>
+          <h1 className="text-lg font-bold text-primary">{t('list.title')}</h1>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => goTo('/gunpla-kits/kits/colors')}>

@@ -37,7 +37,7 @@ const RequireItem = memo(
                 name={item.runner.color.name}
               />
             )}
-            <ItemTitle className="text-2xl font-bold">
+            <ItemTitle className="text-lg font-bold">
               {item.runner.name} x {item.runner.amount}
             </ItemTitle>
           </div>

@@ -78,7 +78,7 @@ const Navbar = memo(() => {
           >
             <button className="flex items-center justify-center w-8 h-8 rounded-full bg-white ">
               <nv.icon
-                className={cn('text-2xl text-gray-500', {
+                className={cn('text-lg text-gray-500', {
                   'text-primary': currentPathName === nv.path,
                 })}
               />

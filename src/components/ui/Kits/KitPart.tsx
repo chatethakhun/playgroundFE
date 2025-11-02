@@ -87,7 +87,7 @@ const KitPartItem = memo(
         >
           <ItemHeader>
             <div className="flex space-x-4">
-              <ItemTitle className="text-2xl font-bold">
+              <ItemTitle className="text-lg font-bold">
                 {part.sub_assembly?.name}
               </ItemTitle>
             </div>

@@ -117,9 +117,7 @@ const RequirementForm = ({
   }, [])
   return (
     <div className="space-y-4">
-      <h1 className="font-bold text-2xl">
-        {t('part.form.requirements_label')}
-      </h1>
+      <h1 className="font-bold text-lg">{t('part.form.requirements_label')}</h1>
 
       {fields.map((field, index) => (
         <div key={field.id} className="space-y-2">

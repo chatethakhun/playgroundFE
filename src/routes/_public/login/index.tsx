@@ -71,7 +71,7 @@ function RouteComponent() {
   return (
     <PageContainer>
       <IconButton onClick={() => goTo('/')}>
-        <IoIosArrowBack className="text-2xl" />
+        <IoIosArrowBack className="text-lg" />
       </IconButton>
 
       <h1 className="text-3xl font-bold">{t('title')}</h1>
