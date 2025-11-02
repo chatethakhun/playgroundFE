@@ -51,12 +51,16 @@ const RunnerItem = memo(
     })
     return (
       <div className="flex gap-2 items-center border-b-gray-500 border-b p-2">
-        <div className="flex  items-center  gap-2 basis-[30%] md:basis-[10%]">
+        <div className="flex  items-center  gap-2 basis-[40%] md:basis-[10%]">
+          {runner.name}
           {!isMultipleRunerColor && (
-            <RunnerColor color={backgroundColor} name={runner.color.name} />
+            <RunnerColor
+              color={backgroundColor}
+              name={runner.color?.name ?? ''}
+            />
           )}
           {isMultipleRunerColor && <MultipleColorBox />}
-          {runner.name}
+
           {isClearColor ? (
             <span className="text-gray-500 text-sm">
               ( {t('color:color.clear-color')} )
