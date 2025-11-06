@@ -53,6 +53,7 @@ const KitPartForm = ({ kitId }: KitPartRequirementFormProps) => {
           })
         },
       )
+      form.reset()
     },
   })
   const { t } = useTranslation(['common', 'part'])
