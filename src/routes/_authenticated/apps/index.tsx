@@ -18,6 +18,13 @@ const apps = [
     image: '/images/gundam.jpg',
     desc: 'gunpla.description',
   },
+  {
+    name: 'steam.pricing',
+    path: '/steam-pricing',
+    icon: Dumbbell,
+    image: '/images/steam.jpg',
+    desc: 'steam.description',
+  },
 ]
 
 const AppCard = memo(

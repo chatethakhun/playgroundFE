@@ -16,7 +16,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminDashboardRouteRouteImport } from './routes/_admin/dashboard/route'
 import { Route as PublicSignupIndexRouteImport } from './routes/_public/signup/index'
 import { Route as PublicLoginIndexRouteImport } from './routes/_public/login/index'
+import { Route as AuthenticatedSteamPricingIndexRouteImport } from './routes/_authenticated/steam-pricing/index'
 import { Route as AuthenticatedAppsIndexRouteImport } from './routes/_authenticated/apps/index'
+import { Route as AuthenticatedSteamPricingAppIdRouteImport } from './routes/_authenticated/steam-pricing/$appId'
 import { Route as AuthenticatedGunplaKitsKitsIndexRouteImport } from './routes/_authenticated/gunpla-kits/kits/index'
 import { Route as AdminDashboardUsersIndexRouteImport } from './routes/_admin/dashboard/users/index'
 import { Route as AuthenticatedGunplaKitsKitsNewRouteImport } from './routes/_authenticated/gunpla-kits/kits/new'
@@ -62,11 +64,23 @@ const PublicLoginIndexRoute = PublicLoginIndexRouteImport.update({
   path: '/login/',
   getParentRoute: () => PublicRoute,
 } as any)
+const AuthenticatedSteamPricingIndexRoute =
+  AuthenticatedSteamPricingIndexRouteImport.update({
+    id: '/steam-pricing/',
+    path: '/steam-pricing/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedAppsIndexRoute = AuthenticatedAppsIndexRouteImport.update({
   id: '/apps/',
   path: '/apps/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedSteamPricingAppIdRoute =
+  AuthenticatedSteamPricingAppIdRouteImport.update({
+    id: '/steam-pricing/$appId',
+    path: '/steam-pricing/$appId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedGunplaKitsKitsIndexRoute =
   AuthenticatedGunplaKitsKitsIndexRouteImport.update({
     id: '/gunpla-kits/kits/',
@@ -143,7 +157,9 @@ const AuthenticatedGunplaKitsKitsKitIdPartPartIdRequirementsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof AdminDashboardRouteRouteWithChildren
+  '/steam-pricing/$appId': typeof AuthenticatedSteamPricingAppIdRoute
   '/apps': typeof AuthenticatedAppsIndexRoute
+  '/steam-pricing': typeof AuthenticatedSteamPricingIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
   '/dashboard/users/$userId': typeof AdminDashboardUsersUserIdRoute
@@ -162,7 +178,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AdminDashboardRouteRouteWithChildren
+  '/steam-pricing/$appId': typeof AuthenticatedSteamPricingAppIdRoute
   '/apps': typeof AuthenticatedAppsIndexRoute
+  '/steam-pricing': typeof AuthenticatedSteamPricingIndexRoute
   '/login': typeof PublicLoginIndexRoute
   '/signup': typeof PublicSignupIndexRoute
   '/dashboard/users/$userId': typeof AdminDashboardUsersUserIdRoute
@@ -185,7 +203,9 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
   '/_admin/dashboard': typeof AdminDashboardRouteRouteWithChildren
+  '/_authenticated/steam-pricing/$appId': typeof AuthenticatedSteamPricingAppIdRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexRoute
+  '/_authenticated/steam-pricing/': typeof AuthenticatedSteamPricingIndexRoute
   '/_public/login/': typeof PublicLoginIndexRoute
   '/_public/signup/': typeof PublicSignupIndexRoute
   '/_admin/dashboard/users/$userId': typeof AdminDashboardUsersUserIdRoute
@@ -206,7 +226,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/steam-pricing/$appId'
     | '/apps'
+    | '/steam-pricing'
     | '/login'
     | '/signup'
     | '/dashboard/users/$userId'
@@ -225,7 +247,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/dashboard'
+    | '/steam-pricing/$appId'
     | '/apps'
+    | '/steam-pricing'
     | '/login'
     | '/signup'
     | '/dashboard/users/$userId'
@@ -247,7 +271,9 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/_public'
     | '/_admin/dashboard'
+    | '/_authenticated/steam-pricing/$appId'
     | '/_authenticated/apps/'
+    | '/_authenticated/steam-pricing/'
     | '/_public/login/'
     | '/_public/signup/'
     | '/_admin/dashboard/users/$userId'
@@ -322,11 +348,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicLoginIndexRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_authenticated/steam-pricing/': {
+      id: '/_authenticated/steam-pricing/'
+      path: '/steam-pricing'
+      fullPath: '/steam-pricing'
+      preLoaderRoute: typeof AuthenticatedSteamPricingIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/apps/': {
       id: '/_authenticated/apps/'
       path: '/apps'
       fullPath: '/apps'
       preLoaderRoute: typeof AuthenticatedAppsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/steam-pricing/$appId': {
+      id: '/_authenticated/steam-pricing/$appId'
+      path: '/steam-pricing/$appId'
+      fullPath: '/steam-pricing/$appId'
+      preLoaderRoute: typeof AuthenticatedSteamPricingAppIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/gunpla-kits/kits/': {
@@ -440,7 +480,9 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedSteamPricingAppIdRoute: typeof AuthenticatedSteamPricingAppIdRoute
   AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
+  AuthenticatedSteamPricingIndexRoute: typeof AuthenticatedSteamPricingIndexRoute
   AuthenticatedGunplaKitsKitsNewRoute: typeof AuthenticatedGunplaKitsKitsNewRoute
   AuthenticatedGunplaKitsKitsIndexRoute: typeof AuthenticatedGunplaKitsKitsIndexRoute
   AuthenticatedGunplaKitsKitsColorsColorIdRoute: typeof AuthenticatedGunplaKitsKitsColorsColorIdRoute
@@ -454,7 +496,9 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedSteamPricingAppIdRoute: AuthenticatedSteamPricingAppIdRoute,
   AuthenticatedAppsIndexRoute: AuthenticatedAppsIndexRoute,
+  AuthenticatedSteamPricingIndexRoute: AuthenticatedSteamPricingIndexRoute,
   AuthenticatedGunplaKitsKitsNewRoute: AuthenticatedGunplaKitsKitsNewRoute,
   AuthenticatedGunplaKitsKitsIndexRoute: AuthenticatedGunplaKitsKitsIndexRoute,
   AuthenticatedGunplaKitsKitsColorsColorIdRoute:
