@@ -16,19 +16,28 @@ const schema = yup.object({
 })
 interface KitPartRequirementFormProps {
   kitId: number
+  kitPartIds: Array<KitPartV2['id']>
 }
 
-const toOption = (subassembly: KitSubassemblyV2) => ({
+const toOption = (subassembly: KitSubassemblyV2 & { disabled: boolean }) => ({
   value: subassembly.id,
   label: subassembly.name,
+  disabled: subassembly.disabled,
 })
 
 type FormData = yup.Asserts<typeof schema>
-const KitPartForm = ({ kitId }: KitPartRequirementFormProps) => {
+const KitPartForm = ({ kitId, kitPartIds }: KitPartRequirementFormProps) => {
   const { data } = useQuery({
     queryKey: ['kit', Number(kitId), 'subassemblies'],
-    queryFn: () =>
-      kitSubassemblyService.getAllKitSubassemblies(kitId.toString()),
+    queryFn: async () => {
+      const data = (
+        await kitSubassemblyService.getAllKitSubassemblies(kitId.toString())
+      ).map((sub: KitSubassemblyV2) => ({
+        ...sub,
+        disabled: kitPartIds.includes(Number(sub.id)),
+      }))
+      return data
+    },
   })
 
   const { mutate: createReq } = useMutation({
@@ -53,6 +62,27 @@ const KitPartForm = ({ kitId }: KitPartRequirementFormProps) => {
           })
         },
       )
+
+      // disable subassembly
+      queryClient.setQueryData<Array<KitSubassemblyV2>>(
+        ['kit', Number(kitId), 'subassemblies'],
+        (oldData) => {
+          if (!oldData) return oldData
+          return oldData.map((sub) => {
+            if (Number(sub.id) === newData.sub_assembly_id) {
+              return {
+                ...sub,
+                disabled: true,
+              }
+            }
+            return sub
+          })
+        },
+      )
+
+      form.reset()
+    },
+    onError: () => {
       form.reset()
     },
   })
@@ -68,6 +98,7 @@ const KitPartForm = ({ kitId }: KitPartRequirementFormProps) => {
   const onSubmit = (data: FormData) => {
     createReq(data)
   }
+
   return (
     <div className="space-y-2">
       <FormProvider {...form}>

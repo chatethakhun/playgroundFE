@@ -202,6 +202,11 @@ const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
     return data.sort(sortByIsCut)
   }, [data])
 
+  const kitPartIds = useMemo(() => {
+    if (!data) return []
+    return data.map((part) => part.sub_assembly_id)
+  }, [data])
+
   if (isLoading) return null
 
   return (
@@ -216,7 +221,7 @@ const KitPart = memo(({ kitId }: { kitId: string; subAssemblyId?: string }) => {
         <Plus className="w-5 h-5" />
       </FloatButton>
       <CustomModal modalIsOpen={isOpen} onClose={closeModal}>
-        <KitPartRequirementForm kitId={Number(kitId)} />
+        <KitPartRequirementForm kitId={Number(kitId)} kitPartIds={kitPartIds} />
       </CustomModal>
     </>
   )
