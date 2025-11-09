@@ -9,6 +9,7 @@ import Button from '../Button'
 import { useTranslation } from 'react-i18next'
 import kitPartService from '@/services/v2/kitPart.service'
 import { queryClient } from '@/utils/queryClient'
+import { useMemo } from 'react'
 
 const schema = yup.object({
   kit_id: yup.string().required(),
@@ -30,12 +31,9 @@ const KitPartForm = ({ kitId, kitPartIds }: KitPartRequirementFormProps) => {
   const { data } = useQuery({
     queryKey: ['kit', Number(kitId), 'subassemblies'],
     queryFn: async () => {
-      const data = (
-        await kitSubassemblyService.getAllKitSubassemblies(kitId.toString())
-      ).map((sub: KitSubassemblyV2) => ({
-        ...sub,
-        disabled: kitPartIds.includes(Number(sub.id)),
-      }))
+      const data = await kitSubassemblyService.getAllKitSubassemblies(
+        kitId.toString(),
+      )
       return data
     },
   })
@@ -95,6 +93,14 @@ const KitPartForm = ({ kitId, kitPartIds }: KitPartRequirementFormProps) => {
     },
   })
 
+  const filteredSubassemblies = useMemo(() => {
+    if (!data) return []
+    return data.map((sub) => ({
+      ...sub,
+      disabled: kitPartIds.includes(parseInt(sub.id)),
+    }))
+  }, [data, kitPartIds])
+
   const onSubmit = (data: FormData) => {
     createReq(data)
   }
@@ -108,7 +114,7 @@ const KitPartForm = ({ kitId, kitPartIds }: KitPartRequirementFormProps) => {
           render={({ field: { value, onChange } }) => (
             <DropDown
               label={t('part:part.form.subassembly_label')}
-              options={(data ?? []).map(toOption)}
+              options={(filteredSubassemblies ?? []).map(toOption)}
               value={value}
               onChange={onChange}
             />
