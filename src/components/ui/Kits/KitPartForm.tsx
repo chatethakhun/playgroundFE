@@ -95,10 +95,18 @@ const KitPartForm = ({ kitId, kitPartIds }: KitPartRequirementFormProps) => {
 
   const filteredSubassemblies = useMemo(() => {
     if (!data) return []
-    return data.map((sub) => ({
-      ...sub,
-      disabled: kitPartIds.includes(parseInt(sub.id)),
-    }))
+    // add disabled and sorted disabled to last
+    return data
+      .map((sub) => ({
+        ...sub,
+        disabled: kitPartIds.includes(parseInt(sub.id)),
+      }))
+      .sort((a, b) => {
+        if (a.disabled === b.disabled) {
+          return 0
+        }
+        return a.disabled ? 1 : -1
+      })
   }, [data, kitPartIds])
 
   const onSubmit = (data: FormData) => {
