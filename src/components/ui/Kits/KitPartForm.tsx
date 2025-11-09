@@ -17,7 +17,7 @@ const schema = yup.object({
 })
 interface KitPartRequirementFormProps {
   kitId: number
-  kitPartIds: Array<KitPartV2['id']>
+  kitPartIds?: Array<KitPartV2['id']>
 }
 
 const toOption = (subassembly: KitSubassemblyV2 & { disabled: boolean }) => ({
@@ -99,7 +99,7 @@ const KitPartForm = ({ kitId, kitPartIds }: KitPartRequirementFormProps) => {
     return data
       .map((sub) => ({
         ...sub,
-        disabled: kitPartIds.includes(parseInt(sub.id)),
+        disabled: (kitPartIds ?? []).includes(parseInt(sub.id)),
       }))
       .sort((a, b) => {
         if (a.disabled === b.disabled) {
